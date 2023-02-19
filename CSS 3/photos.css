@@ -1,0 +1,44 @@
+img {
+    width: 25%;
+    margin: calc(20%/6);
+    transition: all 0.5s;
+    /* transform:skewY(20deg); */
+    /* margin: 1.666666%; */
+}
+
+nav {
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    border-bottom: solid 2px #003566;
+    margin-left: calc(20%/6);
+    width: 14%;
+    display: block;
+    font-size: 1.5em;
+    padding-top: 1.2em;
+    padding-bottom: 0.2em;
+    transition: all 0.5s;
+    color:#003566; 
+    /* position:fixed; */
+}
+
+
+nav:hover {
+    width: 23%;
+    font-size: 2.5em;
+    color:#f07167;
+    /* color: palevioletred; */
+    cursor: pointer;
+    border-bottom: solid 2px #f07167;
+}
+
+img:hover {
+    width: 25.5%;
+    caret-color: aliceblue;
+    transform: rotate(0deg);
+
+}
+
+img:active {
+    width: 26%;
+    box-shadow: 10px 10px palevioletred;
+}

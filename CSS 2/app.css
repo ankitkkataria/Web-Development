@@ -1,0 +1,74 @@
+/* By default the body has a 8px margin it is good to remove it before you start and add it later if you want to  */
+body {
+    margin: 0px;
+}
+
+div {
+    width: 200px;
+    height: 180px;
+    ;
+}
+
+#one {
+    background-color: #cdb4db;
+    border-width: 5px;
+    border-color: #a2d2ff;
+    border-style: solid;
+    /* border box put everything in the 200px*180px box including the border */
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+#two {
+    background-color: #e76f51;
+    border-color: indigo;
+    border-width: 2px;
+    border-style: dashed;
+    border-left-width: 6px;
+    margin: 10px;
+}
+
+#three {
+    background-color: #118ab2;
+    /* down below is a way of doing three things in one line*/
+    border: darkmagenta 5px dashed;
+    border-left-style: dotted;
+    border-radius: 10px;
+    margin: 10px 20px 30px 40px;
+}
+
+.dogclass {
+    width: 210px;
+    height: 210px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.dogclass img {
+    width: 200px;
+    border: 5px solid rgb(236, 183, 191);
+    border-radius: 50%;
+}
+
+/* padding is the space between the content box and the border */
+/* margin is the space between two elements. */
+#forpadding1 {
+    padding: 20px;
+}
+
+#forpadding2 {
+    padding-left: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-top: 40px;
+}
+
+#forpadding3 {
+    /*shorthand notation first vertical padding then horizontal*/
+    padding: 10px 20px
+}
+
+#forpadding4 {
+    padding: 10px 20px 30px 0px;
+}

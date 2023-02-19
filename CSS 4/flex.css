@@ -1,0 +1,61 @@
+/* We have some container and we want to distribute space inside of that container.
+How do we distribute that space? 
+That's what flex is used for.*/
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+/* Main-axis and cross-axis are always perpendicular to each other if main-axis is horizontal then the cross-axis will be vertical and vice-versa*/
+#container {
+    background-color: #003049;
+    width: 90%;
+    height: 1000px;
+    margin: 0 auto;
+    border: 5px solid #003049;
+    /* Default flex direction is row and in the line below i'm actually changing it. */
+    display: flex;
+    flex-direction: row;
+    /* A better name for justify-content would be like main-axis-alignment as it just goes ahead and aligns whatever you have on the main-axis.*/
+    /* justify-content: flex-start;
+       justify-content: flex-end;
+       justify-content: space-around;
+       justify-content: space-between;
+       justify-content: center;
+       Baseline is used for aligning text across various elements
+       justify-content: baseline; 
+    */
+    justify-content: space-evenly;
+    /* Flex-wrap is used for wrapping the content wrap, wrap-reverse basically help us in setting the cross direction
+       so if my main axis is row axis like in this case then wrap will help us in setting the cross-axis which is nothing but vertical axis 
+       but if my main axis is actually column-axis in that case the cross axis will deal with horizontal direction */
+    flex-direction: row;
+    flex-wrap: wrap-reverse;
+
+    /* A better name for align-items would be like cross-axis-alignment as it just goes ahead and aligns whatever you have on the cross-axis.*/
+    align-items: flex-end;
+    /* align-content basically allows us to change the spacing between the rows present across the cross-axis 
+       this only works when there are multiple rows or in other words flex-wrap is doing it's work and making content scale between various rows and columns*/
+    /* align-content: center; */
+
+}
+
+#container div {
+    width: 300px;
+    height: 100px;
+}
+
+div:nth-of-type(1) {
+
+    /* align-self just goes ahead and does what align-items 
+    did but for a single element it basically does nothing 
+    but changes the location of a item in it's cross axis
+    unlike justify content, align-items and align-content
+    this property actually just works on a single element 
+    rather than working on an entire container. */
+    align-self: flex-start;
+}

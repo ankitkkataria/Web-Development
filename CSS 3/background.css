@@ -1,0 +1,19 @@
+section {
+    /* Width 80% here means nothing but 80% of h1 */
+    width: 80%;
+    height: 800px;
+    background-image: url("https://images.unsplash.com/photo-1564442038901-4f9a19d3d456?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1227&q=80");
+    background-position: top; /* This makes the image start from the top*/
+    background-size: cover;
+    margin: 0 auto;
+}
+
+h1 {
+    color: white;
+    font-size: 150px;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: lighter;
+    text-shadow: black -6px 6px 1px;
+    margin: 0 auto;
+}

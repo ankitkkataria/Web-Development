@@ -1,0 +1,88 @@
+This doc contains everything i learn about JS.
+
+Numbers in JS
+
+There is only a single type of number variable in JS unlike c++ it stores floats,negative as well as integers in a single variable.
+
+** is power operation Ex:- 2**4 = 16.
+
+In JS there are no types basically what that means is 
+let aValue = false;
+aValue = 2212; // Is not a wrong operation.
+
+Strings In JS
+
+let stringName = "I am okay";
+let stringName = 'I am not okay';
+Both of the above syntax are good no issue just don't mix them like 'Ankit";
+The only place you might have to use both of them in a string is in cases such as
+let stringName = "I'm okay" if you tried doing 'I'm okay' your string would stop at I.
+Another example:-
+let quote = 'You had me at "hello"';
+
+let s = "hello";
+s.length = 5;
+let s2 = "World";;
+let s3 = s + s2;
+console.log(s3) = helloWorld
+
+Unlike c++ you can't change a character in a string
+let s = "hello";
+you can't do s[0] = 'r'; // It doesn't do anything
+so if you want to make it rello just do 
+s = "rello"; // re-assign.
+
+In JS you can chain multiple methods in the same line.
+string s = "I'm okay mylove";
+s = s.trim().toLowerCase(); // trim() all it does is removes empty space from beginning and end of a string that's it.
+It actually works like this first s is substituted and trim function is applied and then on that trimmed version we go ahead and apply the lowerCase method and then assign it back to s.
+So, It just works from left to right.
+
+String Template Literals `${JS code}`
+let product = Kiwi;
+let price = 25;
+let quantity = 4;
+If you had to print 
+You bought 4 Kiwis. Total is: $100.
+You'd have to do
+"You bought " + quantity + " " + product + "s. Total is: $" + price*quantity;
+But with String Template Literals (When you use `any string in between back ticks` rather than using double quotes you can use ${Expression})
+So you can write the above thing like
+`You bought ${quantity} ${product}s. Total is: $${price*quantity}`
+`You bought ${quantity} ${product.toUpperCase()}s. Total is: $${price*quantity}` // Infact you can even use methods in these literals.
+
+null & undefined 
+null is used in cases like
+
+// No one is logged in yet...
+let loggedInUser = null;
+
+// A user logs in...
+loggedInUser = "Ankit";
+
+Where as undefined basically means unassigned.
+let genericVariableName;
+The above variable is just undefined.
+
+// Math Object 
+Math.random() returns a random float value between 0 to 0.99999999999
+
+So if you want random values between 1 to 100 do this
+let num = Math.floor(Math.random()*100)+1;
+
+If you want a random number between 1 to 5 do this
+let num  = Math.floor(Math.random()*5)+1;
+
+Decision Making 
+== means equality it is a loose form of equality checking in JS
+so when types are same then == behaves like normal
+but when they are different it gives weird results
+like 1 == "1" is true in JS as == converts both the things to same type first and then compares 
+similarly null == undefined also returns true etc.
+so, In conclusion == only checks the value not the type and that can lead to mess ups.
+
+=== is strict equality
+In order to pass this check operands must be exactly equal 
+1 === "1" will give false and same goes for the null & undefined comparision.
+ALWAYS USE TRIPLE EQUALS AND TRIPLE NOT EQUALS (!==).
+

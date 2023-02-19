@@ -1,0 +1,139 @@
+
+h1{
+    text-align: center;
+    color: royalblue;
+    font-weight: lighter;
+    text-decoration: #56e244 underline wavy;
+    font-size: 50px;
+    font-family: futura,fantasy,sans-serif;
+    /* text-decoration: overline;
+    text-decoration: line-through; */
+}
+
+
+h2{
+color : indianred;
+font-weight: 400;
+}
+
+p {
+color : goldenrod;
+line-height: 2;
+letter-spacing: 5px;
+}
+
+button {
+color : orchid;
+background-color: blanchedalmond;
+}
+
+a{
+color: pink;
+/* line below helps us in removing the default underline under the anchor tags */
+text-decoration: none;
+
+}
+
+/* Immediately below i'm selecting the individual components using the id selector */
+#specialh2{
+color : #235566
+}
+
+/* use # for id selector */
+#specialbutton{
+background-color: indigo;
+color : yellow;
+}
+/* use . for class selector */
+/* you can put various different kinds of elements in a class and then apply various properties on them */
+.randomclass{
+color : navy;
+}
+
+/* this down below here i'm applying the color purple to all the anchor tags that are desendents of class coolclass */
+.coolclass a{
+color : purple;
+}
+
+/*here i'm making all the descendents that are anchor tags in ordered lists of teal color*/
+ol a{
+color : teal;
+}
+/* h2+button signifies that whenever a button is immidiately followed by a h2 statement then just go ahead do all the changes */
+h2+button{
+background-color : white;
+}
+/* the line below it applies the color red to all the paragraphs and buttons that are immediate desendent of the footer */
+footer > p,button{
+color: red;
+}
+
+
+input[type = "password"]{
+color : red;
+}
+
+input[type = "text"]{
+color : blue;
+}
+
+button:hover{
+background-color: palevioletred;
+color : black;
+}
+
+button:active{
+background-color: paleturquoise;
+color : black;
+}
+
+a:hover {
+text-decoration : underline wavy;
+text-decoration-color:royalblue;
+}
+
+p::first-letter{
+font-size: 20px;
+}
+
+/* this down below makes the first line of every paragraph blue. */
+/* p:first-line{
+color : blue;
+} */
+
+/* In a paragraph if you select something left click + move you'll see this color instead of default blue.*/
+p::selection{
+background-color: bisque;
+}
+
+/* when you select anything else then a paragraph then it will be blueish and if you just kept whatever was in this code snippet below and removed the paragraph one just above you'll see sky blue on selection everywhere*/
+::selection{
+background-color: paleturquoise;
+}
+
+/* this allows us to use the hover effect on only the buttons in a specific class  */
+/* .classname button:hover{
+background-color: red;
+color : yellow;
+} */
+
+/* universal selector below not commenly used */
+/*
+*{
+  color : pink;
+}
+*
+/* you can use a comma in between selectors  */
+
+/* h1,h2{
+color : indianred;
+} */
+
+
+/* 
+body{
+background-color : rgb(33, 123, 151);
+background-color : #5ceeaa;
+background-color : #3cf == #33ccff;
+}  */
+

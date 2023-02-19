@@ -1,0 +1,11 @@
+.button-reddish {
+    background-color: palevioletred;
+}
+
+.button-large {
+    padding: 5px;
+}
+
+.button-littleBitRound {
+    border-radius: 0.5em;
+}

@@ -1,0 +1,115 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+#container {
+    background-color: #003049;
+    width: 90%;
+    /* height: 500px; */
+    margin: 0 auto;
+    border: 5px solid #003049;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* flex-wrap: wrap; */
+}
+
+#container div {
+    width: 200px;
+    height: 200px;
+    /* max-width: 300px; */
+    text-align: center;
+    /* If you wanna see how shrink works here as soon as there is not enough space which you'll be able to see as soon as you resize the window
+       to see that you have to make the space for the items present in this container to be not enough which you can do that either by increasing
+       the size of the elements present in it or by decreasing the size of the container itself*/
+    flex-basis: 100px;
+    /* putting the condition below says okay given there is extra space split all that space equally among the element present in the contianer */
+    /* flex-grow: 1; */
+}
+
+div:nth-of-type(1) {
+    flex-grow: 1;
+    flex-shrink: 2;
+    transition: flex-grow 1s;
+}
+
+div:nth-of-type(1):hover {
+    flex-grow: 2;
+    transition: flex-grow 1s;
+}
+
+div:nth-of-type(1):active {
+    flex-grow: 10;
+    transition: flex-grow 1s;
+}
+
+div:nth-of-type(2) {
+    flex-grow: 0.2;
+    flex-shrink: 1;
+    transition: flex-grow 1s;
+}
+
+div:nth-of-type(2):hover {
+    flex-grow: 2;
+    transition: flex-grow 1s;
+}
+
+div:nth-of-type(3) {
+    flex-grow: 0.5;
+    flex-shrink: 3;
+    transition: flex-grow 1s;
+}
+
+div:nth-of-type(3):hover {
+    flex-grow: 5;
+    transition: flex-grow 1s;
+}
+
+div:nth-of-type(4) {
+    flex-grow: 0.3;
+    transition: flex-grow 1s;
+}
+
+div:nth-of-type(4):hover {
+    flex-grow: 3;
+    transition: flex-grow 1s;
+}
+
+div:nth-of-type(5) {
+    flex-grow: 1.8;
+    transition: flex-grow 1s;
+}
+
+div:nth-of-type(5):hover {
+    flex-grow: 8;
+    transition: flex-grow 1s;
+}
+
+main {
+    width: 80%;
+    margin: 0 auto;
+    border: 5px solid black;
+    height: 500px;
+    display: flex;
+}
+
+main .sidebar {
+    background-color: palevioletred;
+    /* flex when simply written can be used as a shorthand 
+    meaning you can put all three things flex-grow,flex-shrink and flex-basis 
+    in that order here if you miss the 2nd one you can still put the third value*/
+    flex: 1 2 50px;
+    border: 2px solid white;
+}
+
+main .maincontent {
+    background-color: paleturquoise;
+    flex-basis: 100px;
+    flex-grow: 2;
+    flex-shrink: 1;
+}

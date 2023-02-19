@@ -1,0 +1,74 @@
+h1 {
+    background-color: #2a9d8f;
+    border: 5px solid #264653;
+    color: #eae2b7;
+    padding: 0.7em;
+    width: 300px;
+    font-size: 1.8em;
+    text-align: center;
+    /* putting auto in the second parameter of the margin makes it so that your contents automatically get aligned in the middle */
+    margin: 20px auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: lighter;
+}
+
+h1:nth-of-type(2n) {
+    background-color: #e9c46a;
+}
+
+h1:nth-of-type(3n) {
+    background-color: #f4a261;
+}
+
+h1:nth-of-type(4n) {
+    background-color: #e76f51;
+}
+
+section:first-of-type h1:nth-of-type(1):hover {
+    transform: rotate(45deg);
+    transition: transform 1s;
+}
+
+section:first-of-type h1:nth-of-type(2):hover {
+    transform: scale(0.6);
+    transition: transform 1s;
+}
+
+section:first-of-type h1:nth-of-type(3):hover {
+    transform: translateX(-200px);
+    transition: transform 1s;
+}
+
+section:first-of-type h1:nth-of-type(4):hover {
+    transform: translate(-400px, 100px);
+    transition: transform 1s;
+}
+
+section:nth-of-type(2) h1:nth-of-type(1):hover {
+    transform: skew(30deg);
+    transition: transform 1s;
+}
+
+section:nth-of-type(2) h1:nth-of-type(2):hover {
+    transform: skew(10deg, 5deg);
+    transition: transform 1s;
+}
+
+section:nth-of-type(2) h1:nth-of-type(3):hover {
+    /* You can apply multiple transforms in a single line as well */
+    transform: rotate(-20deg) scale(1.3);
+    transition: transform 1s;
+}
+
+section:nth-of-type(2) h1:nth-of-type(4):hover {
+    transform: translateX(-500px) rotate(50deg) scaleY(1.4);
+    transition: transform 1s;
+}
+
+/* Any transforms you make on anything applies on the entire contant present in it for example down below i'll apply some
+transforms on the entire section containing all the 4 values present in the second section it will apply on everything present in it whether that be text of colors or h1's etc anything */
+
+section:nth-of-type(2):active {
+    transform: translate(50px, 20px) rotate(94deg) scale(0.5);
+    transition: 1s;
+}
