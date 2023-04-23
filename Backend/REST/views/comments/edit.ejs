@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Page</title>
+</head>
+<body>
+    <h1>Edit Comment</h1>
+    <!-- The post and patch in the line below can be lowercase as well -->
+    <form method = "POST" action="/comments/<%=originalComment.id%>?_method=PATCH"> 
+        <!-- Having the name down below as comment is extremely important here i had made a error by changing the name cause when this form is submitted i'm sending a patch request to comments/:id and where it accesses the new text data from req.body by using req.body.comment so you need to make sure that name is comment -->
+        <label for="comment">Edit Comment :</label>
+        <textarea name="comment" id="comment" cols="30" rows="10">
+        <%= originalComment.comment %>
+    </textarea>
+    <button>Save</button>
+    </form>
+</body>
+</html>

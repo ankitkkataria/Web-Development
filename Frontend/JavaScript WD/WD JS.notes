@@ -1,0 +1,515 @@
+DOM (Document Object Model)
+
+We're going to learn how to combine JS with HTML CSS instead of just doing JavaScript in isolation
+in a vacuum like we have been.
+
+// I'll be using object and object literal and Element interchangeably so just keep that in mind. 
+// Also official term for an object in an Element (capital E).
+
+What is DOM :- At it's core it's a bunch of JS object literals that represent a web page like for example if we
+               have an h1 statement on our webpage now we will have a JS object literals that will be modeling this
+               h1 statement and i can change that JS object literals and the page will change to show those changes
+               So, it is our access portal into the contents of a web page from JavaScript.
+               
+What is DOM :- Formally the DOM is a JS representation of a webpage.
+               It's your JS access portal into the contents of a webpage.
+               It's just a bunch of object literals that you can interact with via JS.
+
+First see the file Document.png in this folder.
+To access the document object using the console can be done in the following fashion console.dir(document).
+
+See, All you have to know is when a webpage is loaded a document object litral is created which contains all the object literals of all contents 
+you see on the page whether that be body,h1,UL or anchor tags etc. and these object literals are made in a tree fashion so document object will 
+contain the body object not vice-versa. Each of these objects for the contents of this page might contain a lot of properties and methods in it.
+Along with this the document object will also contain some useful methods and properties as well like what happens when you scroll your mouse wheel
+or click your mouse among other things.
+
+-Selecting Elements on the webpage-  
+You don't want to write some JS code and apply it to all the contents of the page so just like css we should be able to select component/components based on id/class/tag.
+
+1) getElementById :- A method that's built into the document object that helps us in selecting objects of components and store them in varibles.
+
+Example :-
+const tableOfContentsObject = document.getElementById("toc"); // Argument will be a string
+// Now tableOfContentsObject contains the object/Element that is toc this object will have all the properties/methods corresponding to the table of components so don't think 
+// it just contains the html of the toc actually this variable now contains everything related to that component.
+// If you fill in a wrong id name that doesn't exist this getElementById will return null.
+
+2) getElementsByTagName :- This way you can select all the occurrences of anything like i can select all images or all anchor tags or all paragraphs or whatever just like we could do this in css.
+
+Example :-
+const allImages = getElementsByTagName("img");
+// Now allImages contains all the objects/Elements that are images on the webpage.
+// allImages is actually a HTML collection now that contains all those Elements/objects of images.
+// HTML collection is not an actual array so you can't use methods like map,reduce or whatever on allImages
+// But if you have 3 images on the page you can access each of those objects like a array
+const secondImageElement = allImages[1];
+
+// Also HTML collection is iteratable so you can use for loop or whatever.
+Example :- Printing all the sources of all the images on the webpage.
+
+for(let img of allImages){
+    console.log(img.src);
+}
+
+3) getElementsByClassName :- Same thing this time we just select all the Elements of a class.
+
+Example :- Printing all the sources of all the square images that are part of the square class in the webpage.
+
+const squareImages = document.getElementsByClassName('square');
+for(let img of squareImages){
+    console.log(img.src);
+}
+
+
+-querySelector- 
+
+querySelector is a newer all-in-one method to select a single element.
+
+Example:-
+[javascript]
+document.querySelector('h1') // Finds and returns the first h1 statement.
+document.querySelector('h1:nth-of-type(2)') // Returns the seconds h1 on the page from the top.
+document.querySelector('#red') // Finds and returns the first element with ID of red.
+document.querySelector('.sqaure') // Finds and returns the first element with the class of sqaure.
+document.querySelector('a[title="Java"]') // Finds the first anchor tag with a title attribute Java and returns that, So instead of just selecting by type or just attribute we are selecting by type and attribute.
+[end]
+
+-querySelectorAll-
+
+querySelectorAll is similar to querySelector except it returns all the elements with a particular tag,id or className just like css you can also be more specific when specifying what you want.
+
+Example:-
+[javascript]
+const links = document.querySelectorAll('p a'); // Select all the links that are children of a paragraph or are inside a paragraph.
+// Now you can iterate over all the links and print all the URLs or all the anchor tags.
+for(let link of links){
+    console.log(link.href);
+}
+[end]
+
+-Some Important Properties And Methods On Objects/Elements-
+// From 1 to 3 are properties not methods on any element.
+1) innerHTML :- It retrieves/returns everything in in between the opening and closing tag of that element including the tag-names like <p> </p> etc. and it can be used to alter the html in that component completely.
+                To see what it can do just do this on the code of the index.html in this folder document.querySelector('p').innerHTML and see what it shows in the console; // You'll see everything in the paragraph.
+
+2) innerText :- It gives/returns us the text inside that component and it also doesn't show the things which are set to display:none so it only changes the text that's it.
+
+3) textContent :- Just like innerText except it even shows that things that are not shown or you could say have been set display:none to.
+
+// The three things above are not just for seeing the contents of these elements but can also be used to modify the contents either text through innerText, textContent or even HTML using innerHTML.
+// Example of changing the html with innerHTML
+document.querySelector('h1').innerHTML += '<sup>i am the superscript of h1</sup>; // Putting a superscript on the first h1 on the page.
+
+
+4) Attributes are like href on anchor tags, src on imgs, class, id, type on input etc. and now we will see how we can access them.
+
+Example :- Getting id of the banner image.
+
+const bannerImageObject = document.querySelector("#banner");
+const storeIdOfTheBannerImage = bannerImageObject.id;
+
+// Even shorter way
+const storeIdOfTheBannerImage = document.querySelector("#banner").id;
+
+// Another way using getAttribute method.
+const storeIdOfTheBannerImage = document.querySelector("#banner").getAttribute("id");
+
+Example :- Setting href of the first anchor tag on the page.
+
+const firstLink = document.querySelector('a');
+
+firstLink.href = 'http://www.google.com'; // Doing it simply through the object entry access.
+or
+firstLink.setAttribute('href','http://www.google.com'); // Doing it using a method provided for objects in which 1st arg is the attribute you want to change and the second is what you want to change it with.
+
+# Note :- getAttribute() & accessing the attribute like on line 114 are usually the same thing except in few circumstances like in href.
+# firstLink.href returns "file:///wiki/List_of_chicken_breeds" where as firstLink.getAttribute('href') returns "/wiki/List_of_chicken_breeds"     
+
+5) You can even change the styles of various components using JS's anyobject.style.anyCSSproperty = "string";
+   Example :-
+
+    const allLinks = document.querySelectorAll('a');
+    for(let link of allLinks){
+    link.style.color = "#23ac23";
+    link.style.textDecoration = "none";
+    }
+  
+6) But you can't really see from JS what CSS properties have been applied to what components as if you check using
+   const h1Obj = document.querySelector("h1");
+   Now, You can try checking 
+   h1obj.style.anyCSSproperty and they will all be empty strings.
+
+   So, You have to use let everyCSSpropertyOfThisComponent = window.getComputedStyle(h1Obj); // This will now return an object that contains all the current css styles applied to this component.
+   Now, You can see what each of those properties are everyCSSpropertyOfThisComponent.fontSize will return a string that tells you the font size of this component.
+   # Just remember this getComputedStyle(h1Obj).anyCSSproperty will always return strings like "32px" so you might have to remove like px from it read the number then do the vice-versa when modifying the values.
+
+7) classList :- See we don't change styles don't often using JS like above cause it changes them inline in HTML we don't usually want that.
+                But what is a really common practice is making some classes like 
+                .purple {
+                color: purple;
+                }
+
+                .border {
+                border : solid 1px palevioletred;
+                }
+
+                And just directly apply these classes on various components let's say when someone clicks something or scrolls something applying each property like font-size & stuff individually will be inefficient so we make classes like we had in bootstrap and apply these.
+                To apply one way is this let's say you want to apply styles to first h2.
+                const h2Obj = document.querySelector("h2");
+                h2Obj.setAttribute('class','border purple'); // Both of the classes will be applied
+                // But now if you want to add any other class (newClass) you'd have to first copy the ones above and then put a space in between and put 'border purple newClass' in the 2ng arg.
+                // Cause if you directly did this h2Obj.setAttribute('class','newClass'); automatically border and purple will be removed.
+                // Similarly if you want to remove purple you'd have to do type h2Obj.setAttribute('class','border newClass') // Putting everything except purple.
+
+                // So, We need something better for that we have the classlList object in every component.
+                
+                // Same thing as above can be done by classList
+                #classlList methods 
+                1) add
+                h2Obj.classList.add('purple');
+                h2Obj.classlList.add('border'); // This adds new class without removing the old one.
+                h2Obj.classlList.add('newClass');
+                
+                2) remove
+                h2Obj.classList.remove('purple'); // This removes the object without removing others.
+
+                3) contains
+                h2Obj.classlList.contains('border') // This returns true if the border class is applied to the h2Obj.
+
+                4) toggle // used in many situations like on clicking navbar-expand button on a site some class called .exapand might be applied and then on clicking it again it might be removed.
+                h2Obj.classlList.toggle('purple'); // If the purple class is not applied to h2Obj it applies it and if it had already applied then it just removes it.
+
+
+8) Accessing of relatives of an element from the given element (Every object has these properties)
+    1) parentElement
+    const firstBold = document.querySelector('b'); // Selecting the first bold tag.
+    firstBold.parentElement // returns the parent Element/object of the first bold tag which is nothing but the first paragraph element.
+    firstBold.parentElement.parentElement // returns the grand parent basically which in our case currenly if you look at your html is the body element/object.
+    firstBold.parentElement.parentElement.parentElement // returns the great grand parent basically which here is the html element.
+    // You can do this .parentElement as many times as you want till you reach the root or whatever.
+    // See bcz any element will always have a single parent only so we don't need to specify what parent to access just do .parentElement.
+    
+    2) children // Cause children unlike parent can be multiple we can't say .childElement
+       const paragraph = firstBold.parentElement;
+       const allChildrenOfParagrah = paragraph.children // returns an HTML collection which again is itertable and accessable like an array but not an actual array.
+       allChildrenOfParagrah[0] // is the first object/element in the paragraph which is nothing but the first bold tag.
+       paragraph.childElementCount // if going to return a number that represents the number of children it has.
+    
+    3) siblingElements // To access the sibling Elements/objects.
+       const firstSquareImg = document.querySelector(".square");
+       firstSquareImg.nextElementSibling // Will give us the next sibling which here is next square image/object.
+       firstSquareImg.previousElementSibling // Will give us the previous sibling which here is second paragraph element/object.
+                
+9) createElement() :- Used to create new elements it's a document method and the rest down below are element methods.
+   
+   Example :- 
+   const newImg = document.createElement('img'); // In arg just pass in a tag in form of a string and it will build a blank element of that type and store it in your variable.
+   // Now you can set the image src or whatever
+   newImg.src = "// Put any image address here".
+   // Do remember doing that just creates an element it doesn't actually show up on the page unless to explicitly put it on the page.
+
+10) appendChild() :- An older way of putting a element on the page it basically puts this element as the last child any element you want to. 
+    // Let's say you wanted to put that image on the page at the end of your body.
+    // First let me make that image a bit smaller cause it might be big
+    newImg.classlList.add('square');
+    // Now let me put this image at the end of the body.
+    document.body.appendChild(newImg); // This will put the newImg at the end of the body as it's last child.
+
+12) append():- It's a newer method it does that same thing as appendChild but
+             1) It allows you to put multiple elements simultanously with just one line just by passing in different args 
+             2) It also allows you to directly append strings without first creating a completely newElement using createElement.
+    Example :-
+    // Say you had created two newImg Elements and wanted to put them at the end of first paragraph element.
+    const firstParagraph = document.querySelector('p');
+    firstParagraph.append(newImg,newImg2); // When appending you must put in the actual element itself not a string just like we usually do.
+    // Or say you wanted to append a string at the end of the first paragraph.
+    firstParagraph.append('you are insane');
+
+13) prepend() :- The same as append except it puts the element in the beginning of the parent element.
+               // Same 2 points as append can be put here.
+    Example :- 
+    // Say you wanted to put a bold Hi! in the front of the first paragraph.
+    // There are many ways of doing it but one way is
+    const newBoldElement = document.createElement('b');
+    // Now to put Hi! into it you can do two things 
+    1) newBoldElement.innerText('Hi!');
+    2) newBoldElement.append('Hi');
+
+    // Both of the above two things are right.
+    // Now putting it in the beginning of the first paragraph.
+    firstParagraph.prepend(newBoldElement);
+
+14) insertAdjacentElement() :- This is probably a outdated method till now we have seen how to put elements inside a parent element but what if you want to put it after a element or before a element infact it can even do what prepend and append do as well.
+    Syntax :- insertAdjacentElement(position, element)
+    position :- Can have 4 values 
+                'beforebegin': Before the targetElement itself.
+                'afterbegin': Just inside the targetElement, before its first child.
+                'beforeend': Just inside the targetElement, after its last child.
+                'afterend': After the targetElement itself.
+    Example :- 
+    // Let'say after the first h1 you want to put a h2.
+    const newH2 = document.createElement('h2');
+    newH2.innerText("Yo! I'm the new h2");
+    h1obj.insertAdjacentElement('afterend',newH2);
+    // Let's say before the first paragraph on the page i wanted to put the h2.
+    firstParagraph.insertAdjacentElement('beforebegin',newH2);
+
+15) before() and after() :- I think this kind of replaces the insertAdjacentElement these methods are used to put elements before and after certain element
+    Example :-
+    // If i wanted to do the same thing as above method we could do it like this simply.
+    const newH2 = document.createElement('h2');
+    newH2.innerText("Yo! I'm the new h2");
+
+    h1obj.after(newH2); // Using after();
+    firstParagraph.before(newH2); // Using before();
+
+//  Exercise where we had to put 100 buttons in a div having id container plus there was one for condition that every button must have some random text in it as well.
+[javascript]  
+
+    // This worked
+    for(let i = 0 ; i < 100 ; i++){
+        const selectDiv = document.querySelector("#container");
+        const newButton = document.createElement("button");
+        newButton.innerText = "Yo!";
+        selectDiv.append(newButton);
+    }
+
+    // This didn't   
+        const selectDiv = document.querySelector("#container");
+        const newButton = document.createElement("button");
+        newButton.innerText = "Yo!";
+    for(let i = 0 ; i < 100 ; i++){
+        selectDiv.append(newButton);
+    }
+
+[end]
+
+16) removeChild() :- A old method which helps us in deleting elements from our webpage.
+                     This is a bit annoying to use as you have to first select the parent of the element you want to delete and then call removeChild on that.
+                     Example:-
+                     // Say you wanted to delete the first bold element that's present in the first paragraph.
+                     const firstBold = document.querySelector("b");
+                     const firstBoldsParent = firstBold.parentElement;
+                     // Now to remove it finally we do this :-
+                     firstBoldsParent.removeChild(firstBold);
+                     // Above two lines of code can even be replaced by one.
+                     firstBold.parentElement.removeChild(firstBold);
+
+17) remove() :- This is a simpler method to remove an element here you don't need to worry about parent or anything just select the element and call remove.
+                Example :- // Remove the first bold element again
+
+                const firstBold = document.querySelector("b"); 
+                firstBold.remove(); // That's it. 
+
+    
+
+#Events
+ Events are basically what help us in making our site responsive in the sense that our site should do something based on what the user does.
+ For Example :- 
+                If the user clicks on something what should we do.
+                If the user hovers over something what should we do.
+                If the user double clicks over something what should we do.
+                If the user scrolls over something how should our page react.
+
+ All the above things clicking,hovering,double click,scrolling and many more are nothing but events.
+ Basically adding functionality to our page based on what the user does is the main purpose of learning about events.
+    
+ How do we use events and implement functionality based on those events ? 
+ 1) This is a bad way but we could do something called inline HTML event reaction where we put JS code within the HTML tag of a element this is a really bad way of doing this 
+    cause it's tough to manage and if you have to repeat something you can't just loop and do something you'll have to repeat code plus changing something for multiple things 
+    will have to be done manually.
+    
+    Example :- <button id="btn" onclick="console.log('clicked');">Click Me</button> // This is what your HTML will look like.
+
+2) This way is where we first select a component that should perform something when a user does something and then on that event we write a function that tells what to do.
+   Assume you have only one button on your HTML page. // Also these events can be done on any element like even h1 and stuff i'm just taking button for instance.
+
+[javascript]  
+
+        const btn = document.querySelector("button"); 
+        btn.onclick = function(){ // This property should be assigned to a function not directly to console.log("statement") cause when that console.log() statement would have been executed immediately rather the fucntion is called only when the button is clicked.
+        console.log("Yo you clicked me my boi");
+        console.log("I hate you");
+        }
+
+        btn.onclick = console.log("Yo you clicked me my boi"); // Wrong
+
+        btn.onmouseenter = () => {
+        console.log("You just entered my buttony body");
+        console.log("Don't do that again");
+        }
+
+        // You can even write named functions and then assign them.
+        function scream() {
+            console.log("You're an idiot");
+        }
+
+        // Example of first defining a function seperately and then assigning so you don't need to always define the function like you did in above two cases.
+        btn.onmousedown = scream; // See we're not typing scream(); bcz we're not calling it initially we're assining the function to onmousedown so when that happens call the function.
+
+[end]
+
+3) addEventListener() :- This method that every object/element has is the best way of handling what to to do when a event happens.
+                         It's first arg is the event that should happen on the element it's being setup upon and the second arg is the funtion that should execute when the event in the first argument happens on this element.
+   Example :- 
+[javascript]
+
+   const btn = document.querySelector("button");
+
+   btn.addEventListener('click',function(){
+       console.log("You clicked me");
+   })
+
+   btn.addEventListener('dblclick',() => {
+       console.log("You double clicked me");
+   })
+
+[end]
+
+Q - Why is addEventListener better than the 2nd way of doing things ? 
+S - Well there are two reasons :-
+    1) Let's say you had to call more than one methods one after the other when a event occurs.
+    [javascript]
+         function printYellow() {
+            console.log("yellow");
+         } 
+
+         function printRed() {
+            console.log("red");
+         }
+
+         // If you do it the 2nd way.
+
+         btn.onclick = printYellow;
+         btn.onclick = printRed; 
+
+         // Now when you run it you'll realize instead of instead of it running both the funcitons one after the other when the button is clicked 
+         // but the only thing that will happen is it will only execute the printRed method cause onclick is a property of the element btn so it 
+         // can only hold a single value and that value just got overwritten when two functions were assigned to it one by one just like in CSS 
+         // the same thing would happen if you tried assining two colors to color property of a paragraph or something.
+         
+         // But the above problem can be solved using addEventListener.
+
+         btn.addEventListener('click',printYellow);
+         btn.addEventListener('click',printRed);
+
+         // So, Basically you can have two or more eventListeners on the same element for the same event but doing it using the second way of modifying that event property of the element can only be assigned one functionality.
+[end]
+
+    2) There can be extra optional objects that can be passed in the addEventListener() method as additional arguments.
+       Example :- 
+
+       [javascript]
+       btn.addEventListener('dblclick',printYellow,{once:true});
+       // The third argument is a object that  can be passed in now this function will be called only the first time the double click event happens it won't be called for the next double clicks.
+       // There are other objects as well that can be passed in we will learn about them later.
+[end]
+
+    3) Just a random other thing just like addEventListener we also have removeEventListener method so if at a certain point you want to remove the eventListener you can do so too.
+
+
+# Now here is where you should go and checkout randomColorGenerator and then checkout eventsAndThis and then eventObject then read about preventDefault and then atlast read preventDefaultTweetExample.
+# Now read about Event Delegation.
+# Then you should read about changeAndInput.
+# Then go and read eventBubbling that will teach you about a eventObject method called stopPropogation();
+# Then you should take a look at the scoreKeeper code.
+
+# ONE THING TO NEVER FORGET IS THAT THIS KEYWORD DOES NOT WORK IN ARROW FUNCTIONS IT ONLY WORKS IN NORMAL FUNCTIONS AND ALSO WHENEVER YOU TAKE INPUT FROM A INPUT EVEN IF THE TYPE IS NUMBER OR EVEN IF YOU USE SELECT THEY WILL ALWAYS GIVE BACK A STRING SO ALWAYS USE parseInt.
+
+# div is a block element and span is a inline element i was using them interchangeably actually they are different say in a line you want to select a word and just want to style it differently in that case we use span not div example of it begin in the scorecard code you had to make the scores red/green we did that by making them spans not divs you can check out the divVsSpan.html file in scoreKeeper directory.
+
+# Just go over the WD Async.pdf file first just so you can grasp the overall basics.
+# Callback Hell :- This happens when you have code that you want to execute after a certain time like the rainbow background color changer program colt wrote that changes the color of the background after 1 second you saw how the nesting grew crazier and crazier with every callback to setTimeout was added.
+
+Now read the callback hell file.
+
+To deal with callback hell we have promises.
+Promise :- A promise is an object representing the eventual completion or failure of an asynchoronus operation.
+If a promise has been resolved the fucntion .then() will be executed and you can put anything you want there.
+If a promise has been rejected the funcitons .catch() will be executeed and you can put anything you want there.
+.then() & .catch() are used for promise chaining where i can have dependent asynchoronus actions here dependent means something should only happen if the previous thing happend and so on and if anywhere things went wrong we should catch it.
+See promises don't stop the execution of a program they let the rest of the program execute normally it's just whenever they are resolved or rejected they just find their way back into the callstack if promises are chained one after the other they all happen one after the other and each waits for the one above to get resolved but they don't stop the execution of the code that's not part of these promises you can check this by putting a simple console.log("random string") all the way after promises that will execute first and then you'll see the promises result it's the same way await keyword works. 
+
+Now read the promisesIntro.js file to get an idea of what the problem is without using promises and a basic example of how to create your own promise.
+Now read the creatingPromises.js file to get a complete sense of how to make promises.
+Async :- async keyword is used to declare a function which means it magically behind the scenes returns a promise to us that promise is either resolved or rejected depending on whether we returned a value from that function or whether we threw an error from that function respectively.
+Await :- To see the use of await keyword just go and check the async.js file and you'll see exactly how all this async/await works.
+
+JSON :- JavaScript Object Notation
+
+JSON is kind of like a javascript object looking string that contains data and can be converted to a javascript object or similar kind of object for other languages as well.
+JSON files don't allow undefined as the value and the key should always be in double quotes.
+In JS we have a way of converting the JSON string into a JS object and it's pretty simple just use JSON.parse(JSON STRING GOES HERE OR THE VARIABLE CONTAINING THE JSON STRING GOES HERE);
+Similarly we might also have to convert a JS object into a JSON string if some of your key's values are undefined they will be skipped completely and the method is JSON.stringify(JS OBJECT NAME GOES HERE);
+
+Postman & Hoppscotch are both similar kind of tools the help us make mostly API requests and help us understand the data that we get back in a more readable way like JSON normally if opened on a browser would look like a string which is not easily understandable but postman & hoppscotch make it easier. 
+
+HTTP Status Codes :-
+200-299 : Success Codes or Everything Went Well Codes
+300-399 : Redirection Codes
+400-499 : Client Side Error Codes (Like you might have typed in a URL that doesn't exist).
+500-599 : Server Side Error Codes 
+
+Some APIs require you to pass in info in URL others in query strings (Ex :- random.com/?movie=parasite&year=2020) and others in HTTP Headers.
+
+HTTP Headers are of two types :-
+1) Request Headers :- This is the extra data we send along with our request.
+2) Response Headers :- This is the extra data our API sends with it's response.
+
+Now read about making HTTP requests from the fetchMethod.js file and then read about the axios library method that's based upon the fetch method itself in axios.js file.
+Now take a look at dadJokes.js file to see the application of axios.
+
+# OOP :- Object Oriented Programming
+  Here you first should read the prototypes.js file that will tell you what prototypes are in simple terms you can think of functions that you define in a class which every object of that class can access and these functions are passed in by reference they are not defined in every object of that class again and again.
+  Now just look at factoryFunctions.js just to look at how people achieved OOP before classes were introduced.
+  Now just take a look at the constructorFunctions.js file it's just the last step before we reach classes it will just show you the old syntax of reaching the reference thing we talk about when talking about functions.
+  Now just read classes.js file to see how classes in JS can be declared and how they can be used.
+  Now just read moreClassesPractice.js where we add a few new functions to our class and also see how to call functions that are present in our class from within the class.
+  Now just read extendAndSuper.js that will show you how to inherit something in a chlid class from a parent class.
+
+Terminal :- 
+Why do we need to use terminal ?
+First it increases speed depending on how good you get at it.
+Second it allows us  access to things like process kill features or viewing hidden files features and another features of our computer that you just can't access using GUI in a computer.
+Third servers don't usually use a GUI so when you have to do anything with a server we'd normally have to use a terminal.
+
+Terminal Commands :-
+1) ls :- list -> Lists all the directories and files in the current directory we are present in.
+2) pwd :- pring working directory -> prints the name of the current directory we are present in.
+3) cd :- change directory -> cd FolderName changes our directory or takes us to folderName folder and cd.. goes back to the parent directory of the current directory we are currenly in.
+                             cd ~ takes use to home directory and cd / takes us to root directory cd ../../Pets takes us two folders up and then in Pets folder if it exists these paths we have seen till now are called relative paths and you can only access them from a certain folder like documents folder can only be accessed from Users/Ankit Kataria folder this is called relative path.
+                             But there is also something called absolute path that you can use to access any file from anywhere in any directory if you know the complete absolute path like this if i'm in Documents folder i can access Vidoes like this cd /c/Users/Ankit Kataria/Videos this way of accessing is called accessing using an absolute path other thing you could have do is cd ../Videos
+4) mkdir :- make directory -> makes a directory or multiple directories depending upon whether you put space in between them. 
+                              Ex :- Let's say my current directory is Downloads and now i want to make a folder here called yellowStone 
+                                    All i gotta do is :-
+                                    mkdir yellowStone
+                                    If i wanna make multiple directories :-
+                                    mkdir yellowStone redStone blueStone // The above line will make three directories
+                                    If you wanna make a new folder in parent directory :-
+                                    mkdir ../yoBoiFolder // This will make a folder in the parent directory 
+                                    If you wanna make a folder in current directory's children as well as in parent directory you can do both those things in the same line
+                                    Let's say you're in Downloads again and you've make yellowStone,redStone and blueStone.
+                                    mkdir yellowStone/newStoneyFolder ../BigBoyFolder now two new folders will be make one in yellowStone called newStoneyFolder and one in current directory's parent called BigBoyFolder.
+5) --help :- This is the help command that helps in finding everyting you can do with any other command
+             Example :- ls --help will give you a list of flags that you can use with ls to do different things.
+                        Example :- ls -a shows all the files in the current directory including hidden files.
+                                   ls -l shows the non hidden files but with every files/directory present in current directory it also shows a lot of other details.
+                                   ls -l -a or ls -la do both of the things simultanously it will show all the hidden and unhidden files also it will show all the details of all the files.
+                    
+6) touch :- This is a command that helps us in creating new files in a directory
+            Example :- touch index.html // Will create index.html file in current directory you need to specify extension as well otherwise touch won't know what extension to give to your file.
+                       touch clock.html clock.css clock.js // This way you can even create multiple files.
+            The reason why it's called touch is cause if a file by the name clock.html in above line for example is already present in current directory it will just touch it so it's modification time is updated to current time but if the file clock.html is not present in current directory then it will just go ahead and make that file in that directory but we normally use it to make new files not to update the modification time so i guess we're abusing it's secondry feature.
+
+7) rm :- remove -> This command helps us in PERMANENTLY REMOVING files and folders remember those files and folders won't be saved in Recycle Bin.
+                   Let's say your curret directory contains index.html app.css app.js randomFolder(contains two files yellowStone.js and redStone.css)
+                   Now to remove one file you can use :- rm app.css // This will permanently delete app.css
+                   Now to remove multiple files use :- rm index.html app.css // This will remove both those files.
+                   Now if you want to delete the folder inside and use :- rm randomFolder (won't work it will say can't delete cause it's a directory and it was thinking you were going to put in a file name).
+                   There is another command :- rmdir randomFolder (But remember rmdir only works while deleting empty folders it won't work on folders having a single or multiple files).
+                   So we use flags here flag -r is stands for recursive which means even if there are multiple directories of various depth containing other directories or files inside the directory you're trying to delete they all will be deleted.
+                   And flag -f stands for force flag it is used so when you're deleting a entire directory it doesn't stop and ask for your permission while deleting every file one by one.
+                   So if you want to delete the randomFolder use the command :- rm -rf randomFolder // This will delete random folder and all the files and directories present in it.                      
+
+                                    

@@ -1,0 +1,264 @@
+# Node
+First go through the Node Basics.pdf included in this folder it's a well made pdf it will give you a basic idea of what node is and why we use it.
+When you type node in terminal it opens a REPL (Read Evaluate Print Loop) kind of browser console thing which helps us in executing small stuff like we did in chrome console.
+This new console looking thing is for node remember node is a javascript runtime that executes javascript outside the browser.
+You can use javascript just as you would within this console running node if you want to exit this runtime just type .exit or ctrl + d or ctrl + c (2 times).
+Just like in browser window object denoted an all encompassing object as it contained everything that was present on the current tab/window of my browser similarly in node we have all encompassing object called global.
+
+Just a random question :- 
+Must we include Let keyword in javaScript For Loops ?
+Yes, if you do not specifically use the let keyword in a for, for...of or for...in loops etc, they will work the same as when you use the let keyword.
+However, when you don't explicitly declare using let keyword, the variable will be declared as a var. let and const are block level variables, but you
+also need to understand that 'functions are not the only blocks, any { } is basically a block'. i.e. Once declared a 'var' will become a function scoped
+variable and in case it is not inside a function, and declared outside, then it becomes globally available, which is not such a good thing considering you
+might have multiple for loops using a variable named 'i' and if you don't use let, it will just keep incrementing the old 'i'.
+
+# Coming Back to Node 
+Now you're not gonna make entire applications from the node REPL console you will need to make javascript files just like we did during browser side javascript code we were learning in order to run the code there we'd first include the script in html file 
+and then run the html file and then open the console to see how the JS file we ran.
+
+Here in node we just get to the directory in which the file is present and then type node FILENAME.js this will run the JS file.
+Had you just typed in node you'd have gone in node REPL console but if you put in a space in between and type the file name it will just run it directly.
+Also putting in node --watch FILENAME.js will restart your server everytime the file FILENAME.js is modified.
+
+Now node is not used only for web developement it is also used for various other purposes you can look at it in the pdf but i'll just show you an example of using argv which might be a statement someone might use who is trying to build a powerful command line tool using node.
+Now go and read the boilerPlate.js file to see one more of many possible things you can do with node that's not connected to web developement at all.
+
+Sometimes we need to use functions and properties of one JS file in other JS file in c++ we could use include similarly here in JS we have require but unlike include which would include everything that was present in the other file into the current file here it's not like that 
+what we can see from the other file is only the stuff that has been explicitly exported from the other file module.exports is a object where you should add all the functions and properties of the file that you want other files to see or whoever require('') that file will get a object 
+and that object will only contain the things the user has exported from the other file this is extremely important to be able to use what's in other files even express which is a node module is completely just a file that you can require and it will give you certain functionalities
+like in previous boilerPlate code we required filesystem(fs) file.
+
+Now read math.js and then see how we send things to usingMathInOtherFile.js.
+When you import a directory using require we only get whatever was exported by index.js file in that folder you can read about this when seeing the catsInfoFolder code.
+
+Now go to Node Basics.pdf and read about what npm is in simple terms it's just a package manager for node that allows us to easily use code written by other people for free.
+npm install package-name or npm i package-name are the two commands that can be used while installing packages these commands will install those packages in that directory and then you can require these packages directly in your JS files.
+Since the command in the line above only installs packages in current directory that means you won't be able to easily use it in other directories so that's where npm install -g package-name or npm i -g package-name comes in it allows us to install npm packages globally you normally don't need to do this as we use packages in their own direcotries usually but for some command line packages where they 
+add extra fucntionality to your command line for those packages you might want global access to them there you might need to use this but normally we use packages locally cause in one folder you might need react version 14 and in other you might need react version 17 their functionalities vary very highly so if something works in vesion 14 it might not work in 17 so you can put 17 globally and call it a day it might mess everything up.
+// You should go and read getJokesMyBoi folder now.
+npm init is a easy way of making package.json file which will be filled out with whatever answers you enter for each of the fields.
+package.json is a special file in the world of node that includes metadata about your project or package or whatever you're working on we typically put this in the root directory of a project.
+one of the reasons for keeping this is if we have package.json and we install dependencies(other packages) those dependencies will automatically be added to the dependencies section of the package.json file which can help us in the future or can help someone else get our code working just like it did on our machine he/she won't have to guess what packages we might have needed to get this code to work.
+dependencies sections look like this :-
+  "dependencies": {
+    "axios": "^0.21.1", // This means above or equal to 0.21.1
+    "request": "~2.88.2" // ~ means around this version and if you remove that it would mean exactly 2.88.2 version.
+  }
+
+// Now read artster folder.
+
+Those above are the dependencies of give-me-a-joke package which it will automatically install and if axios and request has their own package.json files having other dependencies as well those too will be automatically installed as well.
+
+How does package.json helps us in setting up everything ?
+
+Normally when giving someone the code for your project people don't include node_modules folder cause depending on the number of dependencies the size of it could be quite large.
+So,What people do is they just use a package.json file which keeps track of all the dependencies this project needs and when we download that project we will get that package.json file as well now in order for it work it will need all those dependencies installed and put in node_modules folder now since those aren't included with most projects what we can do is go in package.json file and install each package with the specified version one by one but that's cumbersome since there might be 100s of dependencies.
+So,What we do is in the root directory of our project where package.json file is present we open our terminal and use the command npm install it will go and look into package.json file and install all the dependencies with the correct version that's specified automatically and put it in the node_modules folder itself if node_modules folder doesn't even exist it will make that too.
+So,Just use npm install (Don't specify any package name here if you just want to install the dependencies of package.json file).
+
+One more things if you do npm i franc langs // franc and langs are two different packages so you can even install multiple packages using a simple line just put spaces in between package names.
+Now go ahead and read the LanguageGuesser folder.
+
+Always when starting with a new project first use npm init to make a package.json file only then go ahead and install all the node modules,liberaries or frameworks that way everything will be stored in package.json file.
+
+# Express
+  Express is a node.js framework first just read the basics of express and what the diffrence between a framework and a library is they are both just set of files which are written by other developers.
+  npm init -y skips all the fluff enteries in package.json file if you just want to use it for dependencies and nothing else.
+  Next read index.js it just shows basically how to make a server and start listening for requests and how to use app.use() which will call the function passed in it as soon as a request is made to the server.
+  Next read index2.js and then index3.js
+  Next read index4.js where we will learn about setting express path parameters.
+  Next read index5.js where you'll see how we get the data from query strings in the URL to our code using express.
+
+
+#EJS
+  When you look at reddit/r/dogs and reddit/r/cars you'll find two very similar looking pages just the content will be different so what you should know is we're not writing 138,000 different subreddit HTML pages from scratch.
+  Rather we use a basic template of HTML page and fill our content in these where EJS (Embedded JavaScript) comes in to help.
+  There are other template engines as well like nunchucks,handlebars & pug etc. but we are using EJS cause it's the easiest to learn as it uses javascript syntax unlike the others where they have a steep learning curve plus it's really popular too that helps as well.
+  Read index.js file now.
+  Read uptil index9.js in EJS folder.
+  Then jump onto index10.js in EJS II folder you don't need to look till index9.js cause uptil there it's same as EJS folder where you'll learn about how to incorporate bootstrap into your ejs files.
+  Then you'll learn about partials in EJS what that means is putting repeating part of EJS files like header,navbar & footer etc. in seperate files and including them wherever needed they are called partials cause they are just ejs file which are partial (meaning they are not full HTML pages just partial pages) and we can include them in our ejs full pages.
+  There are two reasons for using partials one it reduces duplication in our ejs files and second let's say you have to change something that's repeating in some files (like adding bootstrap) if your head is present in a partial file just change it in one location and that will be enough.
+  When you use partials all and say <%- include("partials/head.ejs") %> or <%- include("partials/head") %> (one thing to note here is i'm using <%- i'm not using <%= or <%) what happens is that code that you've written in home.ejs file gets placed at the particular location and that include line is removed that's it. 
+  See you should now open all the subreddit files here in EJS II and notFound.ejs as well that will show you exactly how small your code has gotten once you put everything repeating in partials i did had to remove the subreddit name from title in the HTML header but to get around that you'd have make a partial ejs file before the title line in header and one after that as well that way you can get around that as well.
+
+
+#REST
+
+-GET VS POST-
+First read the slides here in the REST Folder.
+get requests are for retrieving information from the server,retrieving a page from the server or viewing things from the server.(Like sort by is a get request or searching on youtube for something is a get request the data is sent through a URL(query string) which has the capacity to take 2048 characters only)
+Basically, there should be no side effects on the back end.
+There shouldn't be anything being created or deleted or updated when it comes to a get request.
+Whereas a post request conventionally it's used to create things where you can send a bunch of data like, you know, signing up, registering your account or sending a new comment that will be added to a blog.
+Or how about uploading a new photo or just posting a new blog that's also done using a post request.
+But in general, that's the pattern in a post request allows us to submit data as part of the request
+body, which get requests does not.
+And because of that, we have more flexibility in what we send and the size of what we send using post requests.
+Actually a form by default when submitted sends a get request but we can specify it to send a post request too by specifically telling it what method we are using to send request when form is submitted like method = "get" or method = "post".
+Read the getVsPost.html file.
+Now read the index.js file.
+Go checkout index2.js file.
+Now read REST.pdf again.
+
+REST :- Representational State Transfer
+REST is an architectural style for providing standards between computer systems on the web, making it easier for systems to communicate with each other. REST-compliant systems are often called RESTful systems (To read more :- https://www.codecademy.com/article/what-is-rest).
+A very common to way to make REST compliant paths is using  different HTTP verbs(GET,POST,PATCH & DELETE ETC.) with some resource(SEE COMMENTS EXAMPLE IN REST PDF), some base which is often pluralized(like using comments instead of using comment) and then adding on an ID or some unique identifier when appropriate.
+So this is our basic CRUD(Create,Read,Update,Delete) functionality blueprint and that's how we try to implement these routes using the method specified in the above line to make REST compliant routes or you can say RESTful routes.
+
+// So instead of setting up paths like this 
+// FORMAT OF THE LINES BELOW IS LIKE THE LINE IMMEDIATELY BELOW.
+// HTTP REQUEST /ROUTE - FUNCTIONALITY
+// GET /allcomments - list all comments
+// GET /all - list all comments
+// GET /showmeallcomments now - list all comments
+// POST /newcomment - Create a new comment 
+// POST /makecomment - Create a new comment 
+// DELETE /deletecomment/:id - Destroy one comment
+// And so on...
+// See if you look above there is no uniformity and it's really weird for anyone to use your API to do CRUD whereas what you see down below is a standerd way of doing things that you should follow just to make it easy for everyone else to use your API/WEBSITE like they can send a get/post/patch request to same kindof path to get different functionality.
+
+// We should rather set up paths like this in order to be RESTful/REST compliant
+// HTTP REQUEST /ROUTE - FUNCTIONALITY
+// GET /comments - list all comments
+// POST /comments - Create a new comment 
+// GET /comments/:id - Get one comment (using ID)
+// PATCH /comments/:id - Update one comment
+// DELETE /comments/:id - Destroy one comment
+
+What is Middleware? -  It is those methods/functions/operations that are called BETWEEN processing the Request and sending the Response in your application method.
+express.urlencoded() is a in-built middleware provided by express.
+You NEED express.urlencoded() for POST and PUT requests, because in both these requests you are sending data (in the form of some data object) to the server and you are asking the server to accept or store that data (object), which is enclosed in the body (i.e. req.body) of that (POST or PUT) Request
+Express provides you with middleware to deal with the (incoming) data (object) in the body of the request.
+express.urlencoded() is a method inbuilt in express to recognize the incoming Request Object as strings or arrays. This method is called as a middleware in your application using the code: app.use(express.urlencoded())
+app.use(express.json()); // This statement acts as a middleware that recognizes incoming request object as JSON Object.
+Read all the files in REST folder.
+
+
+# MongoDB
+
+Use mongod command to first start the database server.
+Then in another terminal just use mongo to enter the shell which is nothing but a REPL kind of thing which is more than just a toy(talking about node REPL) this particular REPL allows us to make databases, switch between databases, see current database or see all the databases etc.
+To create a database do this :- use databaseName
+If a database by that name exists already it will switch to it. (There can be multiple databases one can be for tweets and one can be for users) but if a database by that name doesn't already exist then it will create one for you.
+If you type db in mongo shell/REPL you'll see the current database you're in.
+If you type show dbs you'll see all the available databases also you can use the command show databases.
+Ctrl + c will close the mongo shell.
+
+BSON :- Though JSON and BSON have near identical names, they are not identical in purpose. BSON is based on JSON but has its own distinct features and advantages. 
+        BSON stands for Binary Javascript Object Notation. It is a binary-encdoed serialization of JSON documents. BSON has been extended to add some optional non-JSON-native data types, like dates and binary data.
+        You can read the differences between JSON and BSON here // https://www.mongodb.com/basics/bson#:~:text=BSON%20stands%20for%20Binary%20Javascript,like%20dates%20and%20binary%20data.
+        But basically BSON is a binary encoded Javascript Object Notation (JSON)—a textual object notation widely used to transmit and store data across web based applications. JSON is easier to understand as it is human-readable, but compared to BSON, it supports fewer data types. BSON encodes type and length information, too, making it easier for machines to parse.
+        MongoDB stores information in BSON behind the scenes.
+
+Inserting In A Mongo Database :- 
+Let's say we have a database for animalShelter we don't just keep everything right there in it we keep collections of data (you can think of them like tables).
+One collection can be for all the cats we have in the shelter.
+One collection can be for all the dogs we have in the shelter.
+One collection can be for all the employees we have in the shelter.
+
+In a collection all the enteries are usually a JS object that contains inforamtion about one cat, dog or person etc.
+Each of these cats,dogs or person will be automatically assigned a unique id (primary key) as soon as you insert a entry (normally called a document) into the collection you can also specify your own unique id by assigning value to _id : "Something unique here" but we usually don't do that.
+To see all the collections use show collections command in mongo shell.
+To insert do this first switch to the database you have a collection in or want to create a collection in.
+Then do db.collectionName.insert(put js object here or put a array of js objects if you want to insert multiple objects).
+If while using the above line a collection by that name isn't already present one will be made for you.
+db.collectionName.find() with no args in the find will show you all the object/documents you have in this collection.
+
+Reading From A Mongo Database :-
+We can use db.collectionName.find() to see all the documents/objects in this collection.
+But let's say you specify a property or two inside find then it will only search and find the matching objects only.
+db.dogs.find({breed : "corgi"}) // In the collection of dogs it will find all the dogs having the breed corgi one more thing this is case sensitive so if you have a dog having breed Corgi instead of corgi it won't be matched.
+db.dogs.find({breed : "Golden Retriever", age : 13}); // Now it will find all the dogs of golden retriever breed and having the age of 13.
+db.dogs.findOne({breed : "corgi"}) // This will find the first match and return the document/object itself whereas find() method only returns the cursor to the document or you can say pointer to the document.
+
+Updating In A Mongo Database :-
+Update is basically first finding something and then changing the properties.
+We have two methods to update 
+
+1) updateOne()
+db.dogs.updateOne({name : "Charlie"},{$set:{breed : "Golden Retriever"}}); // This will find the first dog in the dogs collection with the name Charlie and made it's breed to be of a golden retriever
+// If the breed property above didn't exist that property would've been created and then set to golden retriever.
+
+2) updateMany()
+db.dogs.updateMany({breed : "corgi"},{$set:{catFriendly : false,isAvailable : true}}) // Here i'm updating two properties.
+
+We also have replaceOne() method which will replace everything about the first object with which it matches just keep the primary key id same.
+
+While updating you don't just have the set option there in updateOne and updateMany we also have options like currentDate.
+db.dogs.updateOne({name : "Wyatt"},{$set:{catFriendly : false},$currentDate: {lastTimeWeAccessed : true}}) // Now because of this line firstly the dog with the name wyatt will have catFriendly = false and it will also have a property called lastTimeWeAccessed which will contain the the currentData and time.
+
+Delete From A Mongo Database :-
+We have two methods to delete 
+
+1) deleteOne()
+db.dogs.deleteOne({name:"charlie"}); // This will delete the first dog it finds with the name charlie.
+
+2) deleteMany() 
+db.dogs.deleteMany({breed : "corgi",age : 17}) // This will delete all the dogs having the breed corgi and age 17
+
+// If you want to delete everything from a collection just do 
+db.dogs.deleteMany({}); // Just don't specify any property to delete by and it will assume all the objects in this collection match that and delete all of em.
+db.dogs.deleteMany(); // THIS DOESN'T WORK YOU MUST PUT CURLY BRACKETS INSIDE.
+
+// When doing db.dogs.find() this will return all the objects/documents in dogs collection as well as db.dogs.find({}) will also show the same thing but the same doesn't happend with deleteMany() method.
+
+Other Mongo Operators :-
+
+Let's say a dog in your dogs collection follows this structure.
+{
+  name: "Rusty", 
+  breed: "Mutt", 
+  age: 3, 
+  weight: 25, 
+  size: "M",
+  personality: {catFriendly: true, childFriendly: true}
+}
+
+// Now you have to find all the dogs that are childFriendly
+// Do this 
+db.dogs.find('personality.childFriendly':true) // These quotes are important they can also be double quotes though.
+
+READ ABOUT THESE EXTRA OPERATORS ALSO CALLED QUERY OPERATORS HERE :- https://www.mongodb.com/docs/manual/reference/operator/query/
+
+Some Examples :- // These operators can be used both while finding and updating cause that also includes finding first and then updating.
+1) $gt // greater than
+db.dogs.find({age : {$gt: 8}}) // This will find all the dogs having age greater than 8.
+
+2) $gte // greater than or equal
+db.dogs.find({age : {$gte: 8}})
+
+3) $lt // less than
+db.dogs.find({age : {$lt: 8}})
+
+4) $lte // less than or equal
+db.dogs.find({age : {$lte: 8}})
+
+5) $in // if the value of the property matches anything in the array specified
+db.dogs.find({breed : {$in : ["Corgi","Golden Retriever"]}})
+
+6) Combining these 
+db.dogs.find({breed : {$in : ["Corgi","Golden Retriever"]},age : {$lt : 10}}) // Find all dogs that belong to either one of those breeds and have age less than 10.
+
+7) $ne // not equal may be inefficient cause let's say you find dogs whose age is not equal to 8 you might get 1000's of dogs.
+db.dogs.find({age : {$ne: 8}})
+
+8) $nin // not in
+db.dogs.find({breed : {$nin : ["Corgi","Golden Retriever"]}}) // Will give us complement of above $in set.
+
+9) $or // logical or
+db.dogs.find({$or : [{'personality.catFriendly':true},{age : {$lt : 8}}]}); // Weird syntax but just put the expresssions in the array in front of $or and if the object/document satisfies any of them then it will be chosen.
+
+10) $and, $nor, $not are also available.
+
+// Whatever we have seen till now are only the basic operators but if you want to read more go in the link above on line 222.
+
+# Mongoose
+
+Mongoose is a ODM (Object Data Mapper,Object Document Mapper)
+ODMs like Mongoose map documents coming from a database into usable JavaScript objects.
+Mongoose provides ways for us to model out our application data and define a schema.  
+It offers easy ways to validate data and build complex queries from the comfort of JS.
+Remember that the central goal, the whole point of using Mongoose is to have an easier way to interact with the Mongo database from our JavaScript.
+node -i -e "$(< index.js)" is a command that can be used to load a js file for mongoose.

@@ -1,0 +1,10 @@
+/* body {
+    background-color: black;
+    color: white;
+} */
+
+#mainDiv {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

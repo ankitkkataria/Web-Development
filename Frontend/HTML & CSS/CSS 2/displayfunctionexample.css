@@ -1,0 +1,10 @@
+span {
+    border: solid 2px black;
+    background-color: palegoldenrod;
+    color: darkred;
+    width: 230px;
+    margin: 0 50px;
+    padding: 50px;
+    display: inline-block;
+    text-align: center;
+}

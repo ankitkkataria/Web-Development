@@ -1,0 +1,19 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show</title>
+ </head>
+ <body>
+    <h1>More Details about comment with comment id : <%= currComment.id %></h1>
+    <h2><%= currComment.comment %> - <%= currComment.username %></h2>
+    <a href="/comments">Go Back To All Comments</a>
+    <a href="/comments/<%= currComment.id %>/edit">Edit This Comment</a>
+   <!-- Apart from using the way down below it can also be done by creating a button on this page and then when that button is clicked axios sends a delete request to the URL down below express will treat both ways the same -->
+    <form action="/comments/<%= currComment.id %>?_method=DELETE" method="POST">
+   <button>Delete</button>
+   </form>
+   </body>
+ </html>

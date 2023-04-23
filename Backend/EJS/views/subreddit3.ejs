@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= name %></title> <!-- Using the name variable instead of subredditName variable cause now i'm passing the subredditObj directly which contains the entire information about this subreddit not just name -->
+    <link rel="stylesheet" href="/cssFileForIndex9.css" /> 
+    <!-- You don't need to use assetsFolder/cssFileForIndex9.css since in the index9.js file you specified that all the assets are in the assetsFolder here you just have to specify the filename but if that css file was in another folder in assetsFolder like assetsFolder/cssFiles/cssFileForIndex9.css then in above line you would have had to write /cssFiles/cssFileForIndex9.css  -->
+  </head>
+  <body>
+    <!-- Down below i'll use the subreddit object i've got from index8.js and display all the information about this particular subreddit we have -->
+    <h1>Welcome to the <%= name %> subreddit</h1>
+    <h2><%= description %></h2>
+    <p><%= subscribers %> total subscribers</p>
+    <!-- Now posts are stored in a array and i can just loop over all the posts and display whatever they have remember each post is a object in itself-->
+    <% for (let post of posts) { %>
+    <!-- For each post make a new div by the name of article -->
+    <article>
+      <p><%= post.title %> - <b><%= post.author %></b></p>
+      <% if (post.img) { %>
+      <img src="<%=post.img%>" alt="" />
+      <% } %>
+    </article>
+    <% } %>
+  </body>
+</html>
+

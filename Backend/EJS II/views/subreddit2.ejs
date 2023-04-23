@@ -1,0 +1,17 @@
+<%- include('partials/head') %> 
+<%- include('partials/navbar') %>
+    <!-- Down below i'll use the subreddit object i've got from index8.js and display all the information about this particular subreddit we have -->
+    <h1>Welcome to the <%= name %> subreddit</h1>
+    <h2><%= description %></h2>
+    <p><%= subscribers %> total subscribers</p>
+    <!-- Now posts are stored in a array and i can just loop over all the posts and display whatever they have remember each post is a object in itself-->
+    <% for (let post of posts) { %>
+    <!-- For each post make a new div by the name of article -->
+    <article>
+      <p><%= post.title %> - <b><%= post.author %></b></p>
+      <% if (post.img) { %>
+      <img src="<%=post.img%>" alt="" />
+      <% } %>
+    </article>
+    <% } %>
+<%- include('partials/footer') %>

@@ -1,0 +1,1100 @@
+This doc contains everything i learn about JS.
+
+Numbers in JS
+
+There is only a single type of number variable in JS unlike c++ it stores floats,negative as well as integers in a single variable.
+
+** is power operation Ex:- 2**4 = 16.
+
+In JS there are no types basically what that means is 
+let aValue = false;
+aValue = 2212; // Is not a wrong operation.
+
+Strings In JS
+
+let stringName = "I am okay";
+let stringName = 'I am not okay';
+Both of the above syntax are good no issue just don't mix them like 'Ankit";
+The only place you might have to use both of them in a string is in cases such as
+let stringName = "I'm okay" if you tried doing 'I'm okay' your string would stop at I.
+Another example:-
+let quote = 'You had me at "hello"';
+
+let s = "hello";
+s.length = 5;
+let s2 = "World";;
+let s3 = s + s2;
+console.log(s3) = helloWorld
+
+Unlike c++ you can't change a character in a string
+let s = "hello";
+you can't do s[0] = 'r'; // It doesn't do anything
+so if you want to make it rello just do 
+s = "rello"; // re-assign.
+
+In JS you can chain multiple methods in the same line.
+string s = "I'm okay mylove";
+s = s.trim().toLowerCase(); // trim() all it does is removes empty space from beginning and end of a string that's it.
+It actually works like this first s is substituted and trim function is applied and then on that trimmed version we go ahead and apply the lowerCase method and then assign it back to s.
+So, It just works from left to right.
+
+String Template Literals `${JS code}`
+let product = Kiwi;
+let price = 25;
+let quantity = 4;
+If you had to print 
+You bought 4 Kiwis. Total is: $100.
+You'd have to do
+"You bought " + quantity + " " + product + "s. Total is: $" + price*quantity;
+But with String Template Literals (When you use `any string in between back ticks` rather than using double quotes you can use ${Expression})
+So you can write the above thing like
+`You bought ${quantity} ${product}s. Total is: $${price*quantity}`
+`You bought ${quantity} ${product.toUpperCase()}s. Total is: $${price*quantity}` // Infact you can even use methods in these literals.
+
+null & undefined 
+null is used in cases like
+
+// No one is logged in yet...
+let loggedInUser = null;
+
+// A user logs in...
+loggedInUser = "Ankit";
+
+Where as undefined basically means unassigned.
+let genericVariableName;
+The above variable is just undefined.
+
+// Math Object 
+Math.random() returns a random float value between 0 to 0.99999999999
+
+So if you want random values between 1 to 100 do this
+let num = Math.floor(Math.random()*100)+1;
+
+If you want a random number between 1 to 5 do this
+let num  = Math.floor(Math.random()*5)+1;
+
+Decision Making 
+== means equality it is a loose form of equality checking in JS
+so when types are same then == behaves like normal
+but when they are different it gives weird results
+like 1 == "1" is true in JS as == converts both the things to same type first and then compares 
+similarly null == undefined also returns true etc.
+so, In conclusion == only checks the value not the type and that can lead to mess ups.
+
+=== is strict equality
+In order to pass this check operands must be exactly equal 
+1 === "1" will give false and same goes for the null & undefined comparision.
+
+Something to Remember
+ALWAYS USE TRIPLE EQUALS AND TRIPLE NOT EQUALS (!==).
+
+Inherent Truth/False Values.
+if(Any Negative Number) is also true.
+if(" ") my string is not empty it contains one space that too is true.
+null,empty string,undefined and NaN are all false by nature.
+let variableName = promt(Enter a number); // This is an annoying way of asking the user for input just remember it always returns whatever you enter as a string.
+Then you can convert it to integer
+Like let variableName = parseInt(promt(Enter a number));
+or variableName = parseInt(variableName);
+
+Arrays In JS
+
+In JS actually a array can contain various types of elements it's not restricted to a single type of element.
+let arr = [];
+Methods you can use on arrays.
+arr.push("Ankit"); // Idk where you'll use it but when you push a element this method push returns the new length of your array.
+arr.push("Ashish");
+arr.push("Gaurav","Aman"); // Can even add 2 values simultanously.
+arr.pop(); // Actually pops the last element from the array and also simultanously returns it.
+let x = arr.pop(); // So, after this line the x variable will contain the last element currently present in the array.
+arr.shift(); removes from the beginning of an array and just like pop() it returns the element simultanously which you can catch in a variable if you wish to.
+arr.unshift("Laura"); adds to the beginning of an array.
+Some Other popular methods.
+concat - merge arrays.
+includes - look for a value.
+indexOf - just like string.indexOf.
+join - creates a string from an array.
+reverse — reverses an array.
+slice - returns a subArray of an array like a substr method in c++.
+splice - removes/replaces elements in between the array.
+sort - sorts an array by default it's kinda garbage we will have to use functions to tell it to how to sort exactly.
+
+Actually arrayName stores the reference of the array.
+let arr = [1,2,4];
+let arr1 = [1,2,4];
+arr == arr1 will return false.
+[1,2] is not equal to [1,2] cause they are stored in different memory locations and when you compare arrays only thier addresses are compared.
+let arr = [1,2];
+let arr2 = arr;
+// Now arr2 also points to arr (any changes made to any one of the arrays will reflect in the other as well)
+// Since both the arrays now point to the same location in this case arr == arr1 will return true this is the only case that happens.
+// Not even two empty arrays are equal.
+
+It is suggested to use the const keyword when declaring an array.
+const arr = [1,34,5];
+You'll still be able to perform all of the methods and everything like push,pop etc.
+Just the address of the array will be constant meaning you can't assign a completely new array to it.
+arr = [1,22,4] will give an error cause this new array [1,22,4] will have a different address.
+The reason why we keep the arr as a const is cause we usually want to keep the same container for let's say names of students now students maybe all deleted we will still keep the container 
+and we don't go ahead and assign rollno array to students array usually.
+
+Object Literals in JS
+
+Object Literals is kind of fancy term for a hashmap kind of data structure where you can store values as (key,value) pairs.
+For Ex:-
+
+// product below again just like arrays will contain this object literal's address.
+
+const product  = { 
+    name: "Gummy Bears",
+    inStock: true,
+    price: 1.99,
+    flavors: ["grape", "apple", "cherry"],
+}
+
+const person = {
+    firstName : "Ankit",
+    lastName : "Kataria",
+    age : 25,
+    rollNo : 214101008,
+    hobbies : ["notmuch","somethingInteresting"], // Even array's can be stored as values.
+    male : true,
+    2342 : "okay random number",
+}
+
+// If you didn't have object literal or this kind of hashmap stucture you'd have to use an array like
+const person = ["Ankit","Kataria",25,214101008,["notmuch","somethingInteresting"],true];
+// Now you'd have to remember what each index meant and represents rather than that you can just use the object literal.
+
+// Something you have to remember is object literal converts every key (except symbols) to a string making it kinda like a map<string,anything>hashmap.
+// Two ways of accessing the data are
+// 1) console.log(person.hobbies);
+// 2) console.log(person["hobbies"]) // Since everything is converted to strings by default by the object literal when accessing it using the square brackets use double quotes.
+// Only numbers when they are keys you don't need to use double quotes in brackets.
+// person[2342] is fine cause 2342 here will be converted to a string and then matched with the string that 2342 was converted to earlier when that object literal was formed.
+// person.2342 doesn't work for some reason that's a wrong syntax so don't access the number keys that way using the (.)dot operator.
+// One other thing why you may want to use square brackets while accessing the data of an object literal you can access it using variables.
+// const years = { 
+    1997 : "good",
+    2020 : "bad",
+}
+
+let userInputYear = 1997;
+
+// Now you can't access 
+   years.userInputYear; // Wrong cause years doesn't contain such userInputYear property.
+// But this can be done
+   years[userInputYear]; // Since userInputYear is a number that's okay otherwise it's your job to make sure that whatever that userInputYear variable contains is a string that's also the reason we 
+                         // specifically use double quotes when using brackets cause if we allowed it to convert everything to string then userInputYear would be converted to string and nothing would
+                         // be accessed so without double quotes whatever (except numbers) you put in square brackets is considered as a variable name.
+
+// So, square brackets make sense when the key input comes in a variable.
+// If you need to add a new entry or somthing new syntax is like hashmap
+years["1998"] = "born+1Year";
+// Similarly updating a key's value can be updated like years["1997"] = born;
+
+// while loop can be best used when we don't know exactly how many times we might have to run the loop like in bfs while(!q.empty()).
+// For Ex:-
+
+const secretCode = "BabyHippo";
+
+let guess = prompt("Enter your code...);
+while(guess !== secretCode){
+    guess = prompt("Enter your code...);
+}
+
+console.log("congrats you've got the secret code right");
+
+for-of loop is basically a range-based for loop in c++.
+
+let numbers = [1,2,3,4,5,6,7,8,9];
+
+// Instead of doing 
+for(int i = 0 ; i < numbers.length ; i++){
+    console.log(numbers[i]);
+}
+
+// Do This
+for(let num of numbers){
+    console.log(num);
+}
+
+// for-of is not limited to arrays it can also be used to iterate over strings.
+
+let someString = "Yo boi what you doing ?";
+for(let character of someString){
+    console.log(character);
+}
+
+Object literals are a bit weird to iterate over.
+
+let scores = {
+    Ankit : 90,
+    Ritik : 99,
+    Aman : 12,
+    Rahul : 82,
+    Ajay : 93,
+}
+
+// First of all scores.length doesn't work as you can't find the length through this way.
+// Secondly the code below doesn't work either.
+for(let personNamePlusScore of scores){ // This is how you might have done a hashmap accesses in c++.
+    console.log(personNamePlusScore); 
+} 
+
+// So, Object literals can't be iterated using for...of loop.
+
+But there is a for...in loop
+for(let personNamePlusScore in scores){
+    console.log(personNamePlusScore);  // But you might think personNamePlusScore will contain both the enteries (key,value) but nope it contains only the key values.
+    // If you really wanna access the values as well since you already have the key value you can just do this
+    console.log(scores[personNamePlusScore]); // This will print all the values as well.
+} 
+
+
+// Other newer ways are 
+let storeKeys = Object.keys(scores); // returns a array containing all the keys of the scores object literal and stores it in storeKeys.
+storeKeys now = ["Ankit","Ritik","Aman","Rahul","Ajay"]
+let storeValues = Object.values(scores); // returns a array containing all the values of the scores object literal and stores it in storeKeys.
+storeValues now = [90,99,12,82,93]
+let storeEnteries = Object.enteries(scores); // returns a array of arrays containing all the enteries
+storeEnteries now = [[Ankit,90],[Ritik,99],[Aman,12],[Rahul,82],[Ajay,93]]
+
+// Now after we have these arrays themselves we can iterate over them however we'd like
+
+// Like let's say i wanted to take the average of all the values in the score.
+let total = 0;
+let valuesArray = Object.values(scores);  // O must be a Capital Letter
+
+for(let val of valuesArray){
+    total += valuesArray;
+}
+
+// The above loop could also be written like 
+for(let val of Object.values(scores)){ // In the place of Object.values(scores) a array is substituted whenever the code runs you don't need to store it in a seperate variable like valuesArray.
+    total += valuesArray;
+}
+console.log(`Average of all the values is ${total/valuesArray.length}`);
+
+Comparing with NaN is a bit weird.
+let's say you did parseInt and got NaN now you have to compare whether you've got a NaN or not one way was in the practice.js file where we took advantage of the NaN having a default false value
+we did this
+let maxNum = parseInt(prompt("Enter a max num: "));
+// parseInt("aafljajgd") will give a NaN if that thing is not a number so must check here.
+while (!maxNum) {
+  maxNum = parseInt(
+    prompt("Enter a max num again you entered something wront the last time : ")
+  );
+}
+
+Other way would have been using Number.isNaN(maxNum)
+while(Number.isNaN(maxNum) == false) or while(!Number.isNaN(maxNum)) would also work.
+
+Scope in JS
+
+JS is function scoped all it means is just that everything in a function is local to the function and can only be accessed by the function itself not outside.
+
+JS is block scoped all it means is just that everything in a if block or a for block or while block etc. is local to the block and can only be accessed by 
+the block itself not outside(only applicable for let and const not for var(var doesn't support block scoped)).
+
+JS is lexically scoped meaning
+function bankRobbery() {
+    const heroes = ['Spiderman', 'Wolverine', 'Black Panther', 'Batwoman']
+    function cryForHelp() {
+        let color = 'purple';
+        function inner() {
+            for (let hero of heroes) {
+                console.log(`PLEASE HELP US, ${hero.toUpperCase()}`)
+            }
+        }
+        inner();
+    }
+    cryForHelp();
+}
+
+When you call bankRobbery();
+Both the functions cryForHelp and inner have access the the heroes array but vice versa is not true if you define something in inner it's not accessible in 
+
+Function Expressions
+// This is the normal way of declaring a function
+function add(x,y){
+    return x+y;
+}
+
+// This is the function expression way
+let add = function(x,y){ // So basically this function is being stored in a variable.
+    return x+y;
+}
+
+To call both of them can be called the same way let sum = add(4,5);
+
+// The reason for knowing about function expression is two fold.
+// 1) You might encounter them.
+// 2) It shows us that functions thought of as nothing but values and you can do anything with them that you can do with values like 
+      storing them in variable or passing them as arguments etc.
+
+Example of passing a function as a argument.
+
+function rollDie(){
+    return Math.floor(Math.random()*6)+1;
+}
+
+function callThrice(functionName){ // functionName is a variable that will be able to store a function itself.
+    functionName();
+    functionName();
+    functionName();
+}
+
+// To call do this
+
+callThrice(rollDie); // now rollDie(); will be executed thrice.
+
+// Other thing you can do is return a function as a value.
+
+// Let's say you have a need to make a function like this frequently 
+// Like a function that can tell us if a number is in between [0,18].
+// function func1(num){
+    return num >= 0 && num <= 18;
+}
+
+// Similarly you need a function that can tell you if a number is between [19,45];
+// So, You go ahead and make
+// function func2(num){
+    return num >= 19 && num <= 45;
+}
+
+// Similarly you need other functions like that.
+
+// So, instead of making a different function every time just go ahead and make a function that takes two values (x,y) and returns a function like that.
+
+function makeAFunctionThatChecksIfAValueIsBetweenXandY(x,y){
+    return function(num){
+        return num >= x && num <= y;
+    }
+}
+
+// Let's say now you had to make a function func3 that checked if a values is in between [46,95].
+// Instead of making this function again yourself just do this :-
+
+let func3 = makeAFunctionThatChecksIfAValueIsBetweenXandY(46,95);
+
+// Now func3(55) will return true as if you had actually made this function. 
+
+Methods :-
+A method is simply a function that has been placed as a entry/property in an object literal.
+Basically you can access method using (.)dot operator in front of it.
+Every method is a function but not every function is a method.
+
+const myMathObjectLiteral = {
+    PI : 3.14,
+    square: function(x){ // see this fucntion is called a method as it is a function that has been placed as a entry in an object literal.
+        return x*x;
+    },
+    cube: function(x){
+        return x*x*x;
+    },
+    pow: function(x,y){
+        return x**y;
+    },
+}
+
+// Now to access it 
+
+let res = myMathObjectLiteral.pow(1,4); // Infact even the real Math is just an object literal containing all these math methods etc.
+or
+let res = myMathObjectLiteral["pow"](1,4); // But this is a bit weird so we stick with the above way.
+
+// The reason we can access it using (.)dot operator is cause that's the key value and that's how we access values from an object literal.
+// Check line 171 to see how we accessed values in object literal.
+// Similarly when on a string we do str.toUpperCase(); that's cause strings themselves are wrapped in a object literal that contains the string as well as 
+// these methods.
+// Same goes for arrays that's why you are able to arr.reverse() or whatever.
+
+// Shorter way of writing the above object literal.
+
+const myMathObjectLiteral = {
+    PI : 3.14,
+    square(x){ // There is no need of doing that square : function(x){/*funcion body*/},
+        return x*x;
+    }, // You still need to add these comma's as it is still just a object literal you need to make sure it knows what are the different enteries it has.
+    cube(x){
+        return x*x*x;
+    },
+    pow(x,y){
+        return x**y;
+    },
+}
+
+// You can still access all the methods the same way nothing has changed "square","cube" and "pow" are still the keys of that object literal just the syntax 
+// of writing it has changed a little this is done to shorten the code as this is something you usually need to do.
+
+Using Try/Catch
+
+// try's job is to try something if the code inside try runs fine without error then it's cool if it shoots an error then instead of halting the program completely
+// the catch statement is executed.
+
+// Let's say we have two lines of code.
+
+str.toUpperCase(); // Creating an error on purpose cause no such thing as string as str exists yet.
+console.log("After the error string.");
+
+// If you run the above code it will give you an error on the line str.toUpperCase() itself and the code after it will never be ran.
+// So maybe i can do this:-
+
+try { // You can't use try statement alone without using the catch statement.
+    str.toUpperCase();
+} catch {
+    console.log("Your code above produced an error.");
+}
+
+console.log("After the error string.");
+
+// If you run the above code you'll see :-
+
+Your code above produced an error.
+After the error string.
+
+// As you can notice the code didn't stop working here it seems silly but let's say you have something unpredictable in try statement like a API call that might not work someday 
+// we wouldn't want our site to crash and maybe call an alternate API incase the first one crashes.
+
+// Another Example :-
+
+function yell(msg) {
+    try { 
+        console.log(msg.toUpperCase().repeat(3));
+    } catch(e) { // Typing this (e) along with catch statement stores the error message string you might get from the above try statement and stores it in the (e) variable so you can print it actually if you want to without removing the catch statement first and then seeing what the error actually was.
+        console.log(e); // This will print out the actual error you got above when someone let's say doesn't pass in a string as a message and passes in a number or boolean or something cause .toUpperCase() doesn't exist for numbers and booleans etc.
+        console.log("You didn't call the function yell with a string plz call again with a string and the string above is the error it had produced");
+    }
+}
+
+
+// Array Methods in JS that accept functions as arguments.
+
+1) map // applies a function on every element of the array and keeps on storing the new modified values in a new array (original array still stays the same).
+
+const nums = [1,2,3,4,5,6,7,8,9,10];
+
+let doubleNumsArray = nums.map(function(numFromNums){ // numFromNums is stored with every number from nums array one by one.
+    return numFromNums*2;
+})
+
+// Now every value will come in numFromNums and on that value the function will be applied and simultanously the values will be stored in a new array which will finally be stored in doubleNumsArray.
+
+// nums array after map method :- [1,2,3,4,5,6,7,8,9,10]
+// doubleNumsArray after map method :- [2,4,6,8,10,12,14,16,18,20]
+
+// If i wanted to i could have also done the same thing with a for...of loop
+
+let doubleNumsArray = [];
+
+for(let num of nums){
+    doubleNumsArray.push(num*2);
+}
+
+Arrow Functions
+
+// Different ways of writing a function of adding two Numbers
+
+function add (x,y){
+    return x+y;
+}
+
+const add = function(x,y){
+    return x+y;
+}
+
+// This below is what you call a arrow function or basically writing a function without using the keyword function.
+
+const add = (x,y) => { 
+    return x+y;
+}
+
+
+// Writing a function that requires no parameters using all three ways.
+
+function rollDie(){
+    return Math.floor(Math.random()*6)+1;
+}
+
+rollDie = function(){
+    return Math.floor(Math.random()*6)+1;
+}
+
+// Even though there are no arguments you still need to use empty brackets it's mandatory.
+rollDie = () => {
+    return Math.floor(Math.random()*6)+1;
+}
+
+// Writing a function that requires one parameter
+
+function square(x){
+    return x**2;
+}
+
+square = function(x){
+    return x**2;
+}
+
+// When there is only one parameter you have a choice for the brackets around argument.
+square = (x) => {
+    return x**2;
+}
+
+or 
+
+square = x => {
+    return x**2;
+}
+
+// Implicit Return (When you have a small and one clear expression in your function you can just skip out on return statement all together and make the function still work).
+
+fucntion isEven(x){
+    return x % 2 === 0;
+}
+
+const isEven = function(x){
+    return x % 2 === 0;
+}
+
+const isEven = (x) => {
+    return x % 2 === 0;
+}
+
+// Removing brackets as it's only one argument.
+const isEven = x => {
+    return x % 2 === 0;
+}
+
+// Using () brackets instead of {} returns the only expression in it automatically (no return statement needed).
+const isEven = x => ( 
+        x % 2 === 0; // If you have more than one expressions here the compiler will get confused and produce an error.
+)
+
+// But if you have a really small expression so small that it can be fit on one line itself then you don't even need to use () brackets.
+const isEven = x => x % 2 === 0; // This is called one-liner implicit return.
+
+// We mostly use arrow functions when we are passing in functions into functions like map and stuff.
+
+// Again the same example.
+const nums = [1,2,3,4,5,6,7,8,9,10];
+
+let doubleNumsArray = nums.map(function(numFromNums){ // numFromNums is stored with every number from nums array one by one.
+    return numFromNums*2;
+})
+
+let doubleNumsArray = nums.map((numFromNums) => {
+    return numsfromNums*2;
+}
+
+// Or you might make it a bit more smaller 
+
+let doubleNumsArray = nums.map(numFromNums => (
+    numsfromNums*2;
+))
+
+// Even more smaller
+let doubleNumsArray = nums.map(numsfromNums => numsfromNums*2);
+
+
+setTimeout/setInterval Funtions 
+
+These functions again are one another example of functions that take other functions as arguments.
+So, Basically in other languages if you have to stop the execution of the program for a few seconds it's easy.
+Like :-
+print("hello")
+pause(3000); // This will stop the execution for 2s.
+print("are you still here ?");
+
+But in JS it's a bit different.
+
+setTimeout function what it does is it takes in two args 
+1) A function if you put anything else then a function like console.log() it will produce an error so make sure it's a function.
+2) time
+It will call that function you put in after that specified time.
+
+// To do the same thing as above 
+
+console.log("hello");
+
+setTimeout(function(){ 
+    console.log("are you still here ?");
+},2000) // That 2000 is the second argument.
+// Anything typed after setTimeout will be ran immediately so set timeout doesn't stop the execution of the program completely it's just when it's ran it waits for the assigned time to call the function that's in it's parameters.
+
+// With arrow function. 
+console.log("hello");
+
+setTimeout(() => { 
+    console.log("are you still here ?");
+},2000) // That 2000 is the second argument.
+
+setInterval is a function that repeats the function you put in it as it's first arg indefinitely after the set time until you stop it using the id it returns you.
+
+let idReturnedBySetInterval = setInterval(()=>{
+    console.log(Math.random());
+},2000) // This function will print a new random number after every two seconds.
+
+// To stop it you'll have to type 
+clearInterval(idReturnedBySetInterval); // If you type this in the code immediately below setInterval function your setInterval will be immediately stopped so you have to either put it in a setTimeout fucntion so it runs after the setInterval has ran a few times 
+                                        // or type it in manually when you feel it's okay to stop the execution.
+
+Filter Method 
+const nums = [1,2,3,4,5,6,7,8,9,10];
+const odds = nums.filter(num =>{
+    return n % 2 === 1; // Our function must return a true/false value whenever it does return true that value will be stored in an array which later will be stored in the odds array.
+})
+
+odds now = [1,3,5,7,9]
+
+// Obviously the above filter method can be written in one liner fashion as well.
+const odds = nums.filter(num => num % 2 === 1)
+
+// More examples of filter method
+// Say you have this array containing object literals
+const movies = [
+    {
+        title: 'Amadeus',
+        score: 99,
+        year: 1984
+    },
+    {
+        title: 'Sharknado',
+        score: 35,
+        year: 2013
+    },
+    {
+        title: '13 Going On 30',
+        score: 70,
+        year: 2004
+    },
+    {
+        title: 'Stand By Me',
+        score: 85,
+        year: 1986
+    },
+    {
+        title: 'Waterworld',
+        score: 62,
+        year: 1995
+    },
+    {
+        title: 'Jingle All The Way',
+        score: 71,
+        year: 1996
+    },
+    {
+        title: 'Parasite',
+        score: 95,
+        year: 2019
+    },
+    {
+        title: 'Notting Hill',
+        score: 77,
+        year: 1999
+    },
+    {
+        title: 'Alien',
+        score: 90,
+        year: 1979
+    }
+]
+
+// Using filter to filter out goodMovie objects.
+
+const goodMovies = movies.filter(movie => movie.score >= 80) // You may also write it in longer forms.
+const goodTitles = goodMovies.map(goodMovie => goodMovie.title);
+
+// Both of the above lines can be condensed into a single line
+const goodTitles = movies.filter(movie => movie.score >= 80).map(goodMovie => goodMovie.title);
+// In the line above first movies.filter(movie => movie.score >= 80) will evaluate and produce an array and then on that map will be ran.
+
+const recentMovies = movies.filter(m => m.year > 2000); // Just one last example.
+
+Some/Every Methods (Both return boolean values depending on if any/all the elements satisfy the boolean function in the argument that we pass in.)
+
+const nums = [1,2,3,4,5,6,7,8,9,10];
+
+// Example of Every
+let x = nums.every(num => {
+    return num < 11;
+})
+
+// Firstly the function inside(which must be a boolean as well) will be evaluated for all the nums in the nums array and if it's true for all the numbers in the nums array only then x will be made true.
+// So, x does contain true in this case.
+
+let x = nums.every(num => num < 11) // smaller way
+
+// Example of Some
+
+let y = nums.some(num => {
+    return num > 8; 
+})
+
+// It's almost self explanotory that y will contain true as there exists atleast one element larger than 8.
+
+Reduce Method (This method is used to make our array boil down to a single value based on some function)
+
+Let's say you have this array and we want to sum up all the elements.
+const prices = [9.99, 1.50, 19.99, 49.99, 30.50];
+
+One simple way is :-
+let total = 0;
+for(let price of prices){
+    total += price;
+}
+
+Other way is using Reduce
+
+let total = prices.reduce(function(accumulator,priceFromPrices){ // Your function should have two args one that keeps track of the overall solution and the second one basically gets all the values from the array one by one.
+    return accumulator+price; // This is returned to the accumulator for the next call of the function.
+} // At the end the result stored in the accumulator will be sent to the variable total.
+
+// Making the code smaller
+let total = prices.reduce((accum,priceFromPrices) => accum+price);
+
+// Finding Min Value In The Above Array Using Reduce
+
+let total = prices.reduce((currMin,currElement) => {
+    if(currMin > currElement){
+      return currElement;
+    }
+    return currMin;
+})
+
+// More examples of reduce on movies array on line 655.
+
+const highestRated = movies.reduce((bestMovie, currMovie) => {
+     if (currMovie.score > bestMovie.score) {
+         return currMovie;
+     }
+     return bestMovie;
+ })
+
+// We can provide an initial value as the 2nd arg to reduce:-
+const evens = [2, 4, 6, 8];
+let total = evens.reduce((sum, num) => sum + num) // Produces 20
+let totalPlus100 = evens.reduce((sum, num) => sum + num, 100) // Produces 120
+
+// A longer version :-
+let totalPlus100 = evens.reduce((sum,num) => {
+    return sum+num;
+},100) // This is how it would look like providing an extra argument in a normal situation without the implicit return statement.
+
+// So just know that after the function you can provide a second argument for the defualt/intitial values of the accumulator parameter.
+
+// this keyword behave differently in arrow functions and normal funcitons.
+
+const person = {
+    firstName : "Ankit",
+    lastName : "Kataria",
+    fullName : function() { // Normal Function
+         return `${this.firstName} ${lastName}`;
+        },
+    }
+
+person.fullName(); // Will go ahead and print Ankit Kataria.
+
+const person = {
+    firstName : "Ankit",
+    lastName : "Kataria",
+    fullName : () => { // Arrow Function
+         return `${this.firstName} ${lastName}`;
+        },
+    }
+
+person.fullName(); // Will go ahead and print undefined undefined. 
+
+// Right now you don't need to worry about the actual difference just know that they are different.
+
+
+Default Parameters
+
+// Before the new syntax of putting = in the arguments itself we used to do this :-
+
+function rollDie(numSides){
+
+    if(numSides === undefined){ // If the caller doesn't pass in the argument return some random number between 1 to 6.
+       return Math.floor(Math.random()*6)+1;
+    }
+
+    return Math.floor(Math.random()*numSides)+1;
+}
+
+// Now using new syntax :-
+
+function rollDie(numSides = 6){
+    return Math.floor(Math.random()*numSides)+1;
+}
+
+// But keep the order in mind make sure that all the arguments with default parameters are written in the last few arguments.
+// Example
+
+function greet(greetingMessage = "Hi There!",name){
+    console.log(`${greetingMessage} ${name}.`);
+}
+
+// Now let's say you don't want to pass in a greeting message.
+
+greet("Ankit"); // This will actually print :- (Ankit undefined.) cause JS doesn't understand that Ankit is actually a name not a greetingMessage.
+
+// So, If you put default argument in the beginning and miss the argument wrong actual arguments will be passed into wrong formal arguments.
+
+// So, Rather keep the ones with default arguments at the end.
+
+function greet(name,greetingMessage = "Hi There"){
+    console.log(`${greetingMessage} ${name}`);
+}
+
+// Now, same call greet("Ankit") will print Hey There! Ankit.
+
+
+Spread :-
+
+Spread in Functions :-
+
+In JS we have Math.max() method which will return the max of any number of arguments passed into it.
+
+So, Math.max(1,4,5,234,46,6131,34,666) // Returns 6131.
+
+// But if you store all the elements in an array.
+let arr = [1,4,5,234,46,6131,34,666];
+
+// And now if you try 
+Math.max(arr); // This returns NaN cause it was actually expecting some different arguments like above so we can use spread represented by (...) here.
+
+Math.max(...arr); // This again will return the value 6131 here actually this line is exactly equivalant to the line on 858 just all the elements of the array are spread accross the function call and passed in as argument one by one.
+                  // One more thing to note is the spread operator doesn't really change the original array in any way either so arr still will be the same even after the above line.
+
+// Similar example of console.log()
+
+// You can pass in as many arguments as you want to console.log() and they'll all be printed one the same line sepearted by a space in between.
+console.log('H','e','l','l','o','.'); // prints H e l l o .
+
+console.log(...arr); // Prints 1 4 5 234 46 6131 34 666 (All the elements of arr are passed in as argument seperated by commas).
+
+// Similarly
+console.log("hello.") // Prints hello.
+// Whereas
+console.log(..."hello.") // Prints H e l l o .
+// So, Basically the line 879 and 872 are the same just the difference being on we used the spread operator rather than passing all the args manually.
+
+Spread in Arrays :-
+
+let dogs = ["cherry","harry","perry"];
+let cats = ["bilu","bilo"];
+
+// Let's say you had to copy all the pets in allPets array.
+
+let allPets = [...dogs,...cats]; // This is equivalant to (let allPets = ["cherry","harry","perry","bilu","bilo"];)
+                                 // Where ...dogs is replaced by "cherry","harry","perry" and ...cats is replaced by "bilu","bilo".
+
+// Since the above line is nothing but putting a new array in allPets you can even put extra elements if you want to.
+
+let allPets = [...dogs,...cats,"merry",1,2,3,4,5] // Even adding random numbers so array now looks like ["cherry","harry","perry","bilu","bilo","merry",1,2,3,4,5]
+
+So, to copy one array to another is as simple as 
+let nums1 = [1,2,3,4,5,6];
+let nums2 = [...nums1]; 
+
+Another Example.
+let str = "hello";
+
+let charactersInStrArray = [...str]; // charactersInStrArray is now ["h","e","l","l","o"].
+
+// So basically you can think of ...Anything is whatever elements are present in Anything are put in position of ...Anything all seperated by commas.
+// So ...nums is replaced by 1,2,3,4,5,6 that's it.
+
+Spread in Objects :-
+
+const feline = { legs: 4, family: 'Felidae' };
+const canine = { isFurry: true, family: 'Caninae' };
+
+// Let's say you want to combine both the above objects and put them in a new object.
+const combinationOfBothObjects = { ...feline, ...canine };
+
+After the above statement 
+combinationOfBothObjects = {
+        legs : 4,
+        isFurry : true,
+        family : "canine", // Since this was a common property it is overwritten by the order in which you put ...canine after ...feline.
+}
+
+// You can overwrite something even further
+const combinationOfBothObjects = {...feline,...canine,family:"randooo"}; // Now randooo will be placed in the family property.
+
+// Real world example of using spread in objects.
+
+const dataFromForm = { // Let's say this is the data you recieved from the user and you stored it in a object.
+    email: 'blueman@gmail.com',
+    password: 'tobias123!',
+    username: 'tfunke'
+}
+
+const newUser = { ...dataFromForm, id: 2345, isAdmin: false } // But now when storing the data to our database you might have to add some other values by yourself so first we use 
+                                                              // spread to copy the entire object we got from the form and then add a few properties by oursselves and put it in a new object call newuser.
+
+
+
+Rest Params (Looks like spread due to the same (...) but is used while accepting parameters) :-
+
+If you remember in Math.min(1,3,4,56,6,7,8,5785) you could put any number of arguments how did that happen or how was that achieved how did they write a function/method that could change it's formal arguments based on the
+number of actual arguments passed in.
+
+So, There is a arguments object that's kinda like a array that stores all the arguments passed in by the user in a function.
+Using arguments object example :-
+
+function sum() {
+    let total = 0;
+    for(let i = 0 ; i < arguments.length ; i++)
+        total += arguments[i];
+    return total;
+}
+
+// Now sum(2,43,5) will return 50.
+// And sum(2,3,4,5,6) will return 20.
+
+That works fine but arguments is not an actual array if you try to use anything like push,pop,reduce or any other method it won't work.
+So, You can't do the same above thing using this way
+function sum() {
+    return arguments.reduce((total, el) => total + el) // This will give you an error cause arguments is not an actual array.
+}
+
+And arguments object doesn't work in arrow functions.
+So, That's where rest comes in it basically whenever you put in ...arrayName in parameters it basically creates a array that will store the remaining actual arguments in this array and since it's an actual Array
+all the methods can be used on it just normally plus this array can also be accessed in the arrow functions unlike the arguments fake array.
+
+Example :-
+
+// Collect the "Rest" of the arguments in the nums array :-
+
+function sum(...nums) { // All of the arguments used while calling the sum function will be stored in this array nums.
+    return nums.reduce((total, el) => total + el) // This works perfectly fine no issues.
+}
+
+// It's not neccessary to use Rest to catch all the arguments sometimes we need to catch only some of them and store the first few ones carefully seperately.
+// Example :-
+
+function raceResults(gold, silver, ...everyoneElse) {
+    console.log(`GOLD MEDAL GOES TO: ${gold}`)
+    console.log(`SILVER MEDAL GOES TO: ${silver}`)
+    console.log(`AND THANKS TO EVERYONE ELSE: ${...everyoneElse}`)
+}
+
+// You can now make a call like raceResults("Ankit","Ashish","Ritik","Aman","Ajay","PP");
+// The above function call prints
+GOLD MEDAL GOES TO: Ankit
+SILVER MEDAL GOES TO: Ashish
+AND THANKS TO EVERYONE ELSE: Ritik,Aman,Ajay,PP // Cause these are all stored in everyoneElse array.
+
+
+Destructuring Arrays (Easier way of getting array values into new variables)
+
+
+// Let's say you have a scores array and you want to put first score in gold variable second in silver and next in bronze and rest of them in a seperate array.
+const scores = [929321, 899341, 888336, 772739, 543671, 243567, 111934];
+
+Normally i'd do this like this :-
+
+const gold = scores[0];
+const silver = scores[1];
+const bronze = scores[2];
+const everyoneElse = scores.slice(3);
+
+But you can do this :-
+
+const[gold,silver,bronze,...everyoneElse] = scores; // The brackets on the left side say okay we are Destructuring the array break it and store it in the variables on the left if ...everyoneElse wasn't 
+                                                    // written there is no issue gold,silver and bronze would get their values and that's it.
+
+
+Destructuring Objects (Easier way of getting object values into new variables)
+
+Example :- 
+
+// Here we have an object.
+
+const user = {
+    email: 'harvey@gmail.com',
+    password: 'sCoTt1948sMiTh',
+    firstName: 'Harvey',
+    lastName: 'Milk',
+    born: 1930,
+    died: 1978,
+    bio: 'Harvey Bernard Milk was an American politician and the first openly gay elected official in the history of California, where he was elected to the San Francisco Board of Supervisors',
+    city: 'San Francisco',
+    state: 'California'
+}
+
+// Now let's say i wanted these 5 things out in their seperate varibales normally this is how i'd do it.
+
+const firstName = user.firstName;
+const lastName = user.lastName;
+const email = user.email;
+const bio = user.bio;
+const city = user.city;
+
+// The same thing can be done this way
+
+const{firstName,lastName,email,bio,city} = user; // This statement will make 5 variables with the names firstName,lastName,email,bio,city and put the corresponding user.firstname,user.lastName,user.email,user.bio,user.city into the respective variables.
+// Just make sure you're typing the names of properties that are actually in the user object cause variable name and property name will be same this way.
+
+// But if you want the variable name to be different than the property name then use this method.
+
+const {died:deathYear,born:birthYear} = user; // propertyInObject : nameOfTheVariableYouWantToStoreThatPropertyIn
+
+
+// Concept of storing default values in these variables you generate.
+const user2 = {
+    email: 'Stacy@gmail.com',
+    firstName: 'Stacy',
+    lastName: 'Gonzalez',
+    born: 1987,
+    city: 'Tulsa',
+    state: 'Oklahoma'
+}
+
+const { born: birthYear, died: deathYear = 'N/A' } = user; // Since the died property exists in user deathYear will store 1978.
+
+const { city, state, died = 'N/A' } = user2; // Since the died property doesn't exist in user2 died variable will actually store 'N/A' string as 'N/A' is the default value of that variable which is used when that property is not present in the object.
+
+
+Parameters Destructuring (Basically storing data in variables as i'm passing an object into the parameters right there in the parameters themselves).
+
+// Let's say i had to make a function call fullName that would return the fullName of any object passed in.
+
+// 1st way
+function fullName(user) {
+     return `${user.firstName} ${user.lastName}`
+
+// 2nd way
+function fullName(user) {
+    const { firstName, lastName } = user;
+    return `${firstName} ${lastName}`
+}}
+
+// 3rd Way
+
+function fullName({firstName,lastName}){ // When you know you're not gonna be using the other properties/enteries in the user object and just these two properties will be used then you can do this now whenever this function is called with a user type object it will print the fullName.
+    return `${firstName} ${lastName}`
+)}
+
+// All three ways above do the same thing.
+
+// Let's say you want the best movie objects from the movies object above on line 655.
+
+// 1st way
+const bestMovies = movies.filter((movieObject) => movieObject.score >= 80);
+
+// 2nd way
+const bestMovies = movies.filter(({score}) => score >= 90) // Where {score} is written  we will get all the movie objects there now all we are doing is just taking the score from that movie that's it.
+
+
+// One final example
+
+const garbageStrings = movies.map(movie=> { // You don't need paranthesis cause it's only one arg.
+     return `${movie.title} (${movie.year}) is rated ${movie.score}`
+})
+
+const garbageStrings = movies.map(({title,year,score}) => { // Even though it was only one argument you still need to use paranthesis when using parameters destructuring.
+     return `${title} (${year}) is rated ${score}`;
+})

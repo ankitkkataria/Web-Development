@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Score Keeper</title>
+    <link rel="stylesheet" href="myScoreKeeper.css" />
+  </head>
+  <body>
+    <div id="mainDiv">
+      <h5>Ping Pong Score Keeper</h5>
+      <div>
+        <label for="maxScore"
+          >Till what score do you both want to play till :
+        </label>
+        <input type="number" name="" id="maxScore" />
+        <button id="ok">Ok</button>
+      </div>
+      <h1 id="scoreCard">0 to 0</h1>
+      <h6>Use the buttons below to keep the score</h6>
+      <div>
+        <button id="playerOneScored">+1 Player One</button>
+        <button id="playerTwoScored">+1 Player Two</button>
+        <button id="reset">Reset</button>
+      </div>
+    </div>
+    <script src="myScoreKeeper.js"></script>
+  </body>
+</html>

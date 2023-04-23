@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>getVsPost</title>
+  </head>
+  <body>
+    <h1>Get vs Post</h1>
+    <h2>Get Request</h2>
+    <!-- GET REQUEST -->
+    <!-- YOU'VE ONLY SEEN THIS TYPE OF REQUESTS SO MANY TIMES THE DATA GOES THROUGH THE QUERY STRING ITSELF WHEN YOU SUBMIT  -->
+    <form action="http://localhost:3000/tacos" method="get">
+      <label for="tacosFlavor"> Taco Flaver : </label>
+      <input type="text" name="tacosFlavor" id="tacosFlavor" />
+      <label for="qty"> Quantity : </label>
+      <input type="number" name="qty" id="qty" />
+      <button>Submit</button>
+    </form>
+    <h2>Post Request</h2>
+    <!-- POST REQUEST -->
+    <!-- HERE THE INFO IS SENT THROUGH REQUEST BODY SO YOU WON'T SEE THE INFORMATION IN THE URL ITSELF -->
+    <!-- HERE WE ARE MAKING A POST REQUEST FROM THE CLIENT SIDE NEXT WE WILL LEARN HOW TO DEAL WITH POST REQUESTS ON THE SERVER SIDE -->
+    <form action="http://localhost:3000/tacos/" method="post"> 
+      <label for="tacosFlavorPost"> Taco Flaver : </label>
+      <input type="text" name="tacosFlavorPost" id="tacosFlavorPost" />
+      <label for="qtyPost"> Quantity : </label>
+      <input type="number" name="qty" id="qtyPost" />
+      <button>Submit</button>
+    </form>
+  </body>
+</html>

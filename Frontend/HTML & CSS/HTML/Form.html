@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Table</title>
+  </head>
+  <body>
+    <form action="/search/">
+      <p>
+        <label for="username">Enter the username : </label>
+        <input type="text" placeholder="username" id="username" name="username"/>
+      </p>
+      <p>
+        <label for="password">Enter the password : </label>
+        <input type="password" id="password" placeholder="password" name="pass"/>
+      </p>
+      <p>
+        <label for="color">Enter the color : </label>
+        <input type="color" id="color" name="color"/>
+      </p>
+      <p>
+        <label for="number">Enter a number : </label>
+        <input type="number" placeholder="enter a number please" id="number" name="num"/>
+      </p>
+      <button type="submit">Submit Form</button>
+      <button type="button">Don't submit this form</button>
+    </form>
+    <form action="https://www.youtube.com/results">
+      <input type="text" name="search_query" id="youtube" placeholder="search on youtube">
+      <button type="submit">Youtube Search</button>
+    </form>
+    <button>outside the form</button>
+    <br>
+    <br>
+    <br>
+    <h2>second form</h2>
+    <form action="/birds">
+      <label for="checkbox"> <b>Agree to everying we say :</b> </label>
+      <input type="checkbox" name="check" id="checkbox">
+      <p>
+        <b>Select your shirt size : </b>
+        <br>
+        <label for="xs">xs</label>
+        <input type="radio" name="shirtsize" id="xs" value="xs">
+        <br>
+        <label for="m">m</label>
+        <input type="radio" name="shirtsize" id="m" value="m">
+        <br>
+        <label for="xl">xl</label>
+        <input type="radio" name="shirtsize" id="xl" value="xl">
+      </p>
+      <p>
+        <label for="meal">select a meal please</label>
+        <select name="meal" id="meal">
+          <option value="fish">fish </option>
+          <option value="chicken" selected>chicken</option>
+          <option value="pork">pork</option>
+        </select>
+      </p>
+      <p>
+        <label for="volume">set volume</label>
+        <input type="range" name="volume" id="volume">
+      </p>
+      <p>
+        <label for="sp">Special Requests</label>
+        <br>
+        <textarea name="specialreq" id="sp" cols="50" rows="20" placeholder="Type something here"></textarea>
+      </p>
+      <button>submit second form</button>
+    </form>
+    <h2>validations demo</h2>
+    <form action="/dummy">
+      <label for="name">Enter your name here</label>
+      <input type="text" name="name" id="name" required>
+      <br>
+      <br>
+      <label for="username">Enter your username</label>
+      <input type="text" name="username" id="username" minlength="5" maxlength="20" required>
+      <br>
+      <br>
+      <label for="password">Enter your password</label>
+      <input type="password" name="password" id="password" required>
+      <br>
+      <br>
+      <label for="email">Enter your email </label>
+      <input type="email" name="email" id="email" required>
+      <br>
+      <br>
+      <label for="url">Enter your url</label>
+      <input type="url" name="url" id="url">
+      <button>submit</button>
+    </form>
+  </body>
+</html>

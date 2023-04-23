@@ -1,0 +1,41 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    margin: 0;
+    /* overview hidden means your content will have to fit that body if it doesn't
+       no scroll bars or whatever will be provided for you. */
+    overflow: hidden;
+}
+
+#image-track>.image {   
+    width: 10vmin;
+    height: 56vmin;
+    object-fit: cover;
+    object-position: left;
+    transition: object-position 5s;
+}
+
+
+#image-track {
+    display: flex;
+    gap: 4vmin;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(0%, -50%);
+    transition: transform 5s;
+}
+
+#image-track:hover {
+    transform: translateX(-100%) translateY(-50%);
+
+}
+
+/* #image-track :hover {
+    object-position: right;
+} */
+
+#image-track > .image{
+   object-position: right;
+}

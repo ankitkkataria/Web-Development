@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cat Shelter</title>
+  </head>
+  <body>
+    <h1>Add Your Cats Here</h1>
+    <form action="/shelter" id="shelterForm">
+      <label for="catName">Cat Name :- </label>
+      <input
+        type="text"
+        name="catName"
+        id="catName"
+        placeholder="Enter Cat's Name Here"
+      />
+      <button>Submit</button>
+    </form>
+    <br>
+    <h3>Cats In Our Shelter :- </h3>
+    <ul id="catList"></ul>
+    <script src="preventDefault.js"></script>
+  </body>
+</html>

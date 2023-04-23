@@ -1,0 +1,38 @@
+h1 {
+    margin-bottom: 2rem;
+}
+
+body img {
+    margin: 0.5em;
+    border-radius: 0.5em;
+    transition: transform 200ms;
+}
+
+body img:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+#tvShowForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20%;
+    margin-bottom: 2rem;
+}
+
+#tvShowForm input {
+    border: 1px solid black;
+    border-radius: 0.2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+button {
+    border: 1px solid black;
+    border-radius: 0.2rem;
+}
+
+#inputAndSearch {
+    display: inline;
+}

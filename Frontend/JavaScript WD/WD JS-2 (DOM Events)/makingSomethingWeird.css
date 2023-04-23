@@ -1,0 +1,16 @@
+body {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh; /* Without it i wasn't able to get the content into the center cause by default the height in now 100vh you can check this by commenting this line and uncommenting the border line down below*/
+    /* border: solid white 2px; */
+    margin: 0; /*This is so i can remove those scrollbars from the sides. */
+}
+
+h1 {
+    font-size: 5rem;
+    font-family: 'Space Mono',monospace;
+}

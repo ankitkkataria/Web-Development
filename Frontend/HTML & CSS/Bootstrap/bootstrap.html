@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bootstrap</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+    <!-- You should make sure you load bootstrap before all 
+         your own css stylesheets cause it allows you to 
+         make your own changes later without bootstrap default
+         changes messing it up. -->
+    <!-- In Simple terms what bootstrap is it has made a stylesheet
+         that you included through the link above and what they have
+         done is basically made a few classes and defined some properties
+         like let's say class name is .button-red {background-color: red}
+         now any button in your html document you put in this class button-red
+         those styles will be automatically applied on all those buttons that's 
+         all what bootstrap framework is in my opinion you can take a look at the 
+         original document that i copy/pasted from the bootstrap link. -->
+    <!-- Also something to note is when you're putting something in class field
+         with a space in between that essentially means that in itself is a different
+         class -->
+    <link rel="stylesheet" href="bootstrap.css " />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="display-1 text-center text-primary">Container Class</h1>
+      <h2 class="display-4">
+        Buttons <span class="badge badge-dark badge-pill">New</span>
+      </h2>
+      <button class="btn btn-primary">Primary</button>
+      <button class="btn btn-success">Success</button>
+      <button class="btn btn-info">Info</button>
+      <button class="btn btn-outline-warning">Warning Outline</button>
+      <button class="btn btn-outline-danger btn-lg">Danger Outline</button>
+      <button class="btn btn-secondary btn-sm">Primary Button</button>
+      <button class="btn btn-success" disabled>Success Button Disabled</button>
+      <button class="button-reddish button-littleBitRound button-large">
+        Nothing Button
+      </button>
+      <button class="btn btn-outline-warning">
+        Updates <span class="badge badge-warning badge-pill">9</span>
+      </button>
+      <h3 class="mt-3">Button Groups</h3>
+      <div class="btn-group">
+        <button class="btn btn-outline-warning">One</button>
+        <button class="btn btn-outline-info">Two</button>
+        <button class="btn btn-outline-secondary">Three</button>
+      </div>
+      <h3 class="mt-3">Alerts</h3>
+      <div class="alert alert-warning alert-dismissible fade show">
+        <h4 class="alert-heading">Oh No!</h4>
+        Warning! You are about to end the world.
+        <!-- aria-label are useful for screen readers that's it -->
+        <!-- Let's make this alert dismissable -->
+        <!-- data-dismiss allows us to dismiss this comes from the 
+             javascript files present in bootstrap-->
+        <button class="close" aria-label="Close" data-dismiss="alert">
+          <!-- This line below gives us that cross symbol -->
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <p class="lead">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere est
+        deserunt ipsum ex. Similique officiis dolorum esse quisquam consequuntur
+        ducimus et, vel totam molestias. Ipsa fugit repellat quae culpa
+        explicabo? Beatae labore distinctio laudantium. Labore eligendi nisi cum
+        numquam blanditiis suscipit, laboriosam rem. Impedit quisquam rem atque
+        mollitia iure quam sed labore ipsum magnam quaerat, sequi ea provident
+        reiciendis perferendis.
+      </p>
+    </div>
+    <span class="blockquote text-right">
+      <p class="mb-0">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed quasi
+        doloremque harum, at quod cupiditate quo consequuntur alias ipsam
+        reiciendis nihil beatae. Ratione nisi adipisci a aut cupiditate quas!
+        Nemo.
+      </p>
+      <footer class="blockquote-footer">Ankit</footer>
+    </span>
+    <div class="container-fluid">
+      <h1 class="display-4 text-center">Container-fluid</h1>
+      <p class="lead">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut, repellendus
+        dicta perferendis fugit sunt, eligendi vel in suscipit adipisci, et
+        sapiente modi consequatur excepturi veritatis? Doloribus incidunt quis
+        dignissimos iure? Laboriosam aliquam laborum, dolorum fuga impedit
+        molestias et voluptates, ullam consequatur aspernatur asperiores
+        laudantium. Aliquam, laborum ratione quibusdam voluptatem, non quod
+        molestiae dignissimos tenetur deserunt consectetur, accusamus culpa
+        assumenda quidem?
+      </p>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+      integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

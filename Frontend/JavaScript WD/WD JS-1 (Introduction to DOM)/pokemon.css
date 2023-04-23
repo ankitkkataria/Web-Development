@@ -1,0 +1,14 @@
+.divStyles {
+    display: inline-block;
+    text-align: center;
+    /* border: 1px solid black; */
+}
+
+.divStyles img {
+    display: block;
+    transition: all 250ms ease-in;
+}
+
+.divStyles :hover {
+    transform: scale(120%);
+}
