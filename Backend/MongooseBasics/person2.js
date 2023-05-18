@@ -1,9 +1,8 @@
 // Copying person.js
 // In this we will learn about mongoose middleware this allows us to do something before and after a action has been taken on a instance.
 // For example let's say you were deleting a user before deleting it from your database you might want to delete all the comments/posts this user has ever made and then finally delete the user itself.
-// Or for example let's say you gave a movie 5-star rating i immediately after saving your review i might want to update the aggregate rating of that movie.
+// Or for example let's say you gave a movie 5-star rating immediately after saving your review i might want to update the aggregate rating of that movie.
 // This before and after thing can be applied on any action whether that be save,updateMany,delete or anything you can read all of this on the docs itself.
-const mongoose = require("mongoose");
 mongoose
   .connect("mongodb://127.0.0.1:27017/shopApp")
   .then(() => {

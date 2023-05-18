@@ -262,3 +262,10 @@ Mongoose provides ways for us to model out our application data and define a sch
 It offers easy ways to validate data and build complex queries from the comfort of JS.
 Remember that the central goal, the whole point of using Mongoose is to have an easier way to interact with the Mongo database from our JavaScript.
 node -i -e "$(< index.js)" is a command that can be used to load a js file for mongoose.
+Now first read index.js then all three product.js files and then finally read both the person files.
+
+# Mongoose With Express
+In the folder MongooseAndExpress first read settingUp.js
+Then just go ahead a follow index.js file.
+
+Now go read about Middleware.

@@ -21,8 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
 // Connecting to the mongoose database server.
-mongoose
-  .connect("mongodb://127.0.0.1:27017/farmStand")
+mongoose.connect("mongodb://127.0.0.1:27017/farmStand")
   .then(() => {
     console.log("Successfully connected to the database specified above");
   })
@@ -40,7 +39,7 @@ const categories = ["fruit", "vegetable", "dairy"];
 //  =================
 
 // Setting up a index route (Following the RESTful routes convention)
-app.get("/products", async (req, res) => {// Making this a async function cause i'm making a request to the database.
+app.get("/products", async (req, res) => { // Making this a async function cause i'm making a request to the database.
   const { category } = req.query;
   if (category) { // If category is passed in the URL as a search query if not just display all the products normally.
     const products = await Product.find({ category: category }); // Or you could even do Product.find({category});
@@ -114,7 +113,8 @@ app.delete("/products/:id", async (req, res) => {
 // So, In these search kind of things it's better to go with a query string kind of URL.
 // Here we will send a get request to /products?category=fruit kindof thing.
 
-// Here really alll we just did was plugged Mongoose into a pattern we've already seen.
+// Here really all we just did was plugged Mongoose into a pattern we've already seen.
 // Here we just did the same thing we were doing with a array but with an actual database and inorder to achieve that what new work i did is written in the line below.
-// What was new however was setting up async route handlers and then awaiting the results of our model using methods like findById,findByIdAndDelete,findByIdAndUpdate and save etc. cause these operations can take time to complete.
+// What's new however was setting up async route handlers and then awaiting the results of our model using methods like findById,findByIdAndDelete,findByIdAndUpdate and save etc. cause these operations can take time to complete.
 // The methods you put in requests like app.get,app.post,app.patch etc. as second arguments are called route handlers or route handler functions cause they handle when we get a certain request at a route or a endpoint.
+t
