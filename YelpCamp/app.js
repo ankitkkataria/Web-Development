@@ -4,7 +4,7 @@ const path = require("path");
 const Campground = require('./models/campground');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
-
+const ejsMate = require('ejs-mate');
 // Connecting to the mongoose database server.
 mongoose.connect("mongodb://127.0.0.1:27017/yelpCamp")
   .then(() => {
@@ -27,6 +27,7 @@ app.listen(3000, () => {
 });
 
 // Setting up EJS
+app.engine('ejs',ejsMate); // This is so instead of using the default ejs engine it starts using the new ejsMate engine that allows us to easily make boilerplate code and saves us from repeating the code even better than what ejs partials did for us.
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
