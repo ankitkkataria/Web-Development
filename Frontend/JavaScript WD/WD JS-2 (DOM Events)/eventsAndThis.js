@@ -69,7 +69,7 @@ for (let currh1 of allh1s) {
   currh1.addEventListener("click", colorize);
 }
 
-function colorize() { // So basically whenever this is used in a function that's begin passed in a addEventListener whenever that event happens and that function is called putting this in that function basically means this particular element on which this event occured.
+function colorize() { // So basically whenever this is used in a function that's being passed in a addEventListener whenever that event happens and that function is called putting this in that function basically means this particular element on which this event occured.
   this.style.backgroundColor = makeRandomColor();
   this.style.color = makeRandomColor();
 }

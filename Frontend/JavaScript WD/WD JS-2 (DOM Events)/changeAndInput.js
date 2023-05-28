@@ -6,7 +6,7 @@ const input = document.querySelector("input");
 // const h1 = document.querySelector("h1");
 // input.addEventListener("keydown", function() {
 //     h1.innerText = input.value;
-//     console.log("The keydown event just got fired"); // Open console for each of these threes ways and check when and how they get fired.
+//     console.log("The keydown event just got fired"); // Open console for each of these three ways and check when and how they get fired.
 // });
 
 // 2nd way is using the change event.

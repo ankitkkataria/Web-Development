@@ -12,6 +12,7 @@ button.addEventListener("click", function (e) {
 // });
 
 container.addEventListener("click", function () {
+  console.log("click event on div fired");
   container.classList.toggle("hide");
 });
 

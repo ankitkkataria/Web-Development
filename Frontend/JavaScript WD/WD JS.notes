@@ -32,13 +32,13 @@ You don't want to write some JS code and apply it to all the contents of the pag
 Example :-
 const tableOfContentsObject = document.getElementById("toc"); // Argument will be a string
 // Now tableOfContentsObject contains the object/Element that is toc this object will have all the properties/methods corresponding to the table of components so don't think 
-// it just contains the html of the toc actually this variable now contains everything related to that component.
+// It just contains the html of the toc actually this variable now contains everything related to that component.
 // If you fill in a wrong id name that doesn't exist this getElementById will return null.
 
 2) getElementsByTagName :- This way you can select all the occurrences of anything like i can select all images or all anchor tags or all paragraphs or whatever just like we could do this in css.
 
 Example :-
-const allImages = getElementsByTagName("img");
+const allImages = document.getElementsByTagName("img");
 // Now allImages contains all the objects/Elements that are images on the webpage.
 // allImages is actually a HTML collection now that contains all those Elements/objects of images.
 // HTML collection is not an actual array so you can't use methods like map,reduce or whatever on allImages
@@ -100,7 +100,6 @@ for(let link of links){
 // The three things above are not just for seeing the contents of these elements but can also be used to modify the contents either text through innerText, textContent or even HTML using innerHTML.
 // Example of changing the html with innerHTML
 document.querySelector('h1').innerHTML += '<sup>i am the superscript of h1</sup>; // Putting a superscript on the first h1 on the page.
-
 
 4) Attributes are like href on anchor tags, src on imgs, class, id, type on input etc. and now we will see how we can access them.
 
@@ -177,7 +176,7 @@ firstLink.setAttribute('href','http://www.google.com'); // Doing it using a meth
                 3) contains
                 h2Obj.classlList.contains('border') // This returns true if the border class is applied to the h2Obj.
 
-                4) toggle // used in many situations like on clicking navbar-expand button on a site some class called .exapand might be applied and then on clicking it again it might be removed.
+                4) toggle // used in many situations like on clicking navbar-expand button on a site some class called .expand might be applied and then on clicking it again it might be removed.
                 h2Obj.classlList.toggle('purple'); // If the purple class is not applied to h2Obj it applies it and if it had already applied then it just removes it.
 
 
@@ -194,7 +193,7 @@ firstLink.setAttribute('href','http://www.google.com'); // Doing it using a meth
        const paragraph = firstBold.parentElement;
        const allChildrenOfParagrah = paragraph.children // returns an HTML collection which again is itertable and accessable like an array but not an actual array.
        allChildrenOfParagrah[0] // is the first object/element in the paragraph which is nothing but the first bold tag.
-       paragraph.childElementCount // if going to return a number that represents the number of children it has.
+       paragraph.childElementCount // it's going to return a number that represents the number of children it has.
     
     3) siblingElements // To access the sibling Elements/objects.
        const firstSquareImg = document.querySelector(".square");
@@ -302,9 +301,9 @@ firstLink.setAttribute('href','http://www.google.com'); // Doing it using a meth
                 const firstBold = document.querySelector("b"); 
                 firstBold.remove(); // That's it. 
 
-    
 
 #Events
+
  Events are basically what help us in making our site responsive in the sense that our site should do something based on what the user does.
  For Example :- 
                 If the user clicks on something what should we do.
@@ -316,9 +315,7 @@ firstLink.setAttribute('href','http://www.google.com'); // Doing it using a meth
  Basically adding functionality to our page based on what the user does is the main purpose of learning about events.
     
  How do we use events and implement functionality based on those events ? 
- 1) This is a bad way but we could do something called inline HTML event reaction where we put JS code within the HTML tag of a element this is a really bad way of doing this 
-    cause it's tough to manage and if you have to repeat something you can't just loop and do something you'll have to repeat code plus changing something for multiple things 
-    will have to be done manually.
+ 1) This is a bad way but we could do something called inline HTML event reaction where we put JS code within the HTML tag of a element this is a really bad way of doing this cause it's tough to manage and if you have to repeat something you can't just loop and do something you'll have to repeat code plus changing something for multiple things will have to be done manually.
     
     Example :- <button id="btn" onclick="console.log('clicked');">Click Me</button> // This is what your HTML will look like.
 
@@ -328,16 +325,16 @@ firstLink.setAttribute('href','http://www.google.com'); // Doing it using a meth
 [javascript]  
 
         const btn = document.querySelector("button"); 
-        btn.onclick = function(){ // This property should be assigned to a function not directly to console.log("statement") cause when that console.log() statement would have been executed immediately rather the fucntion is called only when the button is clicked.
-        console.log("Yo you clicked me my boi");
-        console.log("I hate you");
+        btn.onclick = function(){ // This property should be assigned to a function not directly to console.log("statement") cause then that console.log() statement would have been executed immediately rather now fucntion is called only when the button is clicked.
+            console.log("Yo you clicked me my boi");
+            console.log("I hate you");
         }
 
         btn.onclick = console.log("Yo you clicked me my boi"); // Wrong
 
         btn.onmouseenter = () => {
-        console.log("You just entered my buttony body");
-        console.log("Don't do that again");
+            console.log("You just entered my buttony body");
+            console.log("Don't do that again");
         }
 
         // You can even write named functions and then assign them.
@@ -346,7 +343,7 @@ firstLink.setAttribute('href','http://www.google.com'); // Doing it using a meth
         }
 
         // Example of first defining a function seperately and then assigning so you don't need to always define the function like you did in above two cases.
-        btn.onmousedown = scream; // See we're not typing scream(); bcz we're not calling it initially we're assining the function to onmousedown so when that happens call the function.
+        btn.onmousedown = scream; // See we're not typing scream(); bcz we're not calling it initially we're assining the function to onmousedown when that happens call the function.
 
 [end]
 
@@ -367,7 +364,7 @@ firstLink.setAttribute('href','http://www.google.com'); // Doing it using a meth
 
 [end]
 
-Q - Why is addEventListener better than the 2nd way of doing things ? 
+Q - Why is addEventListener better than the 1st way of doing things ? 
 S - Well there are two reasons :-
     1) Let's say you had to call more than one methods one after the other when a event occurs.
     [javascript]
@@ -384,17 +381,14 @@ S - Well there are two reasons :-
          btn.onclick = printYellow;
          btn.onclick = printRed; 
 
-         // Now when you run it you'll realize instead of instead of it running both the funcitons one after the other when the button is clicked 
-         // but the only thing that will happen is it will only execute the printRed method cause onclick is a property of the element btn so it 
-         // can only hold a single value and that value just got overwritten when two functions were assigned to it one by one just like in CSS 
-         // the same thing would happen if you tried assining two colors to color property of a paragraph or something.
+         // Now when you run it you'll realize instead of instead of it running both the funcitons one after the other when the button is clicked but the only thing that will happen is it will only execute the printRed method cause onclick is a property of the element btn so it can only hold a single value and that value just got overwritten when two functions were assigned to it one by one just like in CSS the same thing would happen if you tried assining two colors to color property of a paragraph or something.
          
          // But the above problem can be solved using addEventListener.
 
          btn.addEventListener('click',printYellow);
          btn.addEventListener('click',printRed);
 
-         // So, Basically you can have two or more eventListeners on the same element for the same event but doing it using the second way of modifying that event property of the element can only be assigned one functionality.
+         // So, Basically you can have two or more eventListeners on the same element for the same event but doing it using the first way of modifying that event property of the element can only be assigned one functionality.
 [end]
 
     2) There can be extra optional objects that can be passed in the addEventListener() method as additional arguments.

@@ -43,7 +43,7 @@
 // }
 
 // class Cat extends Pet { // This Cat class now extends Pet what that means is all the functionality of Pet is included in it and some extra things if it wants for itself it can keep it.
-//     // When a new object of this class is created and it doesn't find a constructor here it refers to it's parent class and it does find a constructor there so it will use that so just remember when a object is created and let's say a function is called if it's present in this class itself good it will use that otherwise it will use the one present in the parent class if the parent class doesn't contain that function either obviously a error will be generated.
+       // When a new object of this class is created and it doesn't find a constructor here it refers to it's parent class and it does find a constructor there so it will use that so just remember when a object is created and let's say a function is called if it's present in this class itself good it will use that otherwise it will use the one present in the parent class if the parent class doesn't contain that function either obviously a error will be generated.
 //     meow() { 
 //     return "MEOWWWW!!";
 //   }
@@ -64,6 +64,7 @@
 // The super keyword is used to call the constructor of its parent class to access the parent's properties and methods you can't use super keyword without extends we can't access a parent if there is no parent.
 // super(arguments);  // calls the parent constructor (only to be called from inside the constructor of child class)
 // super.parentMethod(arguments);  // calls a parent method
+// The super() is not called for inheriting the Properties of the base class. That is done by extends keyword. The reason why we call super is because we want to execute the code which is written in the constructor of the Error class.
 class Pet {
     constructor(name, age) {
       console.log("In Pet constructor");

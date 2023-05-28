@@ -117,4 +117,3 @@ app.delete("/products/:id", async (req, res) => {
 // Here we just did the same thing we were doing with a array but with an actual database and inorder to achieve that what new work i did is written in the line below.
 // What's new however was setting up async route handlers and then awaiting the results of our model using methods like findById,findByIdAndDelete,findByIdAndUpdate and save etc. cause these operations can take time to complete.
 // The methods you put in requests like app.get,app.post,app.patch etc. as second arguments are called route handlers or route handler functions cause they handle when we get a certain request at a route or a endpoint.
-t

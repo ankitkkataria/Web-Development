@@ -269,3 +269,11 @@ In the folder MongooseAndExpress first read settingUp.js
 Then just go ahead a follow index.js file.
 
 Now go read about Middleware.
+Now after this i've added some basic styles to our YelpCamp app.
+Now go and read about ErrorsInExpressApps.
+
+Express has a default way of dealing with errors thrown in express apps it will make a html template and resoond with the error on that page it is usually done in developement only not on the production side.
+You yourself can also throw some basic errors and express will show them like it found them itself.
+Express uses status code 500 to signify server side error.
+If a middleware causes an error then also express has a default way of showing it.
+Generally when you encounter an error in your webapp you respond with a status code and some message.
