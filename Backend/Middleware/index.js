@@ -1,5 +1,5 @@
 // Middleware is nothing but function/s that are called between a req and res.
-// url parser, json parser, app.get, method-overide are all middlewares they take in functions that are executed when a request comes.
+// URL parser, json parser, app.get, method-overide are all middlewares they take in functions that are executed when a request comes.
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
@@ -20,8 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/dogs", (req, res, next) => {
-  // This will only run when any request kind of request is sent to /dogs only not only all the other paths till now we had been using it without specifying the path.`
+app.use("/dogs", (req, res, next) => { // This will only run when any request kind of request is sent to /dogs only not only all the other paths till now we had been using it without specifying the path.
   console.log("I love dogs");
   next();
 });
@@ -35,7 +34,7 @@ const verifyPassword = (req, res, next) => {
   res.send("Sorry but you need a password to access this path");
 };
 
-// app.use((req, res, next) => {// Any request i get this function will be called immediately after getting it so we usually put middleware in app.use() that executes no matter what kind of request i get.
+// app.use((req, res, next) => { // Any request i get this function will be called immediately after getting it so we usually put middleware in app.use() that executes no matter what kind of request i get.
 //   console.log("This is my first middleware!!!");
 //   return next(); // Otherwise no other middleware will be called (including route handler functions that are present in app.get routes etc. cause they are also middlewares)
 //   console.log("This is my first middleware!!! - After calling next()");

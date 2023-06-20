@@ -70,7 +70,7 @@ app.get("/secret", verifyPassword, (req, res) => {
 // }) 
 
 // Our own custom error handler that takes any error and if it AppError it will use those message,status codes and display them otherwise if it's not a AppError but a normal error it will assign some default values to status and message and respond with those.
-app.use((err,req,res,next) => { // When you have four arguments in a function it is considered as error handling middleware.
+app.use((err,req,res,next) => { // When you have four arguments in a function it is considered as error handling middleware. (You must keep your custom error handler at the end after all the app.use() middlewares)
     // Whenever a error is this function will be first ran.
     const {status = 500, message = 'Something went wrong'} = err; // The error that occurs when line 42 is hit doesn't have status as a property cause that's not the AppError we have defined that a normal reference error so in that case it will say status code undefined in order to deal with that we can have a default value for the status code while destructruing it itself.
     res.status(status).send(message); // Normally message is present in a normal error to begin with not the status code so even if you get a normal error and you don't see Something went wrong message don't worry that's cause by default if you look at the Error object in chrome's console and type console.dir(Error) you'll see that it has a message property not a status property however.

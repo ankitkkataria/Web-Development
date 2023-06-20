@@ -4,7 +4,7 @@ const button = document.querySelector("button");
 // Function below will return a new dad joke
 const getNewJoke = async () => { // I should use try and catch here but not using it just cause i know this API works here and i want these comments to just stay easily readable.
   // You can pass in the request headers as a second argument of the axios.get() command it's a optional argument till now we saw how to pass in header information using postman but this is how you do it using JS.
-  // Header information is passed in as a object literal where each property itself migght be a object literal you can pass the line below as the second arg directly but we did it by first storing it in a variable just cause it looks nice.
+  // Header information is passed in as a object literal where each property itself might be a object literal you can pass the line below as the second arg directly but we did it by first storing it in a variable just cause it looks nice.
   let headerInformation = { headers: { Accept: "application/json" } }; // This is just the header information that you need to pass into this API request that will provide you with JSON Object or JS object literal of that JSON string in the response.data.
   let response = await axios.get("https://icanhazdadjoke.com/", headerInformation); // Again axios.get() also returns a promise.
   return response.data.joke; // response.data means the JS object literal of the JSON string and .joke is cause that's the property here that contains the joke you can see it by using console.log(res.data);

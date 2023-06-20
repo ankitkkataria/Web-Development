@@ -12,12 +12,12 @@ const player2 = {
 
 const resetButton = document.querySelector("#reset");
 const winningScoreSelect = document.querySelector("#playto");
-let winningScore = 0;
+let winningScore = 3;
 let isGameOver = false;
 
 // Add event listeners to all the buttons where i'll be constantly listening of any click events that might happen on any of these buttons at any time.
 player1.button.addEventListener("click", function () {
-  console.log("clinking p1 button");
+  console.log("clicking p1 button");
   updateScores(player1, player2);
 });
 
@@ -30,7 +30,7 @@ resetButton.addEventListener("click", reset);
 
 winningScoreSelect.addEventListener("change", function () {
   console.log("clinking select button");
-  winningScore = parseInt(this.value);
+  winningScore = parseInt(this.value); // winningScoreSelect.value could also be used.
   reset();
 });
 

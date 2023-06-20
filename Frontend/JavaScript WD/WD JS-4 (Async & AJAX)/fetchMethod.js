@@ -68,7 +68,7 @@
 //   }
 // };
 
-// makeTwoCallsOneAfterAnother(); // Since line 59 to 61 are same as 62 to 64 we can probably make a function that takes a person ID and returns the JSON object.
+// makeTwoCallsOneAfterAnother(); // Since line 60 to 61 are same as 63 to 64 we can probably make a function that takes a person ID and returns the JSON object.
 
 const returnPersonJSONObject = async (id) => {
   // Again try/catch can be added here like we did above.
