@@ -7,7 +7,8 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
-const Joi = require('joi'); // I'll use Joi for data validation in my when submitting a new campground or updating a existing campground.   
+const { campgroundSchema } = require('./validationSchemas'); // So i can use it to validate my post and put routes for my campgrounds here.
+// const Joi = require('joi'); // Not needed here anymore as we are importing our schemas from validationSchemas file and that itself is importing joi.
 
 // Connecting to the mongoose database server.
 mongoose
@@ -36,6 +37,22 @@ app.engine("ejs", ejsMate); // This is so instead of using the default ejs engin
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+// Setting up my custom middleware function that will use Joi to validate the campground whereever needed.
+const validateCampground = (req, res, next) => {
+  // After building the schema this line below is used to run the validation code on the req.body object.
+  // const result = campgroundSchema.validate(req.body); // It will return you an result that will contain a error object that will be defined if a error is generated if any of the property doesn't follow any of the specified constraints but if everything is valid in that case the value of the error property will be left undefined and the if condition if(error) will surely fail.
+  // console.log(result);
+  // console.dir(result.error.details); 
+  const { error } = campgroundSchema.validate(req.body);
+  if (error) {
+    // This line below takes the details array of objects in the error object and makes a new array containing all the messages present in that details array if there are more than one errors using the map operator and then joins all those messages using (,) and returns it.
+    const allErrorMessages = error.details.map(ele => ele.message).join(','); // Here ele is a element which is nothing but a object of the details array and this join will help us return a string of all the elements in the new mapped array that we formed out of all the messages.
+    throw new ExpressError(allErrorMessages, 400);
+  } else {
+    next(); // If there is no error just go ahead and call the next middleware function that will go ahead and try to add a new campground or edit an existing campground.
+  }
+}
+
 // Setting up routes
 app.get("/", (req, res) => {
   res.render("home");
@@ -51,36 +68,12 @@ app.get("/campgrounds/new", (req, res) => {
   res.render("campgrounds/new");
 });
 
-app.post("/campgrounds", catchAsync(async (req, res) => {
+app.post("/campgrounds", validateCampground, catchAsync(async (req, res) => {
   // You're using client side validation using bootstrap which means it won't allow you to submit the form with fields missing from the form.
   // But it's still possible to do it using postman/axios or something.
   // So, One way is to use required in mongoose schema itself.
   // Otherway could be like
   // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400); // This will only save us from cases where campground key is not present in the post request we're not making sure if campground itself is a object to begin with so it's still possible to fool this method but just naming something campground but this is just to show the concept of things that can be done.
-
-  // Using Joi to make a schema which will help us to validate the data before we even attempt to save it to the actual database.
-  const campgroundSchema = Joi.object({ // This says whatever you pass in this schema during the validation on line 78 must be a object and yes req.body is a object inside that object there must be another object by the name of campground that is required and within that campground object there must be these properties having these types and following these particular constraints.
-    // Format inside Joi schema => (property name : Joi.typeThatPropertyNeedsToBe().additionalConstraints(). 
-    campground: Joi.object({
-      title: Joi.string().required(),
-      price: Joi.number().required().min(0),
-      image: Joi.string().required(),
-      location: Joi.string().required(),
-      description: Joi.string().required(),
-    })
-  })
-
-  // After building the schema this line below is used to run the validation code on the req.body object.
-  // const result = campgroundSchema.validate(req.body); // It will return you an result that will contain a error object that will be defined if a error is generated if any of the property doesn't follow any of the specified constraints but if everything is valid in that case the value of the error property will be left undefined and the if condition if(error) will surely fail.
-  // console.log(result);
-  // console.dir(result.error.details); 
-
-  const { error } = campgroundSchema.validate(req.body);
-  if (error) {
-    // This line below takes the details array of objects in the error object and makes a new array containing all the messages present in that details array if there are more than one errors using the map operator and then joins all those messages using (,) and returns it.
-    const allErrorMessages = error.details.map(ele => ele.message).join(','); // Here ele is a element which is nothing but a object of the details array and this join will help us return a string of all the elements in the new mapped array that we formed out of all the messages.
-    throw new ExpressError(allErrorMessages, 400);
-  }
   const camp = new Campground(req.body.campground);
   await camp.save();
   res.redirect(`/campgrounds/${camp._id}`);
@@ -96,7 +89,7 @@ app.get("/campgrounds/:id/edit", catchAsync(async (req, res) => {
   res.render("campgrounds/edit", { campground });
 }));
 
-app.put("/campgrounds/:id", catchAsync(async (req, res) => {
+app.put("/campgrounds/:id", validateCampground, catchAsync(async (req, res) => {
   const { id } = req.params;
   const updatedCampground = await Campground.findByIdAndUpdate(
     id,
