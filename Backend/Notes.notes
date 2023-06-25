@@ -277,3 +277,8 @@ You yourself can also throw some basic errors and express will show them like it
 Express uses status code 500 to signify server side error.
 If a middleware causes an error then also express has a default way of showing it.
 Generally when you encounter an error in your webapp you respond with a status code and some message.
+
+After errors and stuff you'll add error/validations in the YelpCamp app too.
+Then we will read about the mongo relationships.
+Some rules that you can follow what it comes to implementing mongo relationships
+https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design
