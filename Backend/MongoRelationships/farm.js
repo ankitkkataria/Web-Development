@@ -40,7 +40,7 @@ const Farm = mongoose.model('Farm', farmSchema);
 const makeFarm = async () => {
     const farm = new Farm({ name: 'Full Belly Farms', city: 'Guinda, CA' });
     const melon = await Product.findOne({ name: 'Goddess Melon' });
-    farm.products.push(melon)
+    farm.products.push(melon) // Even though you're directly pushing a product object/document in here actually only the id of that product will be stored as defined in schema.
     await farm.save()
     console.log(farm);
 }
@@ -55,5 +55,5 @@ const addProduct = async () => {
 
 
 Farm.findOne({ name: 'Full Belly Farms' })
-    .populate('products')
+    .populate('products') // The field you want to populate is provided inside populate function.
     .then(farm => console.log(farm))

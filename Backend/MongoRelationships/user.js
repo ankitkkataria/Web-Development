@@ -11,6 +11,7 @@ mongoose.connect('mongodb://localhost:27017/relationshipDemo', { useNewUrlParser
         console.log(err)
     })
 
+// This is a way you should look at to see how you can define nested schemas.    
 const userSchema = new mongoose.Schema({
     first: String,
     last: String,
