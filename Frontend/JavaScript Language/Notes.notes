@@ -174,7 +174,7 @@ const person = ["Ankit","Kataria",25,214101008,["notmuch","somethingInteresting"
 // person[2342] is fine cause 2342 here will be converted to a string and then matched with the string that 2342 was converted to earlier when that object literal was formed.
 // person.2342 doesn't work for some reason that's a wrong syntax so don't access the number keys that way using the (.)dot operator.
 // One other thing why you may want to use square brackets while accessing the data of an object literal you can access it using variables.
-// const years = { 
+const years = { 
     1997 : "good",
     2020 : "bad",
 }
@@ -298,6 +298,7 @@ JS is block scoped all it means is just that everything in a if block or a for b
 the block itself not outside(only applicable for let and const not for var(var doesn't support block scoped)).
 
 JS is lexically scoped meaning
+
 function bankRobbery() {
     const heroes = ['Spiderman', 'Wolverine', 'Black Panther', 'Batwoman']
     function cryForHelp() {
@@ -353,13 +354,13 @@ callThrice(rollDie); // now rollDie(); will be executed thrice.
 
 // Let's say you have a need to make a function like this frequently 
 // Like a function that can tell us if a number is in between [0,18].
-// function func1(num){
+function func1(num){
     return num >= 0 && num <= 18;
 }
 
 // Similarly you need a function that can tell you if a number is between [19,45];
 // So, You go ahead and make
-// function func2(num){
+function func2(num){
     return num >= 19 && num <= 45;
 }
 
