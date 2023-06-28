@@ -56,13 +56,14 @@ app.get("/farms", async (req, res) => {
 
 app.get("/farms/:id", async (req, res) => {
   const { id } = req.params;
-  const farm = await Farm.findById(id);
+  const farm = await Farm.findById(id).populate("products");
   res.render("farms/show", { farm });
 });
 
 app.delete("/farms/:id", async (req, res) => {
   const { id } = req.params;
-  const farm = await Farm.findByIdAndDelete(id);
+  const farm = await Farm.findByIdAndDelete(id); // Also one thing to note if you change this method here to something else that doesn't convert to findOneAndDelete in that case that particular middleware you've defined won't work so be careful about that.
+  // Instead of delelting all the products associated with it here you can use mongoose middleware as it makes it easier if you have multiple things associated with your farm like employees,schedules,reviews etc. instead of doing them here we can use mongoose middleware that we will define in the farm.js file on farmSchema.
   res.redirect("/farms");
 });
 
@@ -108,7 +109,7 @@ app.post("/products", async (req, res) => {
 app.get("/products/:id", async (req, res) => {
   const { id } = req.params;
   // Search the database for the document with that id.
-  const product = await Product.findById(id);
+  const product = await Product.findById(id).populate("farm", "name"); // Only populate the name field in the farm object also id is already populated inside the farm object that's not something you have to specify explicitly as even if you don't populate you'll still be able to see the id.
   res.render("products/show", { product });
 });
 
@@ -118,6 +119,7 @@ app.get("/products/:id/edit", async (req, res) => {
   const product = await Product.findById(id); // This is cause i would like to populate the form with already existing values for name,price and category.
   res.render("products/edit", { product, categories });
 });
+
 
 app.put("/products/:id", async (req, res) => {
   const { id } = req.params;
@@ -138,9 +140,10 @@ app.delete("/products/:id", async (req, res) => {
   res.redirect("/products");
 });
 
-app.get("/farms/:id/products/new", (req, res) => {
+app.get("/farms/:id/products/new", async (req, res) => {
   const { id } = req.params;
-  res.render("products/new", { id, categories });
+  const farm = await Farm.findById(id);
+  res.render("products/new", { farm, categories });
 });
 
 app.post("/farms/:id/products", async (req, res) => {
@@ -167,3 +170,5 @@ app.post("/farms/:id/products", async (req, res) => {
 // Here we just did the same thing we were doing with a array but with an actual database and inorder to achieve that what new work i did is written in the line below.
 // What's new however was setting up async route handlers and then awaiting the results of our model using methods like findById,findByIdAndDelete,findByIdAndUpdate and save etc. cause these operations can take time to complete.
 // The methods you put in requests like app.get,app.post,app.patch etc. as second arguments are called route handlers or route handler functions cause they handle when we get a certain request at a route or a endpoint.
+
+

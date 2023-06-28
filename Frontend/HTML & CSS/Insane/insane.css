@@ -32,9 +32,9 @@ body {
 
 }
 
-/* #image-track :hover {
+#image-track :hover {
     object-position: right;
-} */
+}
 
 #image-track > .image{
    object-position: right;

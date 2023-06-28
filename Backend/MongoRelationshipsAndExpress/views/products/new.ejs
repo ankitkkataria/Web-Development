@@ -9,16 +9,18 @@
       form {
         display: flex;
         flex-direction: column;
-        width: 25rem;
+        width: 20rem;
       }
       button {
         margin-top: 1em;
+        width: 5rem;
       }
     </style>
   </head>
   <body>
-    <h1>Add New Product</h1>
-    <form action="/farms/<%= id %>/products" method="POST">
+    <h1><%= farm.name %></h1>
+    <h2>Add New Product</h2>
+    <form action="/farms/<%=farm._id%>/products" method="POST">
       <label for="name">Name : </label>
       <input
         type="text"
@@ -44,6 +46,8 @@
         <% } %>
       </select>
       <button>Submit</button>
+      <br>
+      <a href="/farms/<%= farm._id %>">Cancel</a>
     </form>
   </body>
 </html>

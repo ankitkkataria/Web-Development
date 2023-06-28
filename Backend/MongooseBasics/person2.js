@@ -35,7 +35,7 @@ personSchema.pre("save", async function () { // What this method will do is no m
 });
 
 personSchema.post("save", async function () { // It's not neccessary to always call this on save itself you can call it on any opertation not just save.
-  // Before this ling below even executes that means that save has been ran already.
+  // Before this line below even executes that means that save has been ran already.
   console.log("Just Saved");
 });
 
