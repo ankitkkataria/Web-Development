@@ -9,9 +9,6 @@ const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
 const { campgroundSchema, reviewSchema } = require("./validationSchemas"); // So i can use it to validate my post and put routes for my campgrounds here.
 const Review = require("./models/review");
-const review = require("./models/review");
-const { array } = require("joi");
-
 // const Joi = require('joi'); // Not needed here anymore as we are importing our schemas from validationSchemas file and that itself is importing joi.
 
 // Connecting to the mongoose database server.
