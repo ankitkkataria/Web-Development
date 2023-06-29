@@ -331,8 +331,7 @@ To call both of them can be called the same way let sum = add(4,5);
 
 // The reason for knowing about function expression is two fold.
 // 1) You might encounter them.
-// 2) It shows us that functions thought of as nothing but values and you can do anything with them that you can do with values like 
-      storing them in variable or passing them as arguments etc.
+// 2) It shows us that functions thought of as nothing but values and you can do anything with them that you can do with values like storing them in variable or passing them as arguments etc.
 
 Example of passing a function as a argument.
 
