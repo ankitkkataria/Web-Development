@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Products</title>
+  </head>
+  <body>
+    <h1><%= category[0].toUpperCase()+ category.slice(1)%> Products!</h1>
+    <ul>
+      <% for (let product of products) { %>
+      <!-- I had made one mistake that took some time to resolve i had put the product.name down below after the closing anchor tag and i wouldn't get a hyperlink i'd just get normal text -->
+      <li><a href="/products/<%=product._id%>"><%= product.name %></a></li>
+      <% } %>
+    </ul>
+    <a href="/products/new">Add New Product</a>
+    <!-- Show a link to index page only when you're on a specific category page if you remove this condition you'll see a link to All Products even when you're on the All Products page. -->
+    <% if (category !== 'All') { %>
+    <a href="/products">All Products</a>
+    <% } %>
+  </body>
+</html>
