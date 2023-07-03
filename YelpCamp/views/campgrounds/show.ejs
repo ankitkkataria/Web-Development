@@ -38,15 +38,12 @@
     <form
     <% if (foundReview) { %>
       action="/campgrounds/<%= campground._id %>/reviews/<%= foundReview._id %>?_method=PUT"
-      method="POST"
-      class="mb-3 validated-form"
-      novalidate
     <% } else { %>
       action="/campgrounds/<%= campground._id %>/reviews"
-      method="POST"
-      class="mb-3 validated-form"
-      novalidate
     <% } %>
+    method="POST"
+    class="mb-3 validated-form"
+    novalidate
     >
       <div class="mb-3">
         <label for="rating" class="form-label">Rating</label>
