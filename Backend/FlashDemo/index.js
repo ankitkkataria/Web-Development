@@ -29,7 +29,7 @@ const sessionOptions = {
 };
 app.use(session(sessionOptions));
 
-// Flash Middleware
+// Flash Middleware (Because of this every request will now have access to the req.flash() function using which a flash message can be generated (Also something to note is that this flash message is stored in session storage then using the middleware we go ahead and store this message in res.locals when we get a request to redirect to farms index page.))
 app.use(flash());
 
 // Adding the success flash message directly to the res object rather then going to every path where success message might be needed and adding it manually now every response object to every request will now have access to messages if a success flash message has been sent.
@@ -76,7 +76,7 @@ app.post("/farms", async (req, res) => {
 app.get("/farms", async (req, res) => {
   const farms = await Farm.find({});
   // When rendering a form you should pass in the flash message you might get from a newly added farm route and if a success key exists in the req.flash body then it's value will be passed in and sent to the farms/index ejs file.
-  res.render("farms/index", { farms });
+  res.render("farms/index", { farms }); // No need to pass in { farms, messages : req.flash('success') } here.
 });
 
 app.get("/farms/:id", async (req, res) => {
