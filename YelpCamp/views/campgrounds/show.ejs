@@ -36,10 +36,17 @@
   <div class="col-6">
     <h4 class="my-3">Leave a Review</h4>
     <form
+    <% if (foundReview) { %>
+      action="/campgrounds/<%= campground._id %>/reviews/<%= foundReview._id %>?_method=PUT"
+      method="POST"
+      class="mb-3 validated-form"
+      novalidate
+    <% } else { %>
       action="/campgrounds/<%= campground._id %>/reviews"
       method="POST"
       class="mb-3 validated-form"
       novalidate
+    <% } %>
     >
       <div class="mb-3">
         <label for="rating" class="form-label">Rating</label>
@@ -50,6 +57,9 @@
           class="form-range"
           min="1"
           max="5"
+          <% if (foundReview) { %>
+          value="<%= foundReview.rating %>"
+          <% } %>
         />
       </div>
       <div class="mb-3">
@@ -62,18 +72,34 @@
           class="form-control"
           placeholder="Add a review here..."
           required
-        ></textarea>
+        ><% if (foundReview) { %><%= foundReview.body %><% } %>
+</textarea
+        >
         <div class="valid-feedback">Looks good!</div>
         <div class="invalid-feedback">Review required!</div>
       </div>
-      <button class="btn btn-success">Submit</button>
+      <% if (foundReview) { %>
+        <button class="btn btn-info text-white">Edit</button>
+      <% } else { %>
+        <button class="btn btn-success">Submit</button>
+      <% } %>
     </form>
     <% for (let review of campground.reviews) { %>
     <div class="card mb-3">
       <div class="card-body">
         <h6 class="card-title">Rating : <%= review.rating %></h6>
         <p class="card-text">Review : <%= review.body %></p>
-        <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+        <form
+          action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>/edit"
+          class="d-inline"
+        >
+          <button class="btn btn-sm btn-info text-white">Edit</button>
+        </form>
+        <form
+          action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE"
+          method="POST"
+          class="d-inline"
+        >
           <button class="btn btn-sm btn-danger">Delete</button>
         </form>
       </div>
@@ -81,4 +107,3 @@
     <% } %>
   </div>
 </div>
-

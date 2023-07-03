@@ -1,19 +1,17 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const Campground = require("./models/campground");
+
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const catchAsync = require("./utils/catchAsync");
 const ExpressError = require("./utils/ExpressError");
-const { campgroundSchema, reviewSchema } = require("./validationSchemas"); // So i can use it to validate my post and put routes for my campgrounds here.
-const Review = require("./models/review");
+const campgroundRoutes = require("./routes/campgroundRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 // const Joi = require('joi'); // Not needed here anymore as we are importing our schemas from validationSchemas file and that itself is importing joi.
 
 // Connecting to the mongoose database server.
-mongoose
-  .connect("mongodb://127.0.0.1:27017/yelpCamp")
+mongoose.connect("mongodb://127.0.0.1:27017/yelpCamp")
   .then(() => {
     console.log("Successfully connected to the database specified above");
   })
@@ -24,9 +22,13 @@ mongoose
     console.log(err);
   });
 
-// Middleware
+// Parsing and Method Override Middleware
 app.use(express.urlencoded({ extended: true })); // All these inside the app.use() are functions that are executed on each and every reqeust we get to our webpage.
 app.use(methodOverride("_method"));
+
+// Router Middleware
+app.use("/campgrounds", campgroundRoutes);
+app.use("/campgrounds/:id/reviews", reviewRoutes); // When you use a param in the prefix route you must go ahead and merge params in the corresponding file (Here that file is reviewRoutes.js) that's cause routers get their own separate params so we will have to merge them if we want to access them in our router.get() methods specified in reviewRoutes.js file.
 
 // Starting server
 app.listen(3000, () => {
@@ -38,129 +40,10 @@ app.engine("ejs", ejsMate); // This is so instead of using the default ejs engin
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Setting up my custom middleware function that will use Joi to validate the campground whereever needed.
-const validateCampground = (req, res, next) => {
-  // After building the schema this line below is used to run the validation code on the req.body object.
-  // const result = campgroundSchema.validate(req.body); // It will return you an result that will contain a error object that will be defined if a error is generated if any of the property doesn't follow any of the specified constraints but if everything is valid in that case the value of the error property will be left undefined and the if condition if(error) will surely fail.
-  // console.log(result);
-  // console.dir(result.error.details);
-  const { error } = campgroundSchema.validate(req.body);
-  if (error) {
-    // This line below takes the details array of objects in the error object and makes a new array containing all the messages present in that details array if there are more than one errors using the map operator and then joins all those messages using (,) and returns it.
-    const allErrorMessages = error.details.map((ele) => ele.message).join(","); // Here ele is a element which is nothing but a object of the details array and this join will help us return a string of all the elements in the new mapped array that we formed out of all the messages.
-    throw new ExpressError(allErrorMessages, 400);
-  } else {
-    next(); // If there is no error just go ahead and call the next middleware function that will go ahead and try to add a new campground or edit an existing campground.
-  }
-};
-
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-  if (error) {
-    const allErrorMessages = error.details.map((ele) => ele.message).join(",");
-    throw new ExpressError(allErrorMessages, 400);
-  } else {
-    next();
-  }
-};
-
 // Setting up routes
 app.get("/", (req, res) => {
   res.render("home");
 });
-
-// When using catchAsync it's optional to pass in next argument in these route handlers the reasoning being https://www.udemy.com/course/the-web-developer-bootcamp/learn/lecture/22291546#questions/17815506 but one more thing since you're not passing in next in the async function you can only throw new ExpressError here and let the next in the wrapping catchAsync function but you can't do next(new ExpressError()) cause you can't reference next here as you've not included it in the args.
-app.get(
-  "/campgrounds",
-  catchAsync(async (req, res) => {
-    const campgrounds = await Campground.find();
-    res.render("campgrounds/index", { campgrounds });
-  })
-);
-
-app.get("/campgrounds/new", (req, res) => {
-  res.render("campgrounds/new");
-});
-
-app.post(
-  "/campgrounds",
-  validateCampground,
-  catchAsync(async (req, res) => {
-    // You're using client side validation using bootstrap which means it won't allow you to submit the form with fields missing from the form.
-    // But it's still possible to do it using postman/axios or something.
-    // So, One way is to use required in mongoose schema itself.
-    // Otherway could be like
-    // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400); // This will only save us from cases where campground key is not present in the post request we're not making sure if campground itself is a object to begin with so it's still possible to fool this method but just naming something campground but this is just to show the concept of things that can be done.
-    const camp = new Campground(req.body.campground);
-    await camp.save();
-    res.redirect(`/campgrounds/${camp._id}`);
-  })
-);
-
-app.get(
-  "/campgrounds/:id",
-  catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id).populate(
-      "reviews"
-    );
-    res.render("campgrounds/show", { campground });
-  })
-);
-
-app.get(
-  "/campgrounds/:id/edit",
-  catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id);
-    res.render("campgrounds/edit", { campground });
-  })
-);
-
-app.put(
-  "/campgrounds/:id",
-  validateCampground,
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const updatedCampground = await Campground.findByIdAndUpdate(
-      id,
-      req.body.campground,
-      { new: true, runvalidators: true }
-    ); // You could also have used {...req.body.campground} as second arg.
-    res.redirect(`/campgrounds/${updatedCampground._id}`);
-  })
-);
-
-app.delete(
-  "/campgrounds/:id",
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    await Campground.findByIdAndDelete(id);
-    res.redirect("/campgrounds");
-  })
-);
-
-app.post(
-  "/campgrounds/:id/reviews",
-  validateReview,
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const campground = await Campground.findById(id);
-    const newReview = new Review(req.body.review);
-    campground.reviews.push(newReview);
-    await campground.save(); // If i add await in front of both of them then they will be saved sequentially but right now they will be saved parallelly.
-    await newReview.save(); // See if you have to use the saved result here immediately let's say for campground in that case adding a await makes sense but if you're not using it then you don't need to make these saves sequential.
-    res.redirect(`/campgrounds/${id}`); // Can not awaiting both those above lines cause an error.
-  })
-);
-
-app.delete(
-  "/campgrounds/:id/reviews/:reviewId",
-  catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } }); // What the pull operator does is from array reviews it pulls/deletes all the occurences of reviewId.
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/campgrounds/${id}`);
-  })
-);
 
 app.all("*", (req, res, next) => {
   // This must be at the end of the file this takes care of all the possible get/post/put/patch/delete requests we did not handle.
