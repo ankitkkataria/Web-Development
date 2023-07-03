@@ -12,7 +12,7 @@ const Review = require("../models/review");
 
 // Requiring Joi Validation Schema
 const { reviewSchema } = require("../validationSchemas"); // So i can use it to validate my post and put routes for my reviews here.
-
+const campground = require("../models/campground");
 
 // Validation Middleware
 const validateReview = (req, res, next) => {
@@ -60,15 +60,21 @@ router.get(
 );
 
 router.put(
+  // For Updating a review what i was doing was first i would pull out the review with that id from this campground's review's array then I would go ahead find and delete the review from the reviews collection then finally i would make a new review with a brand new id and push it in the reviews array of this campground and render the page again but the problem with that was my new updated review would go to the end of the list so my new method works by just updating the data in the review object only in the reviews collection and not tempering with the objectId in the reviews array in campground object at all.
   "/:reviewId",
   catchAsync(async (req, res) => {
     const { id, reviewId } = req.params;
+    await Review.findByIdAndUpdate(reviewId, req.body.review);
+    const review = await Review.findById(reviewId);
+    /*
+    Down below is what I was doing previously It's stupid I know but still let's just keep it here.
     const campground = await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } }); // What the pull operator does is from array reviews it pulls/deletes all the occurences of reviewId.
     await Review.findByIdAndDelete(reviewId);
     const updatedReview = new Review(req.body.review);
     campground.reviews.push(updatedReview);
     await campground.save();
-    await updatedReview.save();    
+    await review.save();
+    */
     res.redirect(`/campgrounds/${id}`);
   })
 );
