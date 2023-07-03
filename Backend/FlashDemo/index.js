@@ -32,9 +32,11 @@ app.use(session(sessionOptions));
 // Flash Middleware
 app.use(flash());
 
-// app.use((req,res,next) => {
-//   res.locals.messages = req.flash('success');
-// })
+// Adding the success flash message directly to the res object rather then going to every path where success message might be needed and adding it manually now every response object to every request will now have access to messages if a success flash message has been sent.
+app.use((req, res, next) => {
+  res.locals.messages = req.flash("success");
+  next();
+});
 
 // For decoding the post requests that you will get when you get data from the form you served when setting up the products/new route.
 app.use(express.urlencoded({ extended: true }));
@@ -74,7 +76,7 @@ app.post("/farms", async (req, res) => {
 app.get("/farms", async (req, res) => {
   const farms = await Farm.find({});
   // When rendering a form you should pass in the flash message you might get from a newly added farm route and if a success key exists in the req.flash body then it's value will be passed in and sent to the farms/index ejs file.
-  res.render("farms/index", { farms, messages: req.flash("success") });
+  res.render("farms/index", { farms });
 });
 
 app.get("/farms/:id", async (req, res) => {
