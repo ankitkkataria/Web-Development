@@ -9,7 +9,7 @@ const app = express();
 
 // Additions in this code from index8.js start here
 // app.use(express.static("assetsFolder")); // It's saying take everything in the assets folder and serve it when any request to this server is made.
-// But if you use the above way it will give the same kind of error if you try to run from a different directory as you got in line 18 without __dirname
+// But if you use the above way it will give the same kind of error if you try to run from a different directory as you got in line 20 without __dirname
 // So a better way of writing it would be
 app.use(express.static(path.join(__dirname, "/assetsFolder"))); // People usually name this assets folder as public and then make seperate folders inside it for HTML,CSS and JS files.
 app.listen(3000, () => {

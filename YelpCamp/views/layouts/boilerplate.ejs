@@ -16,6 +16,7 @@
     <!-- Including a partial of navbar so our boilerplate can stay somewhat slim you must use ../partials/navbar here in this case unlike what you did in layout function cause this one starts looking from this file's location itself rather then come looking down from views location like the layout function did. -->
     <%- include('../partials/navbar') %>
     <main class="container mt-5">
+      <%- include('../partials/flash') %>
       <!-- When you call layout function is called anywhere inside a template the output of that template will be substituted here in place of body in the line below -->
       <%-body%>
     </main>
@@ -30,30 +31,7 @@
       integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
       crossorigin="anonymous"
     ></script>
-    <script>
-      // Example starter JavaScript for disabling form submissions if there are invalid fields
-      (function () {
-        "use strict";
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll(".validated-form");
-
-        // Loop over them and prevent submission
-        Array.from(forms).forEach(function (form) {
-          form.addEventListener(
-            "submit",
-            function (event) {
-              if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-              }
-
-              form.classList.add("was-validated");
-            },
-            false
-          );
-        });
-      })();
-    </script>
+    <!-- <script src="/javascriptFiles/hello.js"></script> -->
+    <script src="/javascriptFiles/validateFormsClientSide.js"></script>
   </body>
 </html>

@@ -12,7 +12,6 @@ const Review = require("../models/review");
 
 // Requiring Joi Validation Schema
 const { reviewSchema } = require("../validationSchemas"); // So i can use it to validate my post and put routes for my reviews here.
-const campground = require("../models/campground");
 
 // Validation Middleware
 const validateReview = (req, res, next) => {
@@ -35,6 +34,7 @@ router.post(
     campground.reviews.push(newReview);
     await campground.save(); // If i add await in front of both of them then they will be saved sequentially but right now they will be saved parallelly.
     await newReview.save(); // See if you have to use the saved result here immediately let's say for campground in that case adding a await makes sense but if you're not using it then you don't need to make these saves sequential.
+    req.flash("success", "Successfully created a new review!");
     res.redirect(`/campgrounds/${id}`); // Can not awaiting both those above lines cause an error.
   })
 );
@@ -45,6 +45,7 @@ router.delete(
     const { id, reviewId } = req.params;
     await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } }); // What the pull operator does is from array reviews it pulls/deletes all the occurences of reviewId.
     await Review.findByIdAndDelete(reviewId);
+    req.flash("success", "Deleted review successfully!");
     res.redirect(`/campgrounds/${id}`);
   })
 );
@@ -55,6 +56,7 @@ router.get(
     const { id, reviewId } = req.params;
     const campground = await Campground.findById(id).populate("reviews");
     const foundReview = await Review.findById(reviewId);
+    console.log(foundReview); // Incase you bookmark the review editing page and then that review is deleted then foundReview will become null and the code when their is no review will be executed in the ejs file so you don't need to put and flash message here.
     res.render("campgrounds/show", { campground, foundReview });
   })
 );
@@ -75,6 +77,7 @@ router.put(
     await campground.save();
     await review.save();
     */
+    req.flash("success", "Updated review successfully!");
     res.redirect(`/campgrounds/${id}`);
   })
 );

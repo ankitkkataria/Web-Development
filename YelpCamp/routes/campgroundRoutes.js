@@ -12,7 +12,7 @@ const Campground = require("../models/campground");
 // Requiring Joi Validation Schema
 const { campgroundSchema } = require("../validationSchemas"); // So i can use it to validate my post and put routes for my campgrounds here.
 
-// Validation Middleware 
+// Validation Middleware
 // Setting up my custom middleware function that will use Joi to validate the campground whereever needed.
 const validateCampground = (req, res, next) => {
   // After building the schema this line below is used to run the validation code on the req.body object.
@@ -53,6 +53,7 @@ router.post(
     // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400); // This will only save us from cases where campground key is not present in the post request we're not making sure if campground itself is a object to begin with so it's still possible to fool this method but just naming something campground but this is just to show the concept of things that can be done.
     const camp = new Campground(req.body.campground);
     await camp.save();
+    req.flash("success", "Successfully created a new campground!");
     res.redirect(`/campgrounds/${camp._id}`);
   })
 );
@@ -63,8 +64,12 @@ router.get(
     const campground = await Campground.findById(req.params.id).populate(
       "reviews"
     );
+    if (!campground) { // Incase someone bookmarked a campground and then that campground is deleted when that bookmark is then accessed at some point of time a weird looking error is generated there we can rather show a flash message.
+      req.flash("error", "Campground no longer exists!");
+      res.redirect("/campgrounds");
+    }
     const foundReview = 0;
-    res.render("campgrounds/show", { campground , foundReview});
+    res.render("campgrounds/show", { campground, foundReview });
   })
 );
 
@@ -72,6 +77,10 @@ router.get(
   "/:id/edit",
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
+    if (!campground) { // Incase someone bookmarked a campground and then that campground is deleted when that bookmark is then accessed at some point of time a weird looking error is generated there we can rather show a flash message.
+      req.flash("error", "Campground no longer exists!");
+      res.redirect("/campgrounds");
+    }
     res.render("campgrounds/edit", { campground });
   })
 );
@@ -86,6 +95,7 @@ router.put(
       req.body.campground,
       { new: true, runvalidators: true }
     ); // You could also have used {...req.body.campground} as second arg.
+    req.flash("success", "Updated campground  successfully!");
     res.redirect(`/campgrounds/${updatedCampground._id}`);
   })
 );
@@ -95,6 +105,7 @@ router.delete(
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
+    req.flash("success", "Deleted campground successfully!");
     res.redirect("/campgrounds");
   })
 );

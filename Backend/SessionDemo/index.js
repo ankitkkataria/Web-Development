@@ -13,10 +13,10 @@ app.listen(3000, () => {
 const sessionOptions = {
   secret: "thisisnotagoodsecret",
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
 };
 
-// Session middleware down below also somthing to remember is session data is not saved in the cookie itself, just the session ID. Session data is stored server-side.
+// Session middleware down below and also somthing to remember is session data is not saved in the cookie itself, just the session ID. Session data is stored server-side.
 app.use(session(sessionOptions)); // secret is used for signing the one cookie that contains the session id.
 
 // Here I'm implementing a counter that counts the number of times you have visited a page using a session and stores the data onto server side also remember this server side doesn't mean mongoDB but it can be a small and light weight database like redus etc.
