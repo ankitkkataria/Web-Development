@@ -1,3 +1,6 @@
+// Till now we can confirm if someone entered the right credentials they had registered with we can confirm that much.
+// But we can't keep track of if someone is logged in across various pages (which we will do using sessions) and the second thing is we will make sure only logged in people can see /secret path.
+// I'll leave all this code here for future reference and copy this code to index2.js so i can continue to add further.
 const express = require("express");
 const app = express();
 const User = require("./models/user");
@@ -27,22 +30,12 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  session({
-    secret: "secret key",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 30, // 1 month
-    },
-  })
-);
-
 app.get("/", (req, res) => {
   res.send("This is the homepage");
 });
 
 app.get("/secret", (req, res) => {
+  // Only a logged in person should be able to see this.
   res.send("This is secret! You cannot see me unless you are logged in");
 });
 
@@ -77,4 +70,3 @@ app.post("/login", async (req, res) => {
     res.send("Wrong username or password");
   }
 });
-
