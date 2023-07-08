@@ -62,7 +62,7 @@ productSchema.methods.addCategory = function (newCategory) {
 }
 
 productSchema.statics.fireSale = function () {
-  return this.updateMany({},{onSale : true, price : 5}); // this here means Product class itself but i'm using this cause we might not know the class name Product always and in the first considtion i left {} that means update everything and we don't need to do save() here cause updateMany automatically saves behind the scenes.
+  return this.updateMany({},{onSale : true, price : 5}); // This here means Product class itself but i'm using this cause we might not know the class name Product always and in the first considtion i left {} that means update everything and we don't need to do save() here cause updateMany automatically saves behind the scenes.
 }
 const Product = new mongoose.model("Product", productSchema);
 

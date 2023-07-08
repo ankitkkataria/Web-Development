@@ -1,5 +1,6 @@
 // Copied index2.js
 // Here we will set up a requireLogin middleware.
+// Also I'll go ahead and make the code smaller by moving certain things on the model itself.
 const express = require("express");
 const app = express();
 const User = require("./models/user");
@@ -36,7 +37,8 @@ app.use(
 );
 
 // Require login middleware function
-requireLogin = (req, res, next) => { // Instead of using this function using app.use() on every request now we can use it on specific routes or even on entire routers like /admin router which maintains all the /admin routes.
+requireLogin = (req, res, next) => {
+  // Instead of using this function using app.use() on every request now we can use it on specific routes or even on entire routers like /admin router which maintains all the /admin routes.
   if (!req.session.user_id) {
     return res.redirect("/login"); // Instead of returning you can even use if
   }
@@ -71,12 +73,10 @@ app.get("/register", (req, res) => {
 
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
-  const hash = await bcrypt.hash(password, 12);
-  // console.log(hash);
-  const user = new User({
-    username,
-    hashedPassword: hash,
-  });
+  // const hash = await bcrypt.hash(password, 12);
+  // const user = new User({username,hashedPassword: hash,});
+  // Instead of hashing it above like we did we can do it presave on the mongoose middlware.
+  const user = new User({ username, hashedPassword: password }); // Yeah it might feel like we're saving the password in plain text directly but we will make sure using mongoose middleware we take care of hashing as well.
   await user.save();
   // When i register a new user i will automatically consider them logged in (to do that i will store a new property in the session object)
   req.session.user_id = user._id; // I can even do req.session.isLoggedIn = true; // But i store user._id as it makes it easier to identify who is logged in and you can display their name or if they comment we can identify oh this person is the one who commented.
@@ -89,10 +89,13 @@ app.get("/login", (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
-  const validPassword = await bcrypt.compare(password, user.hashedPassword);
-  if (validPassword) {
-    req.session.user_id = user._id; // If someone goes to other browser after registering and signs in we will store this user_id here.
+  // Like these two lines below can be moved to the User schema now this method wil be available to be accessed from User model remember this is not instance method these are like entire table method that will be accessable from the User model.
+  // const user = await User.findOne({ username });
+  // const validPassword = await bcrypt.compare(password, user.hashedPassword);
+  const foundUser = await User.findByUsernameAndValidate(username, password);
+  // Once you've made sure that you've found the user who has give you correct username and password you can use that user any way you want.
+  if (foundUser) {
+    req.session.user_id = foundUser._id; // If someone goes to other browser after registering and signs in we will store this user_id here.
     res.redirect("/secret");
   } else {
     res.redirect("/login");

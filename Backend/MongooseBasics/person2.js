@@ -31,7 +31,7 @@ personSchema.pre("save", async function () { // What this method will do is no m
   this.first = "Yo";
   this.last = "Mama";
   console.log("About to save");
-  // After this function is finished finally save on that instance will be called.
+  // After this function is finished finally save on that instance will be called. (Also you can do this explicitly by passing in next in this arg and callind next() as we will see in AuthDemo code otherwise as our async function returns a promise by default the save function will be called on it's own.)
 });
 
 personSchema.post("save", async function () { // It's not neccessary to always call this on save itself you can call it on any opertation not just save.
