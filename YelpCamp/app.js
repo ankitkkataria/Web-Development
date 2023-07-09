@@ -7,8 +7,12 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError");
 const campgroundRoutes = require("./routes/campgroundRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const userRoutes = require("./routes/userRoutes");
 const session = require("express-session"); // Including session capability cause of two reasons one is we would like to use flash messages & other being we would like to use session for authentication.
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local"); // passport-local-mongoose has nothing to do with this here that's just in our model file.
+const User = require("./models/user");
 
 // const Joi = require('joi'); // Not needed here anymore as we are importing our schemas from validationSchemas file and that itself is importing joi.
 
@@ -50,12 +54,29 @@ app.use(flash()); // This must be above router middlware because otherwise when 
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  next();
+  next ();
 });
+
+// Passport Middleware (Must be after session middleware)
+app.use(passport.initialize()); // This is required to initialize passport
+app.use(passport.session()); // If your app uses persistent login session and you don't have to login on every page (that might also be used in some apis) then you must use passport.session() middleware.
+passport.use(new LocalStrategy(User.authenticate())); // This says hey passport we would like you to use the LocalStrategy that we have downloaded and required and for that LocalStrategy the authentication method is going to be located on our User model called authenticate (that was not added by us but by passport-local-mongoose);
+
+passport.serializeUser(User.serializeUser()); // passport-local-mongoose generates a function called serializeUser that tell my passport how i want to add users into my session.
+passport.deserializeUser(User.deserializeUser()); // Similar to above like but for removing.
+
+// Registering a new user becomes pretty easy when you have passport
+app.get("/registerfakeuser", async (req, res) => { // After going to this page you'll get a new user in your database.
+  const user = new User({email : 'ankitkataria@gmail.com',username:'ankit'});
+  const userWithHashedPassword = await User.register(user,'ankitkataria1234'); // This register method we get due to passport-local-mongoose it checks if the username is unique and secondly it hashes the password and stores it under the hash field and also stores the salt it used in the userWithHashedPassword object it does that cause it's not using bcrypt it's using something else like pbkdf2 or some weird algo reason being it says bcrypt is platform dependent while it's not.
+  res.send(userWithHashedPassword); // Similar to register method above passport,passport-local,passport-local-mongoose provide us the ability to use these methods that otherwise we would have to write on our own. 
+});
+
 
 // Router Middleware
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/reviews", reviewRoutes); // When you use a param in the prefix route you must go ahead and merge params in the corresponding file (Here that file is reviewRoutes.js) that's cause routers get their own separate params so we will have to merge them if we want to access them in our router.get() methods specified in reviewRoutes.js file.
+app.use('/',userRoutes);
 
 // Starting server
 app.listen(3000, () => {
