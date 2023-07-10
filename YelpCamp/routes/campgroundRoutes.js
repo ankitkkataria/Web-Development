@@ -12,6 +12,9 @@ const Campground = require("../models/campground");
 // Requiring Joi Validation Schema
 const { campgroundSchema } = require("../validationSchemas"); // So i can use it to validate my post and put routes for my campgrounds here.
 
+// Requiring isLoggedIn Middleware
+const {isLoggedIn} = require('../middleware');
+
 // Validation Middleware
 // Setting up my custom middleware function that will use Joi to validate the campground whereever needed.
 const validateCampground = (req, res, next) => {
@@ -38,12 +41,18 @@ router.get(
   })
 );
 
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn ,(req, res) => { // Putting isLoggedIn here only protect the form route someone can still send this information with the correct fields if they want and if we have left the post route for campgrounds left unprotected they can make as many campgrounds as they want so we will add this isLoggedIn middlware over there too similar logic for edit and put route too.
+  // INSTEAD OF PUTTING THIS CODE IN EVERY SINGLE PATH WE WANT TO PROTECT WE JUST PUT THE CODE INSIDE A MIDDLEWARE.JS FILE.
+  // if (!req.isAuthenticated()) {
+  //   req.flash("error", "You must be signed in first!");
+  //   return res.redirect("/login");
+  // }
   res.render("campgrounds/new");
 });
 
 router.post(
   "/",
+  isLoggedIn,
   validateCampground,
   catchAsync(async (req, res) => {
     // You're using client side validation using bootstrap which means it won't allow you to submit the form with fields missing from the form.
@@ -75,6 +84,7 @@ router.get(
 
 router.get(
   "/:id/edit",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     if (!campground) { // Incase someone bookmarked a campground and then that campground is deleted when that bookmark is then accessed at some point of time a weird looking error is generated there we can rather show a flash message.
@@ -87,6 +97,7 @@ router.get(
 
 router.put(
   "/:id",
+  isLoggedIn,
   validateCampground,
   catchAsync(async (req, res) => {
     const { id } = req.params;
@@ -102,6 +113,7 @@ router.put(
 
 router.delete(
   "/:id",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
@@ -109,5 +121,7 @@ router.delete(
     res.redirect("/campgrounds");
   })
 );
+
+
 
 module.exports = router;

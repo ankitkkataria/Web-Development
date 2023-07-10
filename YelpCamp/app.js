@@ -37,7 +37,7 @@ app.use(methodOverride("_method"));
 const sessionConfig = {
   secret: "thisshouldbeabettersecret!",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     // These options are for the session id cookie that is sent by the server initially.
     httpOnly: true,
@@ -50,13 +50,6 @@ app.use(session(sessionConfig));
 // Flash Middleware :- Using this middlware adds a flash method to every incoming request using which you can send and access flash messages also bcz it's added to every request before it being sent to the router we don't need to require flash in that file now I will go to my routes and send new flash messages. Something to read :- https://www.udemy.com/course/the-web-developer-bootcamp/learn/lecture/22291778#questions/19753164
 app.use(flash()); // This must be above router middlware because otherwise when you go to a route like creating a new campground from where you will try to send a flash message you won't have access to the req.flash() method also flash() middlware should also be after session middleware because it uses the session memory inorder to be able to store the flash messages.
 
-// Res.locals Middleware
-app.use((req, res, next) => {
-  res.locals.success = req.flash("success");
-  res.locals.error = req.flash("error");
-  next ();
-});
-
 // Passport Middleware (Must be after session middleware)
 app.use(passport.initialize()); // This is required to initialize passport
 app.use(passport.session()); // If your app uses persistent login session and you don't have to login on every page (that might also be used in some apis) then you must use passport.session() middleware.
@@ -65,18 +58,28 @@ passport.use(new LocalStrategy(User.authenticate())); // This says hey passport 
 passport.serializeUser(User.serializeUser()); // passport-local-mongoose generates a function called serializeUser that tell my passport how i want to add users into my session.
 passport.deserializeUser(User.deserializeUser()); // Similar to above like but for removing.
 
-// Registering a new user becomes pretty easy when you have passport
-app.get("/registerfakeuser", async (req, res) => { // After going to this page you'll get a new user in your database.
-  const user = new User({email : 'ankitkataria@gmail.com',username:'ankit'});
-  const userWithHashedPassword = await User.register(user,'ankitkataria1234'); // This register method we get due to passport-local-mongoose it checks if the username is unique and secondly it hashes the password and stores it under the hash field and also stores the salt it used in the userWithHashedPassword object it does that cause it's not using bcrypt it's using something else like pbkdf2 or some weird algo reason being it says bcrypt is platform dependent while it's not.
-  res.send(userWithHashedPassword); // Similar to register method above passport,passport-local,passport-local-mongoose provide us the ability to use these methods that otherwise we would have to write on our own. 
+// Res.locals Middleware (Since we are using req.user here that is added only by passport middleware this should these res.locals middleware must always be present after the passport middlewares cause as it's known middleware execute from top to bottom)
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  // Instead of passing in req.user on every single path/request literally all of them to like hide logout and login button cause navbar is on every page rather i can add it here on res.locals.
+  res.locals.currUser = req.user; // This will be null if no one is signed in and it will have a user if someone is infact signed in.
+  // console.log("Before sending it to the next middleware");
+  console.log(req.user); // Used this to find out that i needed to put res.locals middlware below the passport middleware.
+  next();
 });
 
+// Registering a new user becomes pretty easy when you have passport
+// app.get("/registerfakeuser", async (req, res) => { // After going to this page you'll get a new user in your database.
+//   const user = new User({email : 'ankitkataria@gmail.com',username:'ankit'});
+//   const userWithHashedPassword = await User.register(user,'ankitkataria1234'); // This register method we get due to passport-local-mongoose it checks if the username is unique and secondly it hashes the password and stores it under the hash field and also stores the salt it used in the userWithHashedPassword object it does that cause it's not using bcrypt it's using something else like pbkdf2 or some weird algo reason being it says bcrypt is platform dependent while it's not.
+//   res.send(userWithHashedPassword); // Similar to register method above passport,passport-local,passport-local-mongoose provide us the ability to use these methods that otherwise we would have to write on our own.
+// });
 
 // Router Middleware
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/reviews", reviewRoutes); // When you use a param in the prefix route you must go ahead and merge params in the corresponding file (Here that file is reviewRoutes.js) that's cause routers get their own separate params so we will have to merge them if we want to access them in our router.get() methods specified in reviewRoutes.js file.
-app.use('/',userRoutes);
+app.use("/", userRoutes);
 
 // Starting server
 app.listen(3000, () => {
