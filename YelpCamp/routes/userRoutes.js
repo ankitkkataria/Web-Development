@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const catchAsync = require("../utils/catchAsync");
 const passport = require("passport");
-
+const { storeReturnTo } = require("../middleware");
 router.get("/register", (req, res) => {
   res.render("users/register");
 });
@@ -23,12 +23,12 @@ router.post(
       req.login(registeredUser, (err) => {
         // This method is similar to req.logout method also this method is called internally by passport.authenticate when username and password match but you can also call it here.
         if (err) return next(err);
+        // Now once the user has successfully registered as well as signed in we can now just flash a message.
+        req.flash("success", "Welcome to Yelp Camp");  // I SPENT SO SO MUCH TIME FIXING THIS THESE TWO LINES OF FLASHING AND REDIRECTING I HAD PUT THEM OUTSIDE THIS BELOW THIS BEFORE THESE TWO CONSOLE STATEMENT AFTER THIS.
+        return res.redirect("/campgrounds");
       });
       // console.log('Console.logging req.user after login method');
       // console.dir(req.user);
-      // Now once the user has successfully registered as well as signed in we can now just flash a message.
-      req.flash("success", "Welcome to Yelp Camp");
-      res.redirect("/campgrounds");
     } catch (e) {
       req.flash("error", e.message); // This will help us in flashing the duplicated username error.
       res.redirect("/register");
@@ -42,15 +42,20 @@ router.get("/login", (req, res) => {
 
 router.post(
   "/login",
+  // Use the storeReturnTo middleware to save the returnTo value from session to res.locals
+  storeReturnTo,
+  // passport.authenticate logs the user in and clears req.session
   passport.authenticate("local", {
     failureFlash: true,
     failureRedirect: "login",
   }),
+  // Now we can use res.locals.returnTo to redirect the user after login
   (req, res) => {
     // failureRedirect must contain where you want it to go if there is a error. (local here refers to the strategy we are using you could also have multiple login methods like these like in them instead of local it might be google).
     // If i get to this point that means that the username and the password that was entered was infact right.
     req.flash("success", "Welcome Back");
-    res.redirect("/campgrounds");
+    const redirectUrl = res.locals.returnTo || "/campgrounds"; // If someone just goes to login page directly and he wasn't redirected from anywhere in that case we should take him to campgrounds otherwise to the page from where he was redirected from.
+    res.redirect(redirectUrl);
   }
 );
 

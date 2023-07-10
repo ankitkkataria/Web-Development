@@ -59,7 +59,7 @@ passport.serializeUser(User.serializeUser()); // passport-local-mongoose generat
 passport.deserializeUser(User.deserializeUser()); // Similar to above like but for removing.
 
 // Res.locals Middleware (Since we are using req.user here that is added only by passport middleware this should these res.locals middleware must always be present after the passport middlewares cause as it's known middleware execute from top to bottom)
-app.use((req, res, next) => {
+app.use((req, res, next) => { // This should also be after flash middleware otherwise we won't have access to req.flash()
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   // Instead of passing in req.user on every single path/request literally all of them to like hide logout and login button cause navbar is on every page rather i can add it here on res.locals.
