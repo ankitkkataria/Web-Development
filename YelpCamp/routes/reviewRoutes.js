@@ -4,33 +4,24 @@ const router = express.Router({ mergeParams: true });
 
 // Requiring Utilities
 const catchAsync = require("../utils/catchAsync");
-const ExpressError = require("../utils/ExpressError");
 
 // Requiring Models
 const Campground = require("../models/campground");
 const Review = require("../models/review");
 
-// Requiring Joi Validation Schema
-const { reviewSchema } = require("../validationSchemas"); // So i can use it to validate my post and put routes for my reviews here.
-
-// Validation Middleware
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-  if (error) {
-    const allErrorMessages = error.details.map((ele) => ele.message).join(",");
-    throw new ExpressError(allErrorMessages, 400);
-  } else {
-    next();
-  }
-};
+// Requiring validateReview and isLoggedIn middleware
+const { validateReview, isLoggedIn ,isReviewAuthor} = require("../middleware");
 
 router.post(
   "/",
+  isLoggedIn, // Just hidding the form is not enough as someone might be able to circumvent that through postman in creating a review.
   validateReview,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
     const newReview = new Review(req.body.review);
+    // If you get till this point that means you're logged in for sure now we will just go ahead and associate the user to posted this review with this review.
+    newReview.author = req.user._id;
     campground.reviews.push(newReview);
     await campground.save(); // If i add await in front of both of them then they will be saved sequentially but right now they will be saved parallelly.
     await newReview.save(); // See if you have to use the saved result here immediately let's say for campground in that case adding a await makes sense but if you're not using it then you don't need to make these saves sequential.
@@ -41,6 +32,8 @@ router.post(
 
 router.delete(
   "/:reviewId",
+  isLoggedIn, // Just hiding the buttons is not enough.
+  isReviewAuthor, // This will make sure that only the person who created the review can send a request to delete the review even through postman you can make sure this works by removing the logic that hides the edit and delete buttons from your reviews on your campground show page.
   catchAsync(async (req, res) => {
     const { id, reviewId } = req.params;
     await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } }); // What the pull operator does is from array reviews it pulls/deletes all the occurences of reviewId.

@@ -14,6 +14,10 @@ const campgroundSchema = new Schema({
       ref: "Review",
     },
   ],
+  author:{ // So we can find a user who created this current campground.
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }
 });
 
 campgroundSchema.post("findOneAndDelete", async (campground) => {

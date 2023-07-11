@@ -32,6 +32,7 @@ const seedDB = async () => {
       description:
         "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto, sed delectus vel aliquid temporibus sit quam accusantium sapiente vero ducimus animi necessitatibus. Dignissimos maiores accusamus ab quam eveniet, explicabo minima.",
       price: price,
+      author: "64ad1a20268e90f66ac91c52", // Just putting in a random user as a author and reseeding the random campgrounds. (We're doing this cause when adding a new campground we will add the user who is signed in currently to that campground (if they are not signed in they won't even be able to make a campground)) and if we don't add a user to already existing ones when we go to show their name of the show page it will break things or for some we will so username and for some we won't that will make things look a bit inconsistant.
     });
     await camp.save();
   }

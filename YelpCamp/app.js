@@ -13,7 +13,6 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local"); // passport-local-mongoose has nothing to do with this here that's just in our model file.
 const User = require("./models/user");
-
 // const Joi = require('joi'); // Not needed here anymore as we are importing our schemas from validationSchemas file and that itself is importing joi.
 
 // Connecting to the mongoose database server.
@@ -65,7 +64,7 @@ app.use((req, res, next) => { // This should also be after flash middleware othe
   // Instead of passing in req.user on every single path/request literally all of them to like hide logout and login button cause navbar is on every page rather i can add it here on res.locals.
   res.locals.currUser = req.user; // This will be null if no one is signed in and it will have a user if someone is infact signed in.
   // console.log("Before sending it to the next middleware");
-  console.log(req.user); // Used this to find out that i needed to put res.locals middlware below the passport middleware.
+  // console.log(req.user); // Used this to find out that i needed to put res.locals middlware below the passport middleware.
   next();
 });
 

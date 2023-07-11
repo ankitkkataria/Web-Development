@@ -4,33 +4,12 @@ const router = express.Router({ mergeParams: true });
 
 // Requiring Utilities
 const catchAsync = require("../utils/catchAsync");
-const ExpressError = require("../utils/ExpressError");
 
 // Requiring Models
 const Campground = require("../models/campground");
 
-// Requiring Joi Validation Schema
-const { campgroundSchema } = require("../validationSchemas"); // So i can use it to validate my post and put routes for my campgrounds here.
-
-// Requiring isLoggedIn Middleware
-const {isLoggedIn} = require('../middleware');
-
-// Validation Middleware
-// Setting up my custom middleware function that will use Joi to validate the campground whereever needed.
-const validateCampground = (req, res, next) => {
-  // After building the schema this line below is used to run the validation code on the req.body object.
-  // const result = campgroundSchema.validate(req.body); // It will return you an result that will contain a error object that will be defined if a error is generated if any of the property doesn't follow any of the specified constraints but if everything is valid in that case the value of the error property will be left undefined and the if condition if(error) will surely fail.
-  // console.log(result);
-  // console.dir(result.error.details);
-  const { error } = campgroundSchema.validate(req.body);
-  if (error) {
-    // This line below takes the details array of objects in the error object and makes a new array containing all the messages present in that details array if there are more than one errors using the map operator and then joins all those messages using (,) and returns it.
-    const allErrorMessages = error.details.map((ele) => ele.message).join(","); // Here ele is a element which is nothing but a object of the details array and this join will help us return a string of all the elements in the new mapped array that we formed out of all the messages.
-    throw new ExpressError(allErrorMessages, 400);
-  } else {
-    next(); // If there is no error just go ahead and call the next middleware function that will go ahead and try to add a new campground or edit an existing campground.
-  }
-};
+// Requiring isLoggedIn and validateCampground Middleware
+const { isLoggedIn, isAuthor, validateCampground } = require("../middleware");
 
 // When using catchAsync it's optional to pass in next argument in these route handlers the reasoning being https://www.udemy.com/course/the-web-developer-bootcamp/learn/lecture/22291546#questions/17815506 but one more thing since you're not passing in next in the async function you can only throw new ExpressError here and let the next in the wrapping catchAsync function but you can't do next(new ExpressError()) cause you can't reference next here as you've not included it in the args.
 router.get(
@@ -41,7 +20,8 @@ router.get(
   })
 );
 
-router.get("/new", isLoggedIn ,(req, res) => { // Putting isLoggedIn here only protect the form route someone can still send this information with the correct fields if they want and if we have left the post route for campgrounds left unprotected they can make as many campgrounds as they want so we will add this isLoggedIn middlware over there too similar logic for edit and put route too.
+router.get("/new", isLoggedIn, (req, res) => {
+  // Putting isLoggedIn here only protect the form route someone can still send this information with the correct fields if they want and if we have left the post route for campgrounds left unprotected they can make as many campgrounds as they want so we will add this isLoggedIn middlware over there too similar logic for edit and put route too.
   // INSTEAD OF PUTTING THIS CODE IN EVERY SINGLE PATH WE WANT TO PROTECT WE JUST PUT THE CODE INSIDE A MIDDLEWARE.JS FILE.
   // if (!req.isAuthenticated()) {
   //   req.flash("error", "You must be signed in first!");
@@ -53,6 +33,7 @@ router.get("/new", isLoggedIn ,(req, res) => { // Putting isLoggedIn here only p
 router.post(
   "/",
   isLoggedIn,
+  isAuthor,
   validateCampground,
   catchAsync(async (req, res) => {
     // You're using client side validation using bootstrap which means it won't allow you to submit the form with fields missing from the form.
@@ -61,6 +42,8 @@ router.post(
     // Otherway could be like
     // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400); // This will only save us from cases where campground key is not present in the post request we're not making sure if campground itself is a object to begin with so it's still possible to fool this method but just naming something campground but this is just to show the concept of things that can be done.
     const camp = new Campground(req.body.campground);
+    // Since to get to this point we have to be logged in that means due to passport middleware we have access to req.user and with that we can store the author id of the currently logged in user who is making this campground in this campground before saving it. (So, when going to it's show page I can have it's id here using which I can show the username on the show page)
+    camp.author = req.user._id;
     await camp.save();
     req.flash("success", "Successfully created a new campground!");
     res.redirect(`/campgrounds/${camp._id}`);
@@ -70,10 +53,18 @@ router.post(
 router.get(
   "/:id",
   catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id).populate(
-      "reviews"
-    );
-    if (!campground) { // Incase someone bookmarked a campground and then that campground is deleted when that bookmark is then accessed at some point of time a weird looking error is generated there we can rather show a flash message.
+    const campground = await Campground.findById(req.params.id)
+      .populate({
+        // What this does is it populates the reviews on this campground and within each review it goes ahead and populates the author too that gives us access to the username so we can show it on each review.
+        path: "reviews",
+        populate: {
+          path: "author", // Instead of populating the entire user here you could have also went down the path of just storing the username here itself too if that's the only thing we will use here but that's a choice only you can make.
+        },
+      })
+      .populate("author"); // We want to populate the author too if we want to show the username too. (One more random thing you can't do .populate('reviews','author')) you have to chain them separetely like we did here.
+    // console.log(campground); // I added this just to check if everything like author was populated properly.
+    if (!campground) {
+      // Incase someone bookmarked a campground and then that campground is deleted when that bookmark is then accessed at some point of time a weird looking error is generated there we can rather show a flash message.
       req.flash("error", "Campground no longer exists!");
       res.redirect("/campgrounds");
     }
@@ -85,12 +76,16 @@ router.get(
 router.get(
   "/:id/edit",
   isLoggedIn,
+  isAuthor, // There is a issue here that is if you bookmark the edit page and then somehow that campground is infact deleted then our isAuthor does campground.author that will break.
   catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id);
-    if (!campground) { // Incase someone bookmarked a campground and then that campground is deleted when that bookmark is then accessed at some point of time a weird looking error is generated there we can rather show a flash message.
-      req.flash("error", "Campground no longer exists!");
-      res.redirect("/campgrounds");
-    }
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+    // This functionality down below is now taken care of by isAuthor middleware.
+    // if (!campground) {
+    // Incase someone bookmarked a campground and then that campground is deleted when that bookmark is then accessed at some point of time a weird looking error is generated there we can rather show a flash message.
+    //   req.flash("error", "Campground no longer exists!");
+    //   res.redirect("/campgrounds");
+    // }
     res.render("campgrounds/edit", { campground });
   })
 );
@@ -98,14 +93,22 @@ router.get(
 router.put(
   "/:id",
   isLoggedIn,
+  isAuthor,
   validateCampground,
   catchAsync(async (req, res) => {
     const { id } = req.params;
+    // THIS CODE BELOW CHECKS IF THE PERSON THAT'S TRYING TO SEND THIS REQUEST IS ALSO THE SAME PERSON WHO IS THE AUTHOR OF THIS CAMPGROUND (NOW YOU CAN EITHER REPEAT THIS CODE IN DELETE AND /EDIT PATH OR JUST MAKE A FUNCTION OUT OF IT (THAT'S WHAT WE WILL DO.))
+    // const campground = await Campground.findById(id);
+    // if(!campground.author.equals(req.user._id)) {
+    //   req.flash('error','You do not have permission to do that!');
+    //   return res.redirect(`/campgrounds/${id}`);
+    // }
     const updatedCampground = await Campground.findByIdAndUpdate(
       id,
       req.body.campground,
       { new: true, runvalidators: true }
     ); // You could also have used {...req.body.campground} as second arg.
+
     req.flash("success", "Updated campground  successfully!");
     res.redirect(`/campgrounds/${updatedCampground._id}`);
   })
@@ -114,6 +117,7 @@ router.put(
 router.delete(
   "/:id",
   isLoggedIn,
+  isAuthor,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     await Campground.findByIdAndDelete(id);
@@ -121,7 +125,5 @@ router.delete(
     res.redirect("/campgrounds");
   })
 );
-
-
 
 module.exports = router;
