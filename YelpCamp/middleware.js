@@ -1,8 +1,8 @@
 // Requiring Joi Validation Schema
-const { campgroundSchema,reviewSchema } = require("./validationSchemas"); // So i can use it to validate my post and put routes for my campgrounds here.
+const { campgroundSchema, reviewSchema } = require("./validationSchemas"); // So i can use it to validate my post and put routes for my campgrounds here.
 const ExpressError = require("./utils/ExpressError");
 const Campground = require("./models/campground");
-const Review  = require("./models/review");
+const Review = require("./models/review");
 
 module.exports.isLoggedIn = (req, res, next) => {
   // console.log("REQ.USER...", req.user); // Bcz of passport every request just like isAuthenticated has another method that is set to undefined if the user is not logged in otherwise if he is loggedin in that case it will contain information about the user that has logged in. (Behind the scenes it must work like we did when we were implementing the user authentication from scratch like after login our session object might have a user_id property using which you can fetch the user object.) also req.user doesn't show hash or salt only the username and email in our case also we can use it to selectively display logout if a user is logged in and hide the login,register button and vice-versa.
@@ -14,12 +14,12 @@ module.exports.isLoggedIn = (req, res, next) => {
   next();
 };
 
-module.exports.storeReturnTo = (req,res,next) => {
-  if(req.session.returnTo) {
+module.exports.storeReturnTo = (req, res, next) => {
+  if (req.session.returnTo) {
     res.locals.returnTo = req.session.returnTo;
   }
-  next(); // Always always remember next(); 
-}
+  next(); // Always always remember next();
+};
 
 // Validation Middleware
 // Setting up my custom middleware function that will use Joi to validate the campground whereever needed.
@@ -48,32 +48,32 @@ module.exports.validateReview = (req, res, next) => {
   }
 };
 
-module.exports.isAuthor = async(req,res,next) => {
-  const {id} = req.params;
+module.exports.isAuthor = async (req, res, next) => {
+  const { id } = req.params;
   const campground = await Campground.findById(id);
   if (!campground) {
     // Incase someone bookmarked a campground and then that campground is deleted when that bookmark is then accessed at some point of time a weird looking error is generated there we can rather show a flash message.
     req.flash("error", "Campground no longer exists!");
     return res.redirect("/campgrounds");
   }
-  if(!campground.author.equals(req.user._id)){
-    req.flash('error','You do not have permission to do that!');
+  if (!campground.author.equals(req.user._id)) {
+    req.flash("error", "You do not have permission to do that!");
     return res.redirect(`/campgrounds/${id}`);
   }
   next();
-}
+};
 
-module.exports.isReviewAuthor = async(req,res,next) => {
-  const {id,reviewId} = req.params;
+module.exports.isReviewAuthor = async (req, res, next) => {
+  const { id, reviewId } = req.params;
   const review = await Review.findById(reviewId);
   if (!review) {
     // Incase someone bookmarked a review editing page and then that review is deleted when that bookmark is then accessed at some point of time a weird looking error is generated there we can rather show a flash message.
     req.flash("error", "Review no longer exists!");
     return res.redirect("/campgrounds");
   }
-  if(!review.author.equals(req.user._id)){
-    req.flash('error','You do not have permission to do that!');
+  if (!review.author.equals(req.user._id)) {
+    req.flash("error", "You do not have permission to do that!");
     return res.redirect(`/campgrounds/${id}`);
   }
   next();
-}
+};
