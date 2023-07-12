@@ -1,5 +1,7 @@
 <!-- You successfully used ejs-mate by calling in layout one thing to note that is weird about this layout call it starts scanning from the views directory to find the layouts/boilerplate not from this directory in which this file is present so you don't need to do ../layouts/boilerplate here. -->
 <% layout('layouts/boilerplate') %>
+<!-- Even though stylesheets should normally be in head but we're putting them here cause this is the only page which needs this and also if you look in the path we did not do ../public/stylesheets/stars.css cause public directory is accessable from everywhere. -->
+<link rel="stylesheet" href="/stylesheets/stars.css">
 <div class="row">
   <div class="col-6">
     <div class="card mb-3">
@@ -52,20 +54,29 @@
     class="mb-3 validated-form"
     novalidate
     >
-      <div class="mb-3">
-        <label for="rating" class="form-label">Rating</label>
-        <input
-          type="range"
-          name="review[rating]"
-          id="rating"
-          class="form-range"
-          min="1"
-          max="5"
-          <% if (foundReview) { %>
-          value="<%= foundReview.rating %>"
-          <% } %>
-        />
-      </div>
+    <fieldset class="starability-basic">
+      <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+      <% for( let i = 1; i <= 5; i++ ) { %>
+        <input type="radio" id="first-rate<%=i%>" name="review[rating]" value="<%= i %>" 
+        <% if (foundReview && i === foundReview.rating) { %>
+           <%= checked="checked" %>
+           <% } %>
+           />
+        <label for="first-rate<%=i%>" title="<%= i %> stars"><%= i %> stars</label>
+      <% } %>
+    </fieldset>
+    <!-- <fieldset class="starability-basic">
+      <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+      <label for="first-rate1" title="Terrible">1 star</label>
+      <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+      <label for="first-rate2" title="Not good">2 stars</label>
+      <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+      <label for="first-rate3" title="Average">3 stars</label>
+      <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+      <label for="first-rate4" title="Very good">4 stars</label>
+      <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+      <label for="first-rate5" title="Amazing">5 stars</label>
+    </fieldset> -->
       <div class="mb-3">
         <label for="body" class="form-label">Review</label>
         <textarea
@@ -96,9 +107,10 @@
     <% for (let review of campground.reviews) { %>
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title">Rating : <%= review.rating %></h5>
-        <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username%></h6>
-        <p class="card-text">Review : <%= review.body %></p>
+        <h6 class="card-title"><%= review.author.username %></h6>
+        <!-- data-rating down below is for filling in the rating number in the reviews shown on the show page and before the end of the paragraph where i've written review.rating stars that's only for screen readers/accessability purposes. -->
+        <p class="starability-result" data-rating="<%= review.rating %>"><%=review.rating%> stars</p>
+        <p class="card-text">Review: <%= review.body %></p>
         <% if (currUser && review.author.equals(currUser._id)) { %>
           <!-- Even though I have populated the author this equals thing still works ?  -->
           <!-- I thought it would work only when it wasn't populated -->
