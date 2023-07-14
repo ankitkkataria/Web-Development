@@ -10,6 +10,10 @@ const { isLoggedIn, isAuthor, validateCampground } = require("../middleware");
 
 // Requiring Campgrounds Controller
 const campgrounds = require("../controllers/campgroundsController");
+const { storage } = require("../cloudinary"); // When you specify directory the index.js file is automatically
+const multer = require("multer");
+// const upload = multer({dest:'uploads/'}) // Store it locally in upload folder.
+const upload = multer({ storage }); // Store it on cloudinary configuration that i did on storage object in cloudinary/index.js file.
 
 // router.route allows us group together requests that send a request to the same path it allows us to define a path and let's us chain on requests having different HTTP verbs onto that route also you don't need to specify path again in the chained on get, post, put, patch or delete requests.
 router
@@ -18,9 +22,20 @@ router
   .post( // Create Campground Route
     isLoggedIn,
     // isAuthor, // I had put this here for some really odd reason but this will give a error in a post route for sure cause currently this campground doesn't even exist how will you go and look for a author for this campground.
+    upload.array('image'), // This is so we can parse the images passed in by the form and now we will go into the controller createCampground to store the information about this image in mongoDB along with this campground.
     validateCampground,
     catchAsync(campgrounds.createCampground)
   );
+  // Testing for single file upload.
+  // .post(upload.single('image'),(req,res) => { // upload.single is a multer middleware that allows us to parse the file/image sent from the form's input having the name image. (Due to this middleware we will be able to access this file using the req.file attribute and also can access text data just like normal from req.body also meanwhile it stores it in the destination too.)
+  //   console.log(req.body,req.file);
+  //   res.send('It Worked')
+  // })
+  // Testing for multiple files upload.
+  // .post(upload.array("image"), (req, res) => { 
+  //   console.log(req.body, req.files);
+  //   res.send("It Worked");
+  // });
 
 // Render New Campground Form Route (Must be before /:id route)
 router.get("/new", isLoggedIn, campgrounds.renderNewForm);
@@ -32,6 +47,7 @@ router
   .put( // Update Campground Route
     isLoggedIn,
     isAuthor,
+    upload.array('image'),
     validateCampground,
     catchAsync(campgrounds.updateCampground)
   )

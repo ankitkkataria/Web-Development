@@ -8,6 +8,7 @@
       method="post"
       class="validated-form"
       novalidate
+      enctype="multipart/form-data"
     >
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
@@ -36,17 +37,18 @@
         <div class="invalid-feedback">Location required!</div>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="imageURL">Image URL</label>
+        <label for="formFileMultiple" class="form-label"
+          >Add More Image(s)</label
+        >
         <input
-          type="text"
-          id="imageURL"
           class="form-control"
-          name="campground[image]"
-          value="<%= campground.image %>"
-          required
+          type="file"
+          name="image"
+          id="formFileMultiple"
+          multiple
         />
-        <div class="valid-feedback">Looks good!</div>
-        <div class="invalid-feedback">Image URL required!</div>
+        <!-- Putting multiple in the line above is certainly useful without it we won't be able to download multiple files. -->
+        <!-- I changed name to image above cause that what's multer is waiting/looking for. -->
       </div>
       <div class="mb-3">
         <label class="form-label" for="price">Campground Price</label>
@@ -81,6 +83,28 @@
         >
         <div class="valid-feedback">Looks good!</div>
         <div class="invalid-feedback">Description required!</div>
+      </div>
+      <div class="mb-3">
+        <% for( let i = 0; i < campground.images.length; i++ ) { %>
+        <img
+          src="<%= campground.images[i].thumbnail %>"
+          alt=""
+          class="img-thumbnail"
+        />
+        <div class="form-check-inline">
+          <!-- Why does using inline align these checkboxes to the left ? -->
+          <input
+            type="checkbox"
+            name="deleteImagesFilenames[]"
+            id="image-<%=i%>"
+            value="<%= campground.images[i].filename %>"
+          />
+          <!-- deleteImagesFilenames[] says it's a array -->
+          <!-- In value we put filename that cloudinary gave us -->
+          <!-- What doing those above two things does is sends the array of filenames whhere the checkboxes were checked to the server on req.body -->
+          <label for="image-<%=i%>">Delete</label>
+        </div>
+        <% } %>
       </div>
       <div class="mb-3">
         <button class="btn btn-info text-white">Update Campground</button>

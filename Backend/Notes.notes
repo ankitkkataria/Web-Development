@@ -282,3 +282,45 @@ After errors and stuff you'll add error/validations in the YelpCamp app too.
 Then we will read about the mongo relationships.
 Some rules that you can follow what it comes to implementing mongo relationships
 https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design
+
+One thing to note with regards to image upload is normal HTML forms don't allow for file uploads so we will need to change form type. 
+Also we don't store images in mongoDB cause images can be very large also BSON limit is of 16 MB.
+Also we don't store images locally that the user uploads but instead use a cloud service like cloudinary so what happens is when a person uploads a image that goes to cloudinary and there it is stored and cloudinary then gives us a URL that we can store in our mongoDB and access the image that was sent.
+
+Multer Usage
+
+First require multer :- const multer = require('multer');
+Then set the destination where you would want it to upload the files that the form sends you like cloudinary or AWS etc. :- const upload = multer({dest:'uploads/'})
+Multer after parsing the form data adds a body object and a file or files object to the request object. The body object contains the values of the text fields of the form, the file or files object contains the files uploaded via the form.
+[javascript]
+const express = require('express')
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
+const app = express()
+
+app.post('/profile', upload.single('avatar'), function (req, res, next) { // avatar is the name of the field that is used to upload image from the form
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+})
+
+app.post('/photos/upload', upload.array('photos', 12), function (req, res, next) { // photos is the name of the field that is used to upload images from the form but also we need to make the type=file input put multiple at the end of that input like you usually put novalidate in form.
+  // req.files is array of `photos` files
+  // req.body will contain the text fields, if there were any
+})
+[end]
+
+dotenv is a package that let us use an .env file in a node environment to easily manage environment variables, but any system environment variables can be automatically accessed by using process.env on Node, it's a built-in feature.
+Cloudinary stores files with weird names under filename property to avoid conflicts with other commenly used names like hill.png
+Normally as cloudinary req.file is returned like this :-
+[javascript]
+  {
+    fieldname: 'image',
+    originalname: 'd.PNG',
+    encoding: '7bit',
+    mimetype: 'image/png',
+    path: 'https://res.cloudinary.com/dnttigdlc/image/upload/v1689281273/nqolhy8xge4qvwujimus.png',
+    size: 55892,
+    filename: 'nqolhy8xge4qvwujimus'
+  }  
+[end]

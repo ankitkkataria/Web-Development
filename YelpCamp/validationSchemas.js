@@ -7,10 +7,11 @@ module.exports.campgroundSchema = Joi.object({
   campground: Joi.object({
     title: Joi.string().required(),
     price: Joi.number().required().min(0),
-    image: Joi.string().required(),
+    // image: Joi.string().required(),
     location: Joi.string().required(),
     description: Joi.string().required(),
   }).required(),
+  deleteImagesFilenames: Joi.array() // This allows the req.body to contain this array otherwise you won't be able to send this array from edit.ejs
 });
 
 module.exports.reviewSchema = Joi.object({

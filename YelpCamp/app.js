@@ -1,3 +1,9 @@
+if(process.env.NODE_ENV != 'production') {
+  require('dotenv').config(); // .env file must be in the root directory of this project
+} 
+
+// console.log(process.env.CLOUDINARY_KEY); // You can access anything you store in the .env file using process.env
+
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -13,6 +19,8 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local"); // passport-local-mongoose has nothing to do with this here that's just in our model file.
 const User = require("./models/user");
+const multer = require('multer');
+const upload = multer({dest:'uploads/'})
 // const Joi = require('joi'); // Not needed here anymore as we are importing our schemas from validationSchemas file and that itself is importing joi.
 
 // Connecting to the mongoose database server.
@@ -122,3 +130,4 @@ app.use((err, req, res, next) => {
 
 // Louli's explanation behind using Joi as a data validation tool
 // I don't believe Joi is easier at all, as it has too many details when compared to the Mongoose validation, but it's considered safer, as it validates the data way before any attempt of data insertion to the database, different from mongoose, that validates the data when it's being added to the database. If you have a small, simple-purpose application that won't deal with payment or something considered 'more dangerous', then you can use only MongoDB validation; otherwise, it may be a better choice to use a package like Joi.
+
