@@ -324,3 +324,9 @@ Normally as cloudinary req.file is returned like this :-
     filename: 'nqolhy8xge4qvwujimus'
   }  
 [end]
+
+
+In the EJS template code, we basically loop over all the campground images and create a checkbox for each image that has a different value attribute, but the same name="deleteImages[]" attribute.
+The name="deleteImages[]" syntax for the name attribute (with the added empty squre brackets at the end) is important because that will allow our Node.js/Express.js backend application to realize that we are trying to pass multiple input elements with different values under the same name attribute, and this will automatically instruct it to create an array of those values from those specific inputs. Basically, our application is designed to understand this name attribute syntax automatically and parse the data into an array of values accordingly.
+So, yes, the whole idea behind this syntax is that we instruct our app to create an array of checked values and store it to req.body.deleteImages in the backend route (where we submit the form). We don't have to have everything that we submit via the form defined in a model/schema if we are not saving it directly to the database (but we can validate all the submitted form data with Joi regardless).
+Basically, the idea is not to save anything from req.body.deleteImages to the database, so we don't place that in the model schema (i.e. we don't want to save deleted images values to the database). We just use the submitted req.body.deleteImages array of values to know which checked images to remove from the campground, when a campground update happens.

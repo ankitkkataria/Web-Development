@@ -5,7 +5,12 @@
 // Controllers is where you really structure everything. It's kind of the heart of your application. It's where all the main logic happens that where you're rendering views and you're working with models.
 
 const Campground = require("../models/campground");
-const { cloudinary } = require('../cloudinary') // Bcz we want to delete the images from our cloudinary cloud storage too not just from mongoDB (Also remember this is not cloudinary package rather it's the local instance that we formed of it in our cloudinary folder with our credentials).
+const { cloudinary } = require("../cloudinary"); // Bcz we want to delete the images from our cloudinary cloud storage too not just from mongoDB (Also remember this is not cloudinary package rather it's the local instance that we formed of it in our cloudinary folder with our credentials).
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding"); // Cause we want to convert the location the user enters and store it's lattitude/longitude in our database.
+const campground = require("../models/campground");
+const mapboxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapboxToken });
+
 module.exports.index = async (req, res) => {
   const campgrounds = await Campground.find();
   res.render("campgrounds/index", { campgrounds });
@@ -27,9 +32,22 @@ module.exports.createCampground = async (req, res) => {
   // So, One way is to use required in mongoose schema itself.
   // Otherway could be like
   // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400); // This will only save us from cases where campground key is not present in the post request we're not making sure if campground itself is a object to begin with so it's still possible to fool this method but just naming something campground but this is just to show the concept of things that can be done.
-  const camp = new Campground(req.body.campground);
-  camp.images = req.files.map((file) => {
-    // This is so we can upload images that we get from our new form and show them on show page here we will store the filename and url of the files that we uploaded to cloudinary. (This will make us an array of objects each containing url & filename)
+
+  // Just a hardcoded example of how we can find longitude and lattitude for a location using forwardGeocode.
+  // const geoData = await geocoder.forwardGeocode({
+  //   query:'Yosemite,CA',
+  //   limit : 1
+  // }).send()
+  // console.log(geoData.body.features[0].geometry.coordinates);
+
+  const geoData = await geocoder.forwardGeocode({ // I'm not going to allow the campground to change it's location so I'm not adding this capability when you edit the campground.
+    query: req.body.campground.location,
+    limit: 1
+  }).send()
+
+  const camp = new Campground(req.body.campground); 
+  camp.geometry = geoData.body.features[0].geometry; // (geoData.body.features[0].geometry returns geoJSON compatible object like geometry: {type : 'Point', coordinates: [-122.2342, 32.3402]})}
+  camp.images = req.files.map((file) => { // This is so we can upload images that we get from our new form and show them on show page here we will store the filename and url of the files that we uploaded to cloudinary. (This will make us an array of objects each containing url & filename)
     return { url: file.path, filename: file.filename };
   });
   // Easier way of doing the above thing in one line is using implicit return req.files.map(file => ({ url: file.path, filename: file.filename }))
@@ -85,21 +103,25 @@ module.exports.updateCampground = async (req, res) => {
   const updatedCampground = await Campground.findByIdAndUpdate(
     id,
     req.body.campground,
-    { new: true, runvalidators: true }); // You could also have used {...req.body.campground} as second arg.
-    // Getting the image's filename & path out so we can store it in MongoDB.
-    const images = req.files.map((file) => {
+    { new: true, runvalidators: true }
+  ); // You could also have used {...req.body.campground} as second arg.
+
+  // Getting the image's filename & path out so we can store it in MongoDB.
+  const images = req.files.map((file) => {
     // This is so we can upload images that we get from our new form and show them on show page here we will store the filename and url of the files that we uploaded to cloudinary. (This will make us an array of objects each containing url & filename)
     return { url: file.path, filename: file.filename };
   });
   updatedCampground.images.push(...images); // Because we're editing we need to push rather then re-assigning and images here is the array of objects containing filename & url.
   await updatedCampground.save(); // Saving here is extremely important I was not doing it which lead to the situation of my images being uploaded to cloudinary but won't get stored on my page so here we after pushing also save. On top of that we don't need to update this campground in two steps first the text and then the images but we're just doing it for simplicity sake.
-  if (req.body.deleteImagesFilenames) { // If there are any filenames in this array that means the user wants to delete some images.
+  if (req.body.deleteImagesFilenames) {
+    // If there are any filenames in this array that means the user wants to delete some images.
     // Deleting files from cloudinary cloud.
     for (let filename of req.body.deleteImagesFilenames) {
       await cloudinary.uploader.destroy(filename);
     }
     // Deleting thier tracks from MongoDB as well.
-    await updatedCampground.updateOne({ // This will automatically save there is no need to expilicitly save this also we are doing this cause we want to delete the enteries from mongoDB. Also updateOne cause we're updating a single array.
+    await updatedCampground.updateOne({
+      // This will automatically save there is no need to expilicitly save this also we are doing this cause we want to delete the enteries from mongoDB. Also updateOne cause we're updating a single array.
       $pull: { images: { filename: { $in: req.body.deleteImagesFilenames } } }, // I wasted a lot of time here I had forgot to but $ symbol in front of pull idk why the hell that's allowed syntactically.
     });
   }
