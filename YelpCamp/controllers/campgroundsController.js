@@ -7,7 +7,6 @@
 const Campground = require("../models/campground");
 const { cloudinary } = require("../cloudinary"); // Bcz we want to delete the images from our cloudinary cloud storage too not just from mongoDB (Also remember this is not cloudinary package rather it's the local instance that we formed of it in our cloudinary folder with our credentials).
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding"); // Cause we want to convert the location the user enters and store it's lattitude/longitude in our database.
-const campground = require("../models/campground");
 const mapboxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapboxToken });
 
@@ -55,7 +54,7 @@ module.exports.createCampground = async (req, res) => {
   camp.author = req.user._id;
   await camp.save();
   console.log(camp);
-  req.flash("success", "Successfully created a new campground!");
+  req.flash("success", "Successfully created a new campground!"); 
   res.redirect(`/campgrounds/${camp._id}`);
 };
 

@@ -11,6 +11,9 @@ const map = new mapboxgl.Map({
   zoom: 10, // starting zoom
 });
 
+// Add zoom and rotation controls to the map
+map.addControl(new mapboxgl.NavigationControl());
+
 // Your ejs is compiled and all the things are substituted before the page even loads.
 // But scrips only run on the browser they are not compiled initially before the page loads.
 
