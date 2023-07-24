@@ -52,7 +52,7 @@ const seedDB = async () => {
       description:
         "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto, sed delectus vel aliquid temporibus sit quam accusantium sapiente vero ducimus animi necessitatibus. Dignissimos maiores accusamus ab quam eveniet, explicabo minima.",
       price: price,
-      author: "64ad1a20268e90f66ac91c52", // Just putting in a random user as a author and reseeding the random campgrounds. (We're doing this cause when adding a new campground we will add the user who is signed in currently to that campground (if they are not signed in they won't even be able to make a campground)) and if we don't add a user to already existing ones when we go to show their name of the show page it will break things or for some we will so username and for some we won't that will make things look a bit inconsistant.
+      author: "64aa66a34d2e3789d89a4f2e", // Just putting in a random user as a author and reseeding the random campgrounds. (We're doing this cause when adding a new campground we will add the user who is signed in currently to that campground (if they are not signed in they won't even be able to make a campground)) and if we don't add a user to already existing ones when we go to show their name of the show page it will break things or for some we will so username and for some we won't that will make things look a bit inconsistant.
     });
     await camp.save();
   }
@@ -63,5 +63,3 @@ seedDB() // All async functions automatically return Promises. If you declare a 
   .then(() => {
     mongoose.connection.close(); // Closing the database connection after seeding is a good practice to ensure that the program terminates cleanly and does not leave any open connections to the database. In this case, it's just a small seed script, that will end and get us back to the system terminal after the database connection is properly closed. In larger applications or web servers that continuously run and interact with the database, leaving open connections can cause issues like performance problems, so it's good to close the database connection when it's not needed anymore.
   });
-
-
