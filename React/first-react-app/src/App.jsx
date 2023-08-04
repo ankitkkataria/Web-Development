@@ -4,6 +4,9 @@ import Greeter from "./Greeter";
 import Die from "./Die";
 import ListPicker from "./ListPicker";
 import DoubleDice from "./DoubleDice";
+import Heading from "./Heading";
+import ColorList from "./ColorList";
+import Slots from "./Slots";
 function App() {
   return (
     <div>
@@ -21,6 +24,10 @@ function App() {
       <DoubleDice/>
       <DoubleDice/>
       <DoubleDice/>
+      <Heading text="Hi Bro!"color="magenta" fontSize="48px"/>
+      <ColorList colors={['teal','pink','orange','blue']} />
+      <Slots val1="d" val2="d" val3="d"/>
+      <Slots val1="a" val2="d" val3="d"/>
     </div>
   );
 

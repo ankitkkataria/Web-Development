@@ -56,10 +56,11 @@
 export default function DoubleDice() {
   const num1 = Math.floor(Math.random() * 3) + 1;
   const num2 = Math.floor(Math.random() * 3) + 1;
+  const isWinner = num1 === num2; // This will return a boolean value and store it in isWinner.
+  const styles = {color : isWinner ? "green" : "red"};
   return (
-    <div>
-      {num1 === num2 && <h3>You Win!</h3>} 
-      {/* If the condition is not true the h3 statement will never be executed otherwise it will be executed. */}
+    <div style={styles}> {/* Or you can put <div style={{color : isWinner ? "green" : "red"}}>. So basically this is so you can store dynamic styles just pass in a object that changes based on something and put them here again first bracket is to just escape JS and second one is the object. */}
+      {isWinner && <h3>You Win!</h3>} {/* If the condition is not true the h3 statement will never be executed otherwise it will be executed. */}
       <p>Num1: {num1}</p>
       <p>Num2: {num2}</p>
     </div>
